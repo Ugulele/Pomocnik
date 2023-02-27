@@ -7,18 +7,18 @@ body
     margin: 0 !important;
 }
 
-#header
-{
-padding: 10px 0;
-text-align: center;
-}
-
 #logo
 {
 /* border: 1px solid #fff; */
 margin-inline: auto;
 text-align: center;
-min-width: 20em;
+padding: 10px 0;
+}
+
+img .logo
+{
+    max-width: 500px;
+    width: 100%;
 }
 
 .label
