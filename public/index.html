@@ -9,6 +9,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700;900&display=swap" rel="stylesheet">
+        <link rel="icon" type= "image/x-icon" href="img/favicon.png">
 
     <body>
 
@@ -763,6 +764,50 @@
 
                 </div>
 
+               
+
+                <div class="contheader">  
+                    Obliczanie pochylenia
+                </div>   
+                        
+                <div class = "box">
+
+                    <div class = "boxheader">
+                        Parametry pochylenia:
+                    </div>
+
+                    <div class = "boxline">
+                        Wysokość początkowa [m]:
+                        <input type = "number" id = "vertical_height_4_before" placeholder = "10" oninput = "countverticalangle()"> 
+                    </div>
+
+                    <div class = "boxline">
+                        Wysokość końcowa [m]:
+                        <input type = "number" id = "vertical_height_4_after" placeholder = "110" oninput = "countverticalangle()"> 
+                    </div>
+
+                    <div class = "boxline">
+                        Długość pochylenia [m]:
+                        <input type = "number" id = "vertical_length_4" placeholder = "5000" oninput = "countverticalangle()"> 
+                    </div>
+
+                    
+                </div>
+    
+                <div class = "box">
+                    <div class = "boxheader">
+                        Wyniki:
+                    </div>
+
+                    <div class = "boxline">
+                        Pochylenie [&permil;]:
+                        <input type = "number" id = "vertical_inclination_4_result" placeholder = "20" readonly>
+                    </div>
+
+                </div>
+
+                
+
                 <div class="contheader">  
                     Obliczanie wyrównania dla zadanego pochylenia
                 </div>  
@@ -786,7 +831,7 @@
                         <input class = "button" type = "button" value = "Oblicz wyrównanie" onclick="verticalInclines2()">
                     </div> -->
                 </div> 
-                
+                    
                 <div class = "box">
                     <div class = "boxheader">
                         Wyniki:
@@ -799,7 +844,7 @@
                 </div>
 
             </div>
-
+        
             <div class ="label">
                 5. Łuki poziome
             </div>
@@ -824,7 +869,7 @@
                     </div>
 
                     <div class = "boxline">
-                        Prędkość maksymalna [m]: 
+                        Prędkość maksymalna [km/h]: 
                         <input type = "number" id = "turn_max_velocity"  placeholder = "120" oninput = "turnlength()">
                     </div>
                 </div>

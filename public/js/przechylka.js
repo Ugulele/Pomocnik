@@ -64,14 +64,9 @@ function runFunctions(){
             if(lprim){
                 dzielKP()
             }
-        }else if(r && l && lprim){
-
         }else{
             document.getElementById('halflength').value = "";
             document.getElementById('showshift').value = "";
-        }
-        if(!r && (vmax && vmin)){
-            liczPrzechylke(r,vmax,vmin,itype,etype,platform,calctype);
         }
     }
     if(!lprim){
@@ -241,21 +236,19 @@ function liczPrzechylke(r,vmax,vmin,itype,etype,platform,calctype){
     var Dmed = (Dmax+Dmin)/2
 
     //Drukowanie wyników
-    if(r == 0){
-        document.getElementById('radius').value = Math.round(rminp)
-        return
-    }else{
-        document.getElementById('showdmin').value = mround(Dmin,5);
-        document.getElementById('showdmindeg').value = cround(degrees(Math.atan(mround(Dmin,5)/1435)),1); 
-        document.getElementById('showdreg').value = mround(Dreg,5);
-        document.getElementById('showdregdeg').value = cround(degrees(Math.atan(mround(Dreg,5)/1435)),1);
-        document.getElementById('showdmed').value = mround(Dmed,5);
-        document.getElementById('showdmeddeg').value = cround(degrees(Math.atan(mround(Dmed,5)/1435)),1); 
-        document.getElementById('showdeq').value = mround(Deq,5);
-        document.getElementById('showdeqdeg').value = cround(degrees(Math.atan(mround(Deq,5)/1435)),1);  
-        document.getElementById('showdmax').value = mround(Dmax,5);
-        document.getElementById('showdmaxdeg').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),1); 
-    }
+   
+    
+    document.getElementById('showdmin').value = mround(Dmin,5);
+    document.getElementById('showdmindeg').value = cround(degrees(Math.atan(mround(Dmin,5)/1435)),1); 
+    document.getElementById('showdreg').value = mround(Dreg,5);
+    document.getElementById('showdregdeg').value = cround(degrees(Math.atan(mround(Dreg,5)/1435)),1);
+    document.getElementById('showdmed').value = mround(Dmed,5);
+    document.getElementById('showdmeddeg').value = cround(degrees(Math.atan(mround(Dmed,5)/1435)),1); 
+    document.getElementById('showdeq').value = mround(Deq,5);
+    document.getElementById('showdeqdeg').value = cround(degrees(Math.atan(mround(Deq,5)/1435)),1);  
+    document.getElementById('showdmax').value = mround(Dmax,5);
+    document.getElementById('showdmaxdeg').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),1); 
+
    
 }   
 
