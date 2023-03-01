@@ -453,32 +453,41 @@
 
                     <div class = "boxline">
                         Promień Ł1 [m]:
-                        <input type = "number" id = "widening_radius_1" placeholder = "5000" oninput=" runliczPoszerzenie()">
+                        <input type = "number" id = "widening_radius_1" placeholder = "5000" oninput="runliczPoszerzenie()">
                     </div>
 
                     <div class = "boxline">
                         Długość KP(Ł1) [m]:
-                        <input type = "number" id = "widening_curve_length_1" placeholder = "60" oninput=" runliczPoszerzenie()">
+                        <input type = "number" id = "widening_curve_length_1" placeholder = "60" oninput = "runliczPoszerzenie()">
                     </div>
 
                     <div class = "boxline">
                         Promień Ł2 [m]:
-                        <input type = "number" id = "widening_radius_2" placeholder = "5000" oninput=" runliczPoszerzenie()">
+                        <input type = "number" id = "widening_radius_2" placeholder = "5000" oninput = "runliczPoszerzenie()">
                     </div>
 
                     <div class = "boxline">
                         Długość KP(Ł2) [m]:
-                        <input type = "number" id = "widening_curve_length_2" placeholder = "60" oninput=" runliczPoszerzenie()">
+                        <input type = "number" id = "widening_curve_length_2" placeholder = "60" oninput = "runliczPoszerzenie()">
                     </div>
 
                     <div class = "boxline">
                         Kąt łuku[stopnie]:
-                        <input type = "number" id = "widening_angle" placeholder = "0,57" oninput=" runliczPoszerzenie()"> 
+                        <input type = "number" id = "widening_angle" placeholder = "0,57" oninput = "runliczPoszerzenie()"> 
+                    </div>
+
+                    <div class = "boxline">
+                        Wybierz typ krzywej:
+                        <select id = "widening_curvetype" onchange = "runliczPoszerzenie()">
+                            <option value = "3st">Parabola III stopnia</option>
+                            <option value = "4st">Parabola IV stopnia</option>
+                            <option value = "bloss">Krzywa Blossa</option>
+                        </select>
                     </div>
 
                     <div class = "boxline">
                         Zmiana rozstawu torów [m]:
-                        <input type = "number" id = "widening_change" placeholder = "50" oninput=" runliczPoszerzenie()"> 
+                        <input type = "number" id = "widening_change" placeholder = "50" oninput = "runliczPoszerzenie()"> 
                     </div>
 
                     <!-- <div class = "boxbuttons">
@@ -509,8 +518,18 @@
                     </div>
 
                     <div class = "boxline">
+                        Przesunięcie KP(Ł1) [m]:
+                        <input type = "number" id = "widening_shift_1" placeholder = "0,05" readonly>
+                    </div>
+
+                    <div class = "boxline">
                         Długość Ł2 [m]:
                         <input type = "number" id = "widening_curve2" placeholder = "50" readonly>
+                    </div>
+
+                    <div class = "boxline">
+                        Przesunięcie KP(Ł2) [m]:
+                        <input type = "number" id = "widening_shift_2" placeholder = "0,05" readonly>
                     </div>
 
                 </div>
@@ -528,6 +547,15 @@
                     <div class = "boxline">
                         Promień łuków [m]:
                         <input type = "number" id = "widening2_radius" placeholder = "5000" oninput="runliczPoszerzenie2()">
+                    </div>
+
+                    <div class = "boxline">
+                        Wybierz typ krzywej:
+                        <select id = "widening2_curvetype" onchange = "runliczPoszerzenie2()">
+                            <option value = "3st">Parabola III stopnia</option>
+                            <option value = "4st">Parabola IV stopnia</option>
+                            <option value = "bloss">Krzywa Blossa</option>
+                        </select>
                     </div>
 
                     <div class = "boxline">
@@ -561,6 +589,11 @@
                     <div class = "boxline">
                         Długość łuku [m]:
                         <input type = "number" id = "widening2_curve" placeholder = "50" readonly>
+                    </div>
+
+                    <div class = "boxline">
+                        Przesunięcie KP [m]:
+                        <input type = "number" id = "widening2_shift" placeholder = "0,05" readonly>
                     </div>
 
                 </div>
@@ -599,8 +632,22 @@
                     </div>
 
                     <div class = "boxline">
+                        Wybierz typ krzywej:
+                        <select id = "widening3_curvetype" onchange = "runliczPoszerzenie3()">
+                            <option value = "3st">Parabola III stopnia</option>
+                            <option value = "4st">Parabola IV stopnia</option>
+                            <option value = "bloss">Krzywa Blossa</option>
+                        </select>
+                    </div>
+
+                    <div class = "boxline">
                         Długość KP [m]:
                         <input type = "number" id = "widening3_curve_length" placeholder = "50" readonly>
+                    </div>
+
+                    <div class = "boxline">
+                        Przesunięcie KP [m]:
+                        <input type = "number" id = "widening3_shift" placeholder = "0,05" readonly>
                     </div>
 
                 </div>
@@ -882,6 +929,41 @@
                     <div class = "boxline">
                         Minimalna długość [m]:
                         <input type = "number" id = "turn_minimal_length"  placeholder = "30" readonly>
+                    </div>
+                </div>
+
+                <div class = "contheader">
+                    Minimalny promień łuku w torach głównych
+                </div>
+
+                <div class = "box">
+                    <div class = "boxheader">
+                        Parametry łuku:
+                    </div>
+
+                    <div class = "boxline">
+                        Typ wartości:
+                        <select id = "turn_rmin_calctype" onchange = "computeRmin()">
+                            <option value = "rec">Zalecane dopuszczalne wartości</option>
+                            <option value = "nrm">Normalne dopuszczalne wartości</option>
+                            <option value = "exp">Rozszerzone dopuszczalne wartości</option>
+                        </select>
+                    </div>
+
+                    <div class = "boxline">
+                        Prędkość maksymalna [km/h]: 
+                        <input type = "number" id = "turn_rmin_vmax"  placeholder = "120" oninput = "computeRmin()">
+                    </div>
+                </div>
+
+                <div class = "box">
+                    <div class = "boxheader">
+                        Wyniki:
+                    </div>
+
+                    <div class = "boxline">
+                        Minimalny promień [m]:
+                        <input type = "number" id = "turn_rmin_result"  placeholder = "654" readonly>
                     </div>
                 </div>
 
