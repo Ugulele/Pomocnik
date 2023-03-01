@@ -7,7 +7,7 @@ body
     margin: 0 !important;
 }
 
-#logo
+.logo
 {
 /* border: 1px solid #fff; */
 margin-inline: auto;
@@ -15,7 +15,7 @@ text-align: center;
 padding: 10px 0;
 }
 
-img
+.logo > img
 {
     max-width: 500px;
     width: 100%;

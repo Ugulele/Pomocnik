@@ -10,17 +10,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700;900&display=swap" rel="stylesheet">
 
-
-        <script src = "js/przechylka.js"></script>
-        <script src = "js/curves.js"></script>
-        <script src = "js/widening.js"></script>
-        <script src = "js/verticalcurves.js"></script>
-        <script src = "js/turns.js"></script>
-
-
     <body>
 
-        <div id="logo">
+        <div class="logo">
             <img src = "img/logo.png">
         </div>
         
@@ -142,7 +134,7 @@
 
                     <div class = "boxline">
                         Długość części krzywej [m]:
-                        <input type = "number" id = "newl" placeholder = "100" oninput = "dzielKP()">
+                        <input type = "number" id = "newl" placeholder = "100" oninput = "runFunctions()">
                     </div>
 
                     <!-- <div class = "boxbuttons">
@@ -606,7 +598,7 @@
                     </div>
 
                     <div class = "boxline">
-                        Długość krzywej przejściowej [m]:
+                        Długość KP [m]:
                         <input type = "number" id = "widening3_curve_length" placeholder = "50" readonly>
                     </div>
 
@@ -908,12 +900,20 @@
         <footer>
             <a href = "https://td2.info.pl/profile/?u=3336">&copy; Ugulele <span id = "year"></span></a>
 
-            <script>
-                const date = new Date();
-
-                document.getElementById("year").innerHTML = date.getFullYear();
-            </script>
+          
         </footer>
+
+        <script src = "js/przechylka.js"></script>
+        <script src = "js/curves.js"></script>
+        <script src = "js/widening.js"></script>
+        <script src = "js/verticalcurves.js"></script>
+        <script src = "js/turns.js"></script>
+        <script>
+            const date = new Date();
+
+            document.getElementById("year").innerHTML = date.getFullYear();
+        </script>
+
 
     </body>
 </html>
