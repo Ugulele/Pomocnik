@@ -79,7 +79,6 @@ function turnparams(){
         return
     }
 
-    console.log("zaczynam liczyć")
     //przy l, obliczanie t i alfa
     function computeangle(r,l){
         alfa = 360*l/(2*Math.PI*r);
@@ -104,7 +103,42 @@ function turnparams(){
             document.getElementById("turn_parameters_length_result").value = cround(l,4);
             document.getElementById("turn_parameters_slant_result").value = cround(t,4);
         }
+    }   
+}
+
+function computeRmin(){
+
+    vmax = document.getElementById("turn_rmin_vmax").value;
+    calctype = document.getElementById("turn_rmin_calctype").value;
+
+    if(vmax){
+        Dmax = selectDmax(calctype);
+        Idop = selectIdop(calctype);
+
+        let rminp = 11.8*(vmax**2)/(Idop+Dmax);
+
+        document.getElementById("turn_rmin_result").value = Math.round(rminp);
+    }else{
+        document.getElementById("turn_rmin_result").value = "";
     }
-    
+
+    function selectDmax(calctype){
+        const Dmax = 150;
+        return Dmax
+    }
+
+    function selectIdop(calctype){
+        let Idop = ""
+
+        if(calctype == "rec"){
+            Idop  = 110;
+        }else if(calctype == "nrm"){
+            Idop = 130;
+        }else{
+            Idop = 150;
+        }
+
+        return Idop;
+    }
 
 }

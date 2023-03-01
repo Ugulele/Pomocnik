@@ -6,6 +6,10 @@ function cround(number, digits){
     return Math.round(number*(10**digits))/(10**digits);
 }
 
+function degrees(angle){
+    return angle*(180/Math.PI);
+}
+
 function verticalVis(){
     const vcase = document.getElementById("vertical_case").value;
     if(vcase == "radius"){
@@ -80,5 +84,29 @@ function verticalInclines2(l,i){
     //drukowanie wyniku
     document.getElementById("vertical_length_3_result").value = cround(w,6);
 
+}
+
+function countverticalangle(){
+    //deklaracja wartości
+    h1 = document.getElementById("vertical_height_4_before").value;
+    h2 = document.getElementById("vertical_height_4_after").value;
+    l = document.getElementById("vertical_length_4").value;
+
+    if(h1 && h2 && l){
+        //obliczanie wartości
+        let h = h2 - h1;
+
+        //obliczenie kąta
+        let alfa = degrees(Math.atan(h/l));
+
+        //obliczanie pochylenia
+        const p = 0.05728586;
+        let i = cround(alfa/p,2);
+
+        document.getElementById("vertical_inclination_4_result").value = i;
+    }else{
+        document.getElementById("vertical_inclination_4_result").value = "";
+    }
+  
 }
 

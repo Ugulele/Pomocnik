@@ -15,7 +15,6 @@ function eround(number, digits){
 }
 
 function runFunctions(){
-    //deklaracja wszystkich zmiennych na stronie
     let r = document.getElementById("radius").value;
     let vmax = document.getElementById("vmax").value;
     let vmin = document.getElementById("vmin").value;
@@ -28,23 +27,28 @@ function runFunctions(){
     let curvetype = document.getElementById("curvetype").value;
     let lprim = document.getElementById("newl").value;
 
-    if(vmax !=0 && vmin != 0){
-        if(l == 0){
+    if(r && vmax){
+        if(vmin){
             liczPrzechylke(r,vmax,vmin,itype,etype,platform,calctype);
         }
-    }else if(r){
-        if(d && vmax){
-            liczMinlKP(r,vmax,d,curvetype,calctype);
-        }else if(l){
-            liczKP(r,l,vmax,d,curvetype,calctype);
-        }else if(!l){
-            document.getElementById('showshift').value = "";
-            document.getElementById('halflength').value = "";
+       if(l){
+            liczKP(r,l,curvetype);
+            if(lprim){
+                dzielKP();
+            }else{
+                document.getElementById("showrprim").value = "";
+                document.getElementById("showrbis").value = "";
+                document.getElementById("showlprim").value = "";
+                document.getElementById("showlbis").value = "";
+                document.getElementById("shownprim").value = "";
+                document.getElementById("shownbis").value = "";
+                document.getElementById('showdprim').value = "";
+                document.getElementById('showdprimdeg').value = ""; 
+            }
+        }else if(!l && d){
+            liczMinlKP(r,vmax,d,curvetype,calctype)
         }
-        if(lprim != 0){
-            dzielKP();
-        }
-    }else if(r == 0 || vmax ==0 || vmin == 0){
+    }else if(!r || !vmax || !vmin){
         document.getElementById('showdmin').value = "";
         document.getElementById('showdmindeg').value = ""; 
         document.getElementById('showdreg').value = "";
@@ -55,7 +59,25 @@ function runFunctions(){
         document.getElementById('showdeqdeg').value = "";  
         document.getElementById('showdmax').value = "";
         document.getElementById('showdmaxdeg').value = ""; 
-        
+        if(r && l){
+            liczKP(r,l,curvetype);
+            if(lprim){
+                dzielKP()
+            }
+        }else{
+            document.getElementById('halflength').value = "";
+            document.getElementById('showshift').value = "";
+        }
+    }
+    if(!lprim){
+        document.getElementById("showrprim").value = "";
+        document.getElementById("showrbis").value = "";
+        document.getElementById("showlprim").value = "";
+        document.getElementById("showlbis").value = "";
+        document.getElementById("shownprim").value = "";
+        document.getElementById("shownbis").value = "";
+        document.getElementById('showdprim').value = "";
+        document.getElementById('showdprimdeg').value = "";  
     }
 }
 
@@ -203,7 +225,7 @@ function liczPrzechylke(r,vmax,vmin,itype,etype,platform,calctype){
     var Dreg = 6.5*(vmax**2)/r;
 
     //Obliczanie Dmin
-    var Dmin = (11.8*(vmax**2)/r)-Idop;
+    var Dmin = (11.8*(vmax**2)/r)-Edop;
 
     if(Number(Dmin) < 20){
         Dmin = 20;
@@ -214,26 +236,19 @@ function liczPrzechylke(r,vmax,vmin,itype,etype,platform,calctype){
     var Dmed = (Dmax+Dmin)/2
 
     //Drukowanie wyników
-    let textunit = ' m';
-    let warningtext1 = 'Zastosuj większy promień łuku! Powinien być on większy niż: ';
-    let warningtext2 = 'W tym miejscu jest możliwe zastosowanie łuku bez przechyłki. Przemyśl jednak ten temat!';
-    let warningtext3 = 'Przy torze o takich parametrach nie powinien znajdować się peron';
+   
+    
+    document.getElementById('showdmin').value = mround(Dmin,5);
+    document.getElementById('showdmindeg').value = cround(degrees(Math.atan(mround(Dmin,5)/1435)),1); 
+    document.getElementById('showdreg').value = mround(Dreg,5);
+    document.getElementById('showdregdeg').value = cround(degrees(Math.atan(mround(Dreg,5)/1435)),1);
+    document.getElementById('showdmed').value = mround(Dmed,5);
+    document.getElementById('showdmeddeg').value = cround(degrees(Math.atan(mround(Dmed,5)/1435)),1); 
+    document.getElementById('showdeq').value = mround(Deq,5);
+    document.getElementById('showdeqdeg').value = cround(degrees(Math.atan(mround(Deq,5)/1435)),1);  
+    document.getElementById('showdmax').value = mround(Dmax,5);
+    document.getElementById('showdmaxdeg').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),1); 
 
-    if(r == 0){
-        document.getElementById('radius').value = Math.round(rminp)
-        return
-    }else{
-        document.getElementById('showdmin').value = mround(Dmin,5);
-        document.getElementById('showdmindeg').value = cround(degrees(Math.atan(mround(Dmin,5)/1435)),2); 
-        document.getElementById('showdreg').value = mround(Dreg,5);
-        document.getElementById('showdregdeg').value = cround(degrees(Math.atan(mround(Dreg,5)/1435)),2);
-        document.getElementById('showdmed').value = mround(Dmed,5);
-        document.getElementById('showdmeddeg').value = cround(degrees(Math.atan(mround(Dmed,5)/1435)),2); 
-        document.getElementById('showdeq').value = mround(Deq,5);
-        document.getElementById('showdeqdeg').value = cround(degrees(Math.atan(mround(Deq,5)/1435)),2);  
-        document.getElementById('showdmax').value = mround(Dmax,5);
-        document.getElementById('showdmaxdeg').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),2); 
-    }
    
 }   
 
@@ -373,18 +388,6 @@ function dzielKP(){
     let curvetype = document.getElementById("curvetype").value;
     var lprim = document.getElementById("newl").value;
 
-    if(lprim == 0){
-        document.getElementById("showrprim").value = "";
-        document.getElementById("showrbis").value = "";
-        document.getElementById("showlprim").value = "";
-        document.getElementById("showlbis").value = "";
-        document.getElementById("shownprim").value = "";
-        document.getElementById("shownbis").value = "";
-        document.getElementById('showdprim').value = "";
-        document.getElementById('showdprimdeg').value = ""; 
-        return
-    }
-
     //wartości do obliczeń
     var rprim = 0;
     var nprim = 0;
@@ -400,7 +403,7 @@ function dzielKP(){
         dprim = d*r/rprim;
     }else if(curvetype == "4st"){
         dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3));
-        if(lprim > l2){
+        if(Number(lprim) > Number(l2)){
             rprim = (r*l**2)/(2*l2**2);
             var lbis = lprim - l2;
             lprim = l2;
