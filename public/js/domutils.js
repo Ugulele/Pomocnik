@@ -58,6 +58,8 @@ const sectionsVisibility = (source) =>{
 document.querySelectorAll('.label').forEach(label => {
     label.addEventListener('click', (e) => {
         sectionsVisibility(e);
+
+        e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
     })
 })
 
@@ -65,4 +67,5 @@ document.querySelectorAll('.label').forEach(label => {
 //automatyczna zmiana roku
 const date = new Date();
 document.getElementById("year").innerHTML = date.getFullYear();
+
 
