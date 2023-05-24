@@ -1,0 +1,346 @@
+ /* root element structure */
+
+body
+{
+    background-color: #2d2d2d;
+    color:#ffffff;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: min-content min-content 1fr min-content;
+}
+
+
+/* Nav section */
+
+nav
+{
+    background: #1E90FF;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.60);
+}
+
+#menu-visibility-button img
+{
+    height: 30px;
+    aspect-ratio: 1;
+}
+
+#menu-visibility-button{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: transparent;
+}
+
+.dropdown{
+    position: relative;
+}
+
+.dropdown:hover ul,
+.dropown:focus-visible ul
+{
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dropdown ul
+{
+    display: none;
+    background: #4d4d4d;
+    list-style: none;
+    width: 200px;
+    margin-block: 0;
+    padding-inline: 1em;
+}
+
+.dropdown ul li
+{
+    padding-block: 10px;
+}
+
+
+.logo
+{
+    padding: 50px 0;
+    padding-left: 20px;
+    display: grid;
+    place-items: center;
+}
+
+.logo img
+{
+    max-width: 500px;
+    width: 100%;
+}
+
+main
+{
+    width: 100%;
+    margin-inline: 0;
+}
+
+.label
+{
+    padding: 10px 0;
+    background-color:#1E90FF;
+    text-align: center;
+    font-size: 25px;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.60);
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+/* changing state by containers */
+
+.container-grid[data-visible = "open"]{
+    display: grid;
+    gap: 1em;
+    margin-inline: auto;
+    margin-top: 0.5rem;
+    width: min(75em,95%);
+    margin-bottom: 2rem;
+    transition: transform 150ms ease-in-out;
+    transform: translate3d(0, 0, 0);
+}
+
+.container-grid[data-visible = "close"]{
+    max-height: 0;
+    transform: translate3d(0, 10%, 0);
+    visibility: hidden;
+    overflow-y: hidden;
+}
+
+/* ---------------------------- */
+
+footer{
+    background-color: #252525;
+    height: 30px;
+    text-align: center;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0,0.80);
+    padding-top: 5px;
+    min-width: 100%;
+    align-self: end;
+}
+
+
+/* structural element hover effects */
+
+.logo img:hover{
+    cursor: pointer;
+}
+
+.label:hover{
+    cursor: pointer;
+}
+
+/* containers internal style */
+
+.contheader
+{
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #3c3c3c;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.80);
+    font-weight: 700;
+}
+
+.boxheader
+{
+    padding: 5px;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.box
+{
+    align-items: center;
+    background-color: #3c3c3c;
+    padding-block: 8px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0,0.80);
+}
+
+.boxline
+{
+    padding: 5px 0;
+    font-size: 20px;
+    max-width: 90%;
+    text-align: right;
+}
+
+/* Buttons are unused now */
+
+/* .boxbuttons
+{
+    padding: 5px;
+    font-size: 20px;
+    height: 30px; 
+    text-align: center;
+    margin-top: 0.5em;
+} */
+
+
+@media (min-width: 1000px)
+{
+    .contheader
+    {
+        grid-column: span 2;
+    }
+    section[data-visble = "open"]
+    {
+        grid-template-columns: 1fr 1fr;
+        
+    }
+
+}
+
+
+/* input styling */
+
+input[type = text],
+input[type = number]
+{
+    width: min(16em,40%);
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 2px;  
+    box-sizing: border-box;
+    border: none;
+}
+
+select
+{
+    width: min(16em,40%);
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 2px;
+    border:none;
+}
+
+input.half
+{
+    width: min(8em,20%);
+    border: 1px solid #4d4d4d;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 2px;  
+    box-sizing: border-box; 
+}
+
+select.long
+{
+    width: 20em;
+}
+
+/* input hover effects */
+
+input[type = text]:hover,
+input[type = number]:hover
+{
+   cursor: pointer;
+}
+
+input[type = text]:focus-visible,
+input[type = number]:focus-visible,
+select:focus-visible
+{
+   border:none;
+   background: #ddd;
+   outline: 0;
+}
+
+select:hover,
+select:focus-visible
+{
+    cursor: pointer;
+    outline: 0;
+}
+
+
+/* buttons are unused now */
+
+/* input[type = button],
+input[type = reset]
+{
+    background-color: #1E90FF;
+    color: #ffffff;
+    font-size: 16px;
+    min-width: 8em;
+    padding:5px;
+    margin-left: 5px;
+    border: outset 1px #efefef;
+}
+
+input[type = button]:hover,
+input[type = reset]:hover,
+input[type = button]:focus-visible,
+input[type = reset]:focus-visible
+{
+    cursor: pointer;
+    background-color: #1E90FF;
+    color: #efefef;
+    outline: 0;
+} */
+
+
+
+/* a styling */
+
+a
+{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a:focus-visible,
+a:hover{
+    outline: 0;
+    color: #0D80EE;
+    transition: color 2s;
+}
+
+/* invisible class */
+
+.invisible
+{
+    display: none;
+    transition: width 1s ease-out;
+}
+
+/* grid-test */
+.internal-container-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+}
+
+.sibling-container-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min(75em,95%);
+}
+
+.contheader-without-colspan
+{
+    font-size: 20px;
+    text-align: center;
+    background-color: #3c3c3c;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.80);
+    font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
