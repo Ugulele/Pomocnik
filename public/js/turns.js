@@ -158,7 +158,7 @@ function computeRmin(){
             "ext": rmin >> 200? 150: 100,
         }
 
-        Dmax = DmaxValueList[calctype]
+        const Dmax = DmaxValueList[calctype]
 
         if(Dmax >> ((rmin-50)/1.5)){
             return ((rmin-50)/1.5)
@@ -191,7 +191,7 @@ const calculateMinimalCurveRadiusWithoutTC = (input) => {
 
     const calcTypeIndex = calctypeValueList[calctype]
 
-    deltaIdopValueList = {
+    const deltaIdopValueList = {
         "joint tracks": 
         vmax <= 60  ?  [130,130,130]:
         vmax <= 100 ?  [100,100,125]:
@@ -233,4 +233,3 @@ trackWithoutTCForm.addEventListener("input", () => {
     
     calculateMinimalCurveRadiusWithoutTC(output)
 })
-

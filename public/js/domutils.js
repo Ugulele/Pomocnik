@@ -1,8 +1,7 @@
 //Preferencje użytkownika
 const preferenceOpeningCheckbox = document.querySelector("#preference_opening_checkbox");
 const preferenceClosingCheckbox = document.querySelector("#preference_closing_checkbox");
-
-const userPreferencesList = [preferenceOpeningCheckbox,preferenceClosingCheckbox]
+const userPreferencesList = [preferenceOpeningCheckbox,preferenceClosingCheckbox];
 
 userPreferencesList.forEach(item => {
 
@@ -55,17 +54,13 @@ const sectionsVisibility = (source) =>{
     }
 }
 
-document.querySelectorAll('.label').forEach(label => {
+labels.forEach(label => {
     label.addEventListener('click', (e) => {
         sectionsVisibility(e);
-
-        e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+        e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' }); 
     })
 })
-
 
 //automatyczna zmiana roku
 const date = new Date();
 document.getElementById("year").innerHTML = date.getFullYear();
-
-

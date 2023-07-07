@@ -2,8 +2,47 @@ function cround(number, digits){
     return Math.round(number*(10**digits))/(10**digits);
 }
 
-function changeVis() {
+const CurveTCInputs = [
+    document.querySelector("#curve_length_joint"),
+    document.querySelector("#curve_shift_joint"),
+    document.querySelector("#curve_halflength_joint"),
+    document.querySelector("#curve_shift_1"),
+    document.querySelector("#curve_shift_2"),
+    document.querySelector("#curve_length_1"),
+    document.querySelector("#curve_length_2"),
+    document.querySelector("#curve_halflength_1"),
+    document.querySelector("#curve_halflength_2"),
+]
+
+const inputVisibility = (inputs, visibilityState) => {
+    inputs.forEach(input => {
+        const endpoint = input.getAttribute("id").lastIndexOf("_");
+        if(visibilityState == "invisible"){
+            if(input.getAttribute("id").slice(endpoint + 1) === "joint"){
+                input.parentElement.classList.remove("invisible");
+            }else{
+                input.parentElement.classList.add("invisible");
+            }
+        }else{
+            if(input.getAttribute("id").slice(endpoint + 1) === "joint"){
+                input.parentElement.classList.add("invisible");
+            }else{
+                input.parentElement.classList.remove("invisible");
+            }
+        }
+    })
+}
+
+const CurveTCInputsVisibility = () => {
     const curvecase = document.getElementById("curve_case").value;
+    const visibilityState = curvecase == "1kp" ? "invisible" : "visible";
+    inputVisibility(CurveTCInputs, visibilityState);
+}
+
+document.querySelector("#curve_case").addEventListener("change", CurveTCInputsVisibility)
+window.addEventListener('load', CurveTCInputsVisibility)
+
+function changeVis() {
     if(curvecase == "2kp"){
         document.getElementById("curve_length_joint").parentElement.classList.add("invisible");
         document.getElementById("curve_shift_joint").parentElement.classList.add("invisible");
