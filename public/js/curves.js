@@ -42,45 +42,6 @@ const CurveTCInputsVisibility = () => {
 document.querySelector("#curve_case").addEventListener("change", CurveTCInputsVisibility)
 window.addEventListener('load', CurveTCInputsVisibility)
 
-function changeVis() {
-    if(curvecase == "2kp"){
-        document.getElementById("curve_length_joint").parentElement.classList.add("invisible");
-        document.getElementById("curve_shift_joint").parentElement.classList.add("invisible");
-        document.getElementById("curve_halflength_joint").parentElement.classList.add("invisible");
-        document.getElementById("curve_shift_1").parentElement.classList.remove("invisible");
-        document.getElementById("curve_shift_2").parentElement.classList.remove("invisible");
-        document.getElementById("curve_length_1").parentElement.classList.remove("invisible");
-        document.getElementById("curve_length_2").parentElement.classList.remove("invisible");
-        document.getElementById("curve_halflength_1").parentElement.classList.remove("invisible");
-        document.getElementById("curve_halflength_2").parentElement.classList.remove("invisible");
-        // document.getElementById("curves_shiftbutton").value = "Oblicz przesunięcia";
-    }else if(curvecase == "shears"){
-        document.getElementById("curve_length_joint").parentElement.classList.add("invisible");
-        document.getElementById("curve_shift_joint").parentElement.classList.add("invisible");
-        document.getElementById("curve_halflength_joint").parentElement.classList.add("invisible");
-        document.getElementById("curve_shift_1").parentElement.classList.remove("invisible");
-        document.getElementById("curve_shift_2").parentElement.classList.remove("invisible");
-        document.getElementById("curve_length_1").parentElement.classList.remove("invisible");
-        document.getElementById("curve_length_2").parentElement.classList.remove("invisible");
-        document.getElementById("curve_halflength_1").parentElement.classList.remove("invisible");
-        document.getElementById("curve_halflength_2").parentElement.classList.remove("invisible");
-        // document.getElementById("curves_shiftbutton").value = "Oblicz przesunięcia";
-    }else{
-        document.getElementById("curve_length_joint").parentElement.classList.remove("invisible");
-        document.getElementById("curve_shift_joint").parentElement.classList.remove("invisible");
-        document.getElementById("curve_halflength_joint").parentElement.classList.remove("invisible");
-        document.getElementById("curve_shift_1").parentElement.classList.add("invisible");
-        document.getElementById("curve_shift_2").parentElement.classList.add("invisible");
-        document.getElementById("curve_length_1").parentElement.classList.add("invisible");
-        document.getElementById("curve_length_2").parentElement.classList.add("invisible");
-        document.getElementById("curve_halflength_1").parentElement.classList.add("invisible");
-        document.getElementById("curve_halflength_2").parentElement.classList.add("invisible");
-        // document.getElementById("curves_shiftbutton").value = "Oblicz przesunięcie";
-    }
-}
-
-window.addEventListener("load",changeVis);
-
 function runliczCurvesKP(){
     //deklaracja wartości
     let r1 = document.getElementById("curve_radius_1").value;
