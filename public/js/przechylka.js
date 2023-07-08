@@ -164,8 +164,6 @@ function liczPrzechylke(input){
 
     const Edop = EDopValueList[calctypeIndex]
 
-    console.log(Edop, Idop);
-
     // var rminbp = 11.8*(vmax**2)/Idop;
     // var rminp = 11.8*(vmax**2)/(Idop+Dmaxdop);
 
@@ -378,8 +376,6 @@ const computeMinimalLengthTC = (input) => {
     const w3 = Number(qn*(vmax/3.6)*I/didtdop);
     const w4 = Number(30);
     const w5 = Number(Math.sqrt(qr*r));
-    
-    console.log(I, w3);
 
     if(calctype === "rec"){
         lmin = Math.max(w1,w2,w3,w4,w5);

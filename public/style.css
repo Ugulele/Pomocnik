@@ -74,24 +74,22 @@ nav
 .logo img
 {
     max-width: 500px;
-    width: 100%;
 }
 
 main
 {
-    width: 100%;
     margin-inline: 0;
 }
 
 .label
 {
     padding: 10px 0;
+    margin-block: 0 0.5rem;
     background-color:#1E90FF;
     text-align: center;
     font-size: 25px;
     box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.60);
     font-weight: 900;
-    margin-bottom: 0.5rem;
 }
 
 /* changing state by containers */
@@ -99,10 +97,9 @@ main
 .container-grid[data-visible = "open"]{
     display: grid;
     gap: 1em;
+    width: min(76em, 96%);
     margin-inline: auto;
-    margin-top: 0.5rem;
-    width: min(75em,95%);
-    margin-bottom: 2rem;
+    margin-block: 1em 2.5em;
     transition: transform 150ms ease-in-out;
     transform: translate3d(0, 0, 0);
 }
@@ -122,7 +119,6 @@ footer{
     text-align: center;
     box-shadow: 0px 5px 10px 1px rgba(0, 0, 0,0.80);
     padding-top: 5px;
-    min-width: 100%;
     align-self: end;
 }
 
@@ -142,7 +138,6 @@ footer{
 .contheader
 {
     padding: 10px;
-    margin-top: 5px;
     font-size: 20px;
     text-align: center;
     background-color: #3c3c3c;
@@ -152,27 +147,30 @@ footer{
 
 .boxheader
 {
-    padding: 5px;
     font-size: 25px;
     text-align: center;
-    margin-bottom: 5px;
 }
 
 .box
 {
-    align-items: center;
+    display: flex;
+    gap: 0.5em;
+    padding-block: 0.25em 1.5em;
+    flex-flow: column nowrap;
     background-color: #3c3c3c;
-    padding-block: 8px;
     border-radius: 5px;
     box-shadow: 0px 5px 10px 1px rgba(0, 0, 0,0.80);
+    text-align: right;
 }
 
 .boxline
 {
-    padding: 5px 0;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.25rem;
+    justify-content: flex-end;
+    margin-right: min(3em,12%);
     font-size: 20px;
-    max-width: 90%;
-    text-align: right;
 }
 
 /* Buttons are unused now */
@@ -185,22 +183,6 @@ footer{
     text-align: center;
     margin-top: 0.5em;
 } */
-
-
-@media (min-width: 1000px)
-{
-    .contheader
-    {
-        grid-column: span 2;
-    }
-    section[data-visble = "open"]
-    {
-        grid-template-columns: 1fr 1fr;
-        
-    }
-
-}
-
 
 /* input styling */
 
@@ -263,6 +245,16 @@ select:focus-visible
     outline: 0;
 }
 
+
+@media(min-width: 1000px){
+    .contheader{
+        grid-column: span 2;
+    }
+
+    .container-grid[data-visible = "open"]{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 /* buttons are unused now */
 
@@ -334,13 +326,3 @@ a:hover{
     box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.80);
     font-weight: 700;
 }
-
-
-
-
-
-
-
-
-
-

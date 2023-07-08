@@ -173,9 +173,6 @@ function liczPoszerzenieluk(r1,r2,m1,m2,alfa,l1,l2,curvetype){
     let w1 = ((m1-n)/(Math.sin(radians(alfa))));
     let w2 = ((m2-n)/(Math.tan(radians(alfa))));
 
-    console.log(m1,m2,n);
-    console.log(m1-n,m2-n);
-
     //drukowanie wyników
    
     // Długość wstawki [m]: 
