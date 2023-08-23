@@ -1,18 +1,4 @@
-function mround(number, multiple){
-    return multiple*Math.round(number/multiple);
-}
-
-function degrees(angle){
-    return angle*(180/Math.PI);
-}
-
-function cround(number, digits){
-    return Math.round(number*(10**digits))/(10**digits);
-}
-
-function eround(number, digits){
-    return parseFloat(number.toFixed(digits));
-}
+import { calculateShift, mround, cround, degrees } from "./functions.js";
 
 const valueList = document.querySelector("#valuelist");
 const curveParameters = document.querySelector("#superelevation_compute_input");
@@ -221,23 +207,11 @@ function liczPrzechylke(input){
 function liczKP(input){
     const {r, l, curvetype} = input
 
-    n = liczPrzesuniecie(r,l,curvetype);
+    const n = calculateShift(r,l,curvetype);
 
     document.getElementById("showshift").value = cround(n,2);
     let l2 = cround(l/2,2)
     document.getElementById("halflength").value = l2;
-}
-
-function liczPrzesuniecie(r,l,curvetype){
-    let n = "";
-    if(curvetype=="3st"){
-        n = (l**2)/(24*r);
-    }else if(curvetype =="bloss"){
-        n = (l**2)/(48*r)
-    }else if(curvetype == "4st"){
-        n = (l**2)/(40*r)
-    } 
-    return n;
 }
 
 function dzielKP(input){
@@ -254,7 +228,7 @@ function dzielKP(input){
     //Obliczanie przesunięcia i promienia/promieni w zależności od typu krzywej
     if(curvetype == "3st"){
         rprim = r*l/lprim;
-        nprim = liczPrzesuniecie(rprim,lprim,curvetype)
+        nprim = calculateShift(rprim,lprim,curvetype)
         dprim = d*r/rprim;
     }else if(curvetype == "4st"){
         dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3));
@@ -267,10 +241,10 @@ function dzielKP(input){
             rprim = (r*l**2)/(2*lprim**2);
         }
         //przesunięcie
-        nprim = liczPrzesuniecie(rprim,lprim,curvetype)
+        nprim = calculateShift(rprim,lprim,curvetype)
     }else if(curvetype == "bloss"){
         rprim = r*(l**3)/((lprim**2)*(3*l-2*lprim))
-        nprim = liczPrzesuniecie(rprim,lprim,curvetype)
+        nprim = calculateShift(rprim,lprim,curvetype)
         dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3))
     }
 
@@ -289,10 +263,14 @@ function dzielKP(input){
     Number(rbis)? document.getElementById("shownbis").value = 0 : document.getElementById("shownbis").value = "" ;
 }
 
-function elevationcase(){
-    let d1 = document.getElementById("superelevation_degrees").value;
-    let d2 = document.getElementById("superelevation_milimeters").value;
-    let supercase = document.getElementById("superelevation_case").value
+const superelevation_degrees_element =  document.querySelector("#superelevation_degrees");
+const superelevation_milimeters_element = document.querySelector("#superelevation_milimeters");
+const superelevation_case_element = document.querySelector("#superelevation_case");
+
+const elevationcase = () => {
+    const d1 = superelevation_degrees_element.value
+    const d2 = superelevation_milimeters_element.value
+    const supercase = superelevation_case_element.value
 
     if (supercase == "degrees"){
         document.getElementById("superelevation_milimeters_result").parentElement.classList.add("invisible");
@@ -306,32 +284,32 @@ function elevationcase(){
         document.getElementById("superelevation_degrees").parentElement.classList.remove("invisible");
     }
 
-    
     if (!d1 && !d2){
         document.getElementById("superelevation_degrees_result").value  = "";
         document.getElementById("superelevation_milimeters_result").value = "";
-    }else if(d1|d2){
+    }else if(d1||d2){
         superelevationconvert(d1,d2);
     }
 }
 
 window.addEventListener("load",elevationcase);
+[superelevation_degrees_element, superelevation_milimeters_element, superelevation_case_element].forEach(element => element.addEventListener('input', elevationcase))
 
-function superelevationconvert(d1,d2){
+const superelevationconvert = (d1,d2) => {
 
-    function degreestomilimeters(angle){
+    const degreestomilimeters = (angle) => {
         return Math.tan(radians(angle))*1435;
     }
 
-    function milimeterstodegrees(milimeters){
+    const milimeterstodegrees = (milimeters) => {
         return degrees(Math.atan(milimeters/1435));
     }
 
     let dres = ""
     
-    if (d1 != 0) {
+    if (Number(d1)) {
         dres = degreestomilimeters(d1);
-    }else if (d2 !=0){
+    }else if (Number(d2)){
         dres = milimeterstodegrees(d2);
     }
 
@@ -392,7 +370,7 @@ const computeMinimalLengthTC = (input) => {
     output.l = cround(lmin,2);
     output.l2 = cround(lmin/2,2);
     
-    const n = liczPrzesuniecie(r,lmin,curvetype);
+    const n = calculateShift(r,lmin,curvetype);
     output.n = cround(n,2)
 
     return output

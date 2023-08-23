@@ -147,6 +147,7 @@ footer{
 
 .boxheader
 {
+    padding-block: 5px 10px;
     font-size: 25px;
     text-align: center;
 }

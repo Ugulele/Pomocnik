@@ -225,7 +225,7 @@
 
                 <div class="contheader">  
                     Przeliczanie przechyłki 
-                    <select id = "superelevation_case" onchange="elevationcase()">
+                    <select id = "superelevation_case">
                         <option value = "degrees">na stopnie</option>
                         <option value = "milimeters">na milimetry</option>
                     </select> 
@@ -239,12 +239,12 @@
 
                     <div class = "boxline">
                         Przechyłka [stopnie]:
-                        <input type = "number" id = "superelevation_degrees" placeholder = "5,97" oninput = "elevationcase()"> 
+                        <input type = "number" id = "superelevation_degrees" placeholder = "5,97"> 
                     </div>
 
                     <div class = "boxline">
                         Przechyłka [mm]:
-                        <input type = "number" id = "superelevation_milimeters" placeholder = "150" oninput = "elevationcase()"> 
+                        <input type = "number" id = "superelevation_milimeters" placeholder = "150"> 
                     </div>
                 
                 </div>
@@ -347,7 +347,7 @@
 
                 </div>
 
-                <div class = "box">
+                <div class = "box" id = "curve_tc_input_1st_curve">
 
                     <div class = "boxheader">
                         Parametry Łuku 1:
@@ -373,20 +373,20 @@
 
                 </div>
 
-                <div class = "box">
+                <div class = "box" id = "curve_tc_input_2nd_curve">
 
                     <div class = "boxheader">
                         Parametry Łuku 2:
                     </div>
 
-                    <div class = "boxline" oninput="runliczCurvesKP()">
+                    <div class = "boxline">
                             Promień łuku [m]:
                             <input type = "number" id = "curve_radius_2" placeholder = "1200"> 
                     </div>
 
                     <div class = "boxline">
                         Kierunek łuku: 
-                        <select id = "curve_direction_2" oninput="runliczCurvesKP()">
+                        <select id = "curve_direction_2">
                             <option value = "right">Prawy</option>
                             <option value = "left">Lewy</option>
                         </select>
@@ -399,7 +399,7 @@
                     
                 </div>
 
-                <div class = "box">
+                <div class = "box" id = "curve_tc_input_tc_parameters">
 
                     <div class = "boxheader">
                         Warunki miejscowe: 
@@ -416,19 +416,19 @@
 
                     <div class = "boxline">
                         Wybierz typ krzywej:
-                        <select id = "curve_type" oninput="runliczCurvesKP()">
+                        <select id = "curve_type">
                             <option value = "3st">Parabola III stopnia</option>
-                            <!-- <option value = "4st">Parabola IV stopnia</option> -->
+                            <option value = "4st">Parabola IV stopnia</option>
                             <option value = "bloss">Krzywa Blossa</option>
                         </select>
                     </div>
 
-                    <div class = "boxline" oninput="runliczCurvesKP()">
+                    <div class = "boxline">
                         Długość KP [m]:
                         <input type = "number" id = "curve_length_joint" placeholder = "150"> 
                     </div>
 
-                    <div class = "boxline" oninput="runliczCurvesKP()">
+                    <div class = "boxline">
                         Długość KP(Ł1) [m]:
                         <input type = "number" id = "curve_length_1" placeholder = "150"> 
                     </div>
@@ -438,7 +438,7 @@
                         <input type = "number" id = "curve_vmax_1" placeholder = "120"> 
                     </div> -->
 
-                    <div class = "boxline" oninput="runliczCurvesKP()">
+                    <div class = "boxline">
                         Długość KP(Ł2) [m]:
                         <input type = "number" id = "curve_length_2" placeholder = "150"> 
                     </div>
@@ -511,7 +511,7 @@
                     Poszerzenie z dwoma łukami (z krzywymi przejściowymi) i wstawką prostą
                 </div>  
 
-                <div class = "box">
+                <div class = "box" id = "compute_first_widening_method_parameters_input">
 
                     <div class = "boxheader">
                         Parametry łuków:
@@ -519,32 +519,32 @@
 
                     <div class = "boxline">
                         Promień Ł1 [m]:
-                        <input type = "number" id = "widening_radius_1" placeholder = "5000" oninput="runliczPoszerzenie()">
+                        <input type = "number" id = "widening_radius_1" placeholder = "5000" >
                     </div>
 
                     <div class = "boxline">
                         Długość KP(Ł1) [m]:
-                        <input type = "number" id = "widening_curve_length_1" placeholder = "60" oninput = "runliczPoszerzenie()">
+                        <input type = "number" id = "widening_curve_length_1" placeholder = "60" >
                     </div>
 
                     <div class = "boxline">
                         Promień Ł2 [m]:
-                        <input type = "number" id = "widening_radius_2" placeholder = "5000" oninput = "runliczPoszerzenie()">
+                        <input type = "number" id = "widening_radius_2" placeholder = "5000" >
                     </div>
 
                     <div class = "boxline">
                         Długość KP(Ł2) [m]:
-                        <input type = "number" id = "widening_curve_length_2" placeholder = "60" oninput = "runliczPoszerzenie()">
+                        <input type = "number" id = "widening_curve_length_2" placeholder = "60" >
                     </div>
 
                     <div class = "boxline">
                         Kąt łuku[stopnie]:
-                        <input type = "number" id = "widening_angle" placeholder = "0,57" oninput = "runliczPoszerzenie()"> 
+                        <input type = "number" id = "widening_angle" placeholder = "0,57" > 
                     </div>
 
                     <div class = "boxline">
                         Wybierz typ krzywej:
-                        <select id = "widening_curvetype" onchange = "runliczPoszerzenie()">
+                        <select id = "widening_curvetype" o>
                             <option value = "3st">Parabola III stopnia</option>
                             <option value = "4st">Parabola IV stopnia</option>
                             <option value = "bloss">Krzywa Blossa</option>
@@ -553,7 +553,7 @@
 
                     <div class = "boxline">
                         Zmiana rozstawu torów [m]:
-                        <input type = "number" id = "widening_change" placeholder = "50" oninput = "runliczPoszerzenie()"> 
+                        <input type = "number" id = "widening_change" placeholder = "50" > 
                     </div>
 
                     <!-- <div class = "boxbuttons">
@@ -604,7 +604,7 @@
                     Poszerzenie z dwóch łuków odwrotnych (z krzywymi przejściowymi)
                 </div>  
 
-                <div class = "box">
+                <div class = "box" id = "compute_second_widening_method_parameters_input">
 
                     <div class = "boxheader">
                         Parametry łuków:
@@ -612,12 +612,12 @@
 
                     <div class = "boxline">
                         Promień łuków [m]:
-                        <input type = "number" id = "widening2_radius" placeholder = "5000" oninput="runliczPoszerzenie2()">
+                        <input type = "number" id = "widening2_radius" placeholder = "5000" >
                     </div>
 
                     <div class = "boxline">
                         Wybierz typ krzywej:
-                        <select id = "widening2_curvetype" onchange = "runliczPoszerzenie2()">
+                        <select id = "widening2_curvetype" >
                             <option value = "3st">Parabola III stopnia</option>
                             <option value = "4st">Parabola IV stopnia</option>
                             <option value = "bloss">Krzywa Blossa</option>
@@ -626,12 +626,12 @@
 
                     <div class = "boxline">
                         Długość KP [m]:
-                        <input type = "number" id = "widening2_curve_length" placeholder = "40" oninput="runliczPoszerzenie2()">
+                        <input type = "number" id = "widening2_curve_length" placeholder = "40" >
                     </div>
 
                     <div class = "boxline">
                         Zmiana rozstawu torów [m]:
-                        <input type = "number" id = "widening2_change" placeholder = "1" oninput="runliczPoszerzenie2()">
+                        <input type = "number" id = "widening2_change" placeholder = "1" >
                     </div>
 
                 </div>
@@ -668,7 +668,7 @@
                     Poszerzenie z czterech krzywych przejściowych
                 </div>  
 
-                <div class = "box">
+                <div class = "box" id = "compute_third_widening_method_parameters_input">
 
                     <div class = "boxheader">
                         Parametry łuków:
@@ -676,12 +676,21 @@
 
                     <div class = "boxline">
                         Promień Łuków[m]:
-                        <input type = "number" id = "widening3_radius" placeholder = "5000" oninput="runliczPoszerzenie3()">
+                        <input type = "number" id = "widening3_radius" placeholder = "5000" >
                     </div>
 
                     <div class = "boxline">
                         Zmiana rozstawu torów [m]:
-                        <input type = "number" id = "widening3_change" placeholder = "1" oninput="runliczPoszerzenie3()">
+                        <input type = "number" id = "widening3_change" placeholder = "1" >
+                    </div>
+
+                    <div class = "boxline">
+                        Wybierz typ krzywej:
+                        <select id = "widening3_curvetype" >
+                            <option value = "3st">Parabola III stopnia</option>
+                            <option value = "4st">Parabola IV stopnia</option>
+                            <option value = "bloss">Krzywa Blossa</option>
+                        </select>
                     </div>
 
                 </div>
@@ -695,15 +704,6 @@
                     <div class = "boxline">
                         Długość poszerzenia [m]:
                         <input type = "number" id = "widening3_length" placeholder = "200" readonly>
-                    </div>
-
-                    <div class = "boxline">
-                        Wybierz typ krzywej:
-                        <select id = "widening3_curvetype" onchange = "runliczPoszerzenie3()">
-                            <option value = "3st">Parabola III stopnia</option>
-                            <option value = "4st">Parabola IV stopnia</option>
-                            <option value = "bloss">Krzywa Blossa</option>
-                        </select>
                     </div>
 
                     <div class = "boxline">
@@ -723,7 +723,7 @@
                 </div>
                 
                 
-                <div class = "box">
+                <div class = "box" id = "compute_fourth_widening_method_parameters_input">
 
                     <div class = "boxheader">
                         Parametry łuków:
@@ -731,27 +731,27 @@
 
                     <div class = "boxline">
                         Promień Ł1 [m]:
-                        <input type = "number" id = "wideningc_radius_1" placeholder = "5000" oninput="runliczPoszerzenieluk()">
+                        <input type = "number" id = "wideningc_radius_1" placeholder = "5000" >
                     </div>
 
                     <div class = "boxline">
                         Długość KP(Ł1) [m]:
-                        <input type = "number" id = "wideningc_curve_length_1" placeholder = "60" oninput="runliczPoszerzenieluk()">
+                        <input type = "number" id = "wideningc_curve_length_1" placeholder = "60" >
                     </div>
 
                     <div class = "boxline">
                         Promień Ł2 [m]:
-                        <input type = "number" id = "wideningc_radius_2" placeholder = "5000" oninput="runliczPoszerzenieluk()">
+                        <input type = "number" id = "wideningc_radius_2" placeholder = "5000" >
                     </div>
 
                     <div class = "boxline">
                         Długość KP(Ł2) [m]:
-                        <input type = "number" id = "wideningc_curve_length_2" placeholder = "60" oninput="runliczPoszerzenieluk()">
+                        <input type = "number" id = "wideningc_curve_length_2" placeholder = "60" >
                     </div>
 
                     <div class = "boxline">
                         Wybierz typ krzywych:
-                        <select id = wideningc_curvetype onchange = "runliczPoszerzenieluk()">
+                        <select id = wideningc_curvetype >
                             <option value = "3st">Parabola III stopnia</option>
                             <option value = "4st">Parabola IV stopnia</option>
                             <option value = "bloss">Krzywa Blossa</option>
@@ -760,17 +760,17 @@
 
                     <div class = "boxline">
                         Kąt łuku [stopnie]:
-                        <input type = "number" id = "wideningc_angle" placeholder = "0,57" oninput="runliczPoszerzenieluk()"> 
+                        <input type = "number" id = "wideningc_angle" placeholder = "0,57" > 
                     </div>
 
                     <div class = "boxline">
                         Rozstaw torów d1 [m]:
-                        <input type = "number" id = "wideningc_gauge_before" placeholder = "4" oninput="runliczPoszerzenieluk()"> 
+                        <input type = "number" id = "wideningc_gauge_before" placeholder = "4" > 
                     </div>
 
                     <div class = "boxline">
                         Rozstaw torów d2 [m]:
-                        <input type = "number" id = "wideningc_gauge_after" placeholder = "5" oninput="runliczPoszerzenieluk()"> 
+                        <input type = "number" id = "wideningc_gauge_after" placeholder = "5" > 
                     </div>
 
                     
@@ -822,13 +822,13 @@
 
                 <div class="contheader">  
                     Obliczanie
-                    <select id = "vertical_case" onChange = "verticalVis()">
+                    <select id = "vertical_case">
                         <option value = "length">długości łuku pionowego</option>
                         <option value = "radius">promienia łuku pionowego</option>
                     </select> 
                 </div>   
                     
-                <div class = "box">
+                <div class = "box" id= "vertical_inclines_1_input">
 
                     <div class = "boxheader">
                         Parametry pochyleń:
@@ -836,22 +836,22 @@
 
                     <div class = "boxline">
                         Promień łuku [m]:
-                        <input type = "number" id = "vertical_radius" placeholder = "5000" oninput = "runverticalInclines1()"> 
+                        <input type = "number" id = "vertical_radius" placeholder = "5000"> 
                     </div>
 
                     <div class = "boxline">
                         Długość łuku [m]:
-                        <input type = "number" id = "vertical_length" placeholder = "50" oninput = "runverticalInclines1()"> 
+                        <input type = "number" id = "vertical_length" placeholder = "50"> 
                     </div>
 
                     <div class = "boxline">
                         Pochylenie przed łukiem [&permil;]:
-                        <input type = "number" id = "vertical_inclination_1" placeholder = "1" oninput = "runverticalInclines1()"> 
+                        <input type = "number" id = "vertical_inclination_1" placeholder = "1"> 
                     </div>
 
                     <div class = "boxline">
                         Pochylenie za łukiem [&permil;]:
-                        <input type = "number" id = "vertical_inclination_2" placeholder = "-1" oninput = "runverticalInclines1()"> 
+                        <input type = "number" id = "vertical_inclination_2" placeholder = "-1"> 
                     </div>
 
                     <!-- <div class = "boxbuttons">
@@ -883,7 +883,7 @@
                     Obliczanie pochylenia
                 </div>   
                         
-                <div class = "box">
+                <div class = "box" id = "convert_height_difference_to_angle_input">
 
                     <div class = "boxheader">
                         Parametry pochylenia:
@@ -891,17 +891,17 @@
 
                     <div class = "boxline">
                         Wysokość początkowa [m]:
-                        <input type = "number" id = "vertical_height_4_before" placeholder = "10" oninput = "countverticalangle()"> 
+                        <input type = "number" id = "vertical_height_4_before" placeholder = "10"> 
                     </div>
 
                     <div class = "boxline">
                         Wysokość końcowa [m]:
-                        <input type = "number" id = "vertical_height_4_after" placeholder = "110" oninput = "countverticalangle()"> 
+                        <input type = "number" id = "vertical_height_4_after" placeholder = "110"> 
                     </div>
 
                     <div class = "boxline">
                         Długość pochylenia [m]:
-                        <input type = "number" id = "vertical_length_4" placeholder = "5000" oninput = "countverticalangle()"> 
+                        <input type = "number" id = "vertical_length_4" placeholder = "5000"> 
                     </div>
 
                     
@@ -925,19 +925,19 @@
                     Obliczanie wyrównania dla zadanego pochylenia
                 </div>  
 
-                <div class = "box">
+                <div class = "box" id = "vertical_inclines_2_input">
                     <div class = "boxheader">
                         Dane pochylenia:
                     </div>
                 
                     <div class = "boxline">
                         Pochylenie [&permil;]:
-                        <input type = "number" id = "vertical_inclination_3" placeholder = "1" oninput="runverticalInclines2()"> 
+                        <input type = "number" id = "vertical_inclination_3" placeholder = "1"> 
                     </div>
 
                     <div class = "boxline">
                         Długość pochylenia [m]:
-                        <input type = "number" id = "vertical_length_3" placeholder = "5000" oninput = "runverticalInclines2()"> 
+                        <input type = "number" id = "vertical_length_3" placeholder = "5000"> 
                     </div>
 
                     <!-- <div class = "boxbuttons">
@@ -968,23 +968,23 @@
                     Minimalna długość łuku
                 </div>
 
-                <div class = "box">
+                <div class = "box" id = "turn_lenght_compute_input">
                     <div class = "boxheader">
                         Parametry łuku:
                     </div>
 
                     <div class = "boxline">
                         Typ wartości:
-                        <select id = "turn_case" onchange = "turnlength()">
+                        <select id = "turn_case">
                             <option value = "rec">Zalecane dopuszczalne wartości</option>
                             <option value = "nrm">Normalne dopuszczalne wartości</option>
-                            <option value = "exp">Rozszerzone dopuszczalne wartości</option>
+                            <option value = "ext">Rozszerzone dopuszczalne wartości</option>
                         </select>
                     </div>
 
                     <div class = "boxline">
                         Prędkość maksymalna [km/h]: 
-                        <input type = "number" id = "turn_max_velocity"  placeholder = "120" oninput = "turnlength()">
+                        <input type = "number" id = "turn_max_velocity"  placeholder = "120">
                     </div>
                 </div>
 
@@ -1003,14 +1003,14 @@
                     Minimalny promień łuku w torach głównych
                 </div>
 
-                <div class = "box">
+                <div class = "box" id = "compute_minimal_radius_input">
                     <div class = "boxheader">
                         Parametry łuku:
                     </div>
 
                     <div class = "boxline">
                         Typ wartości:
-                        <select id = "turn_rmin_calctype" onchange = "computeRmin()">
+                        <select id = "turn_rmin_calctype">
                             <option value = "rec">Zalecane dopuszczalne wartości</option>
                             <option value = "nrm">Normalne dopuszczalne wartości</option>
                             <option value = "ext">Rozszerzone dopuszczalne wartości</option>
@@ -1019,7 +1019,7 @@
 
                     <div class = "boxline">
                         Prędkość maksymalna [km/h]: 
-                        <input type = "number" id = "turn_rmin_vmax"  placeholder = "120" oninput = "computeRmin()">
+                        <input type = "number" id = "turn_rmin_vmax"  placeholder = "120">
                     </div>
                 </div>
 
@@ -1082,29 +1082,29 @@
                     Obliczanie parametrów łuku
                 </div>
 
-                <div class = "box">
+                <div class = "box" id = "turn_parameters_input">
                     <div class = "boxheader">
                         Parametry łuku:
                     </div>
 
                     <div class = "boxline">
                         Promień łuku [m]: 
-                        <input type = "number" id = "turn_parameters_radius"  placeholder = "300" oninput = "turnparams()">
+                        <input type = "number" id = "turn_parameters_radius"  placeholder = "300">
                     </div>
 
                     <div class = "boxline">
                         Długość łuku [m]: 
-                        <input type = "number" id = "turn_parameters_length"  placeholder = "33,1972" oninput = "turnparams()">
+                        <input type = "number" id = "turn_parameters_length"  placeholder = "33,1972">
                     </div>
 
                     <div class = "boxline">
                         Skos łuku [m]: 
-                        <input type = "number" id = "turn_parameters_slant"  placeholder = "9" oninput = "turnparams()">
+                        <input type = "number" id = "turn_parameters_slant"  placeholder = "9">
                     </div>
 
                     <div class = "boxline">
                         Kąt łuku [m]: 
-                        <input type = "number" id = "turn_parameters_angle"  placeholder = "6,3401" oninput = "turnparams()">
+                        <input type = "number" id = "turn_parameters_angle"  placeholder = "6,3401">
                     </div>
 
                 </div>
@@ -1141,12 +1141,13 @@
           
         </footer>
 
-        <script src = "js/domutils.js"></script>
-        <script src = "js/przechylka.js"></script>
-        <script src = "js/curves.js"></script>
-        <script src = "js/widening.js"></script>
-        <script src = "js/verticalcurves.js"></script>
-        <script src = "js/turns.js"></script>
+        <script type = "module" src = "js/domutils.js"></script>
+        <script type = "module" src = "js/przechylka.js"></script>
+        <script type = "module" src = "js/curves.js"></script>
+        <script type = "module" src = "js/widening.js"></script>
+        <script type = "module" src = "js/verticalcurves.js"></script>
+        <script type = "module" src = "js/turns.js"></script>
+        <script type = "module" src = "js/functions.js"></script>
 
     </body>
 </html>
