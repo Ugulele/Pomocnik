@@ -355,24 +355,20 @@ const computeMinimalLengthTC = (input) => {
     const w4 = Number(30);
     const w5 = Number(Math.sqrt(qr*r));
 
-    if(calctype === "rec"){
-        lmin = Math.max(w1,w2,w3,w4,w5);
-    }else{
-        lmin = Math.max(w1,w2,w3);
+    const minimalLengthPrototype = {
+        "rec":Math.max(w1,w2,w3,w4,w5),
+        "nrm":Math.max(w1,w2,w3),
+        "ext":Math.max(w1,w2,w3),
     }
+
+    const lmin = minimalLengthPrototype[calctype]
 
     const output = {
-        l: "",
-        l2: "",
-        n: "",
+        l: cround(lmin,2),
+        l2: cround(lmin/2,2),
+        n: cround(calculateShift(r,lmin,curvetype),2),
     }
-
-    output.l = cround(lmin,2);
-    output.l2 = cround(lmin/2,2);
     
-    const n = calculateShift(r,lmin,curvetype);
-    output.n = cround(n,2)
-
     return output
 }
 
