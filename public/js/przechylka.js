@@ -1,4 +1,4 @@
-import { calculateShift, mround, cround, degrees } from "./functions.js";
+import { calculateShift, mround, cround, degrees, radians } from "./functions.js";
 
 const valueList = document.querySelector("#valuelist");
 const curveParameters = document.querySelector("#superelevation_compute_input");
@@ -130,7 +130,7 @@ function liczPrzechylke(input){
     
     //ustalanie Edop z listy rozwijanej - przerobić na case`y
 
-    let EDopValueList = []
+    let EDopValueList;
 
     if(etype == 1){     
         EDopValueList = [90,110,110];
