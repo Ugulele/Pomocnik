@@ -1,4 +1,4 @@
-import { radians, cround, degrees, EdopValueList, deltaIdopValueList, IdopValueList, DmaxValueList, lawMinimalRadius } from "./functions.js";
+import { radians, cround, degrees, deltaIdopValueList, IdopValueList, DmaxValueList, lawMinimalRadius } from "./functions.js";
 
 const minimalLength = (vmax,turncase) => {
 

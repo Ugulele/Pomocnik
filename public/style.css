@@ -227,7 +227,7 @@ select.long
 input[type = text]:hover,
 input[type = number]:hover
 {
-   cursor: pointer;
+   cursor: text;
 }
 
 input[type = text]:focus-visible,
@@ -242,7 +242,7 @@ select:focus-visible
 select:hover,
 select:focus-visible
 {
-    cursor: pointer;
+    cursor: context-menu;
     outline: 0;
 }
 

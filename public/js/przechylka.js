@@ -1,173 +1,122 @@
-import { calculateShift, mround, cround, degrees, radians, IdopValueList, EdopValueList} from "./functions.js";
+import { calculateShift, mround, cround, degrees, radians, IdopValueList, EdopValueList, DmaxValueList} from "./functions.js";
 
-const valueList = document.querySelector("#valuelist");
-const curveParameters = document.querySelector("#superelevation_compute_input");
-const superelevationResults = document.querySelector("#superelevation_compute_output");
-const TCParameters = document.querySelector("#tc_parameters_input");
-const tcDivisionResults = document.querySelector("#tc_division_output");
+const calculateSuperelevation = (input) => {
+    //destructering of input object
+    const {radius: r, vmax, vmin, etype,isPlatform, calctype} = input
+    let {itype} = input
 
-const SectionForm = [
-    valueList,
-    curveParameters,
-    TCParameters,
-]
+    //DmaxType declaration
+    let DmaxType = itype
 
-SectionForm.forEach(item => {
-
-    //pobranie obiektu z danymi wyjściowymi formularza
-    const input = {
-        r: document.querySelector("#radius"),
-        vmax: document.querySelector("#vmax"),
-        vmin: document.querySelector("#vmin"),
-        itype: document.querySelector("#idoplist"),
-        etype: document.querySelector("#edoplist"),
-        platform: document.querySelector("#platform"),
-        calctype: document.querySelector("#valuelist"),
-        l: document.querySelector("#length"),
-        l2: document.querySelector("#halflength"),
-        d: document.querySelector("#superelevation"),
-        curvetype: document.querySelector("#curvetype"),
-        lprim: document.querySelector("#newl"),
+    //DmaxType and itype corrrection for small radius curves
+    if(r<200){
+        itype = "extra small curve radius"
+        DmaxType = "extra small curve radius"
+    }else if(r<250){
+        itype = "small curve radius"
+        DmaxType = "small curve radius"
+    }else if(r<300){
+        DmaxType = "small curve radius"
     }
 
-    function superelevationComputeInput(r,vmax,vmin,itype,etype,platform,calctype){
-        this.r = r.value,
-        this.vmax = vmax.value,
-        this.vmin = vmin.value,
-        this.itype = itype.value,
-        this.etype = etype.value,
-        this.platform = platform.value,
-        this.calctype = calctype.value
-    }
-
-    function tcComputeInput(r,l,curvetype){
-        this.r = r.value,
-        this.l = l.value,
-        this.curvetype = curvetype.value
-    }
-
-    function tcDivisionInput(r, l, l2, curvetype, d, lprim){
-        this.r = r.value,
-        this.l = l.value,
-        this.l2 = l2.value,
-        this.curvetype = curvetype.value,
-        this.d = d.value,
-        this.lprim = lprim.value
-    }
-
-    const cleanOutputElementsValue = (array) => array.forEach(item => item.value = '');
-
-    const tcComputeOutput = [document.querySelector("#halflength"), document.querySelector("#showshift")]
-    const superelevationOutput = superelevationResults.querySelectorAll('input');
-    const tcDivisionOutput = tcDivisionResults.querySelectorAll('input');
-
-    item.addEventListener("input", () =>{
-
-        const tcDivisionInputObject = new tcDivisionInput(input.r, input.l, input.l2, input.curvetype, input.d, input.lprim);
-        const tcComputeInputObject = new tcComputeInput(input.r, input.l, input.curvetype);
-        const superelevationComputeInputObject = new superelevationComputeInput(input.r,input.vmax,input.vmin,input.itype,input.etype,input.platform, input.calctype);
-        
-        //uruchamianie funkcji w zależności od  przyjętych parametrów
-        if(!Number(input.r.value)){
-            cleanOutputElementsValue(tcComputeOutput);
-            cleanOutputElementsValue(superelevationOutput);
-            cleanOutputElementsValue(tcDivisionOutput);
-            return
-        } 
-        //blok uruchamiający przechyłki
-        if(input.vmax.value || input.vmin.value){
-            liczPrzechylke(superelevationComputeInputObject);
-        }else{
-            cleanOutputElementsValue(superelevationOutput);
-        }
-        //blok uruchamiający kp
-        if(Number(input.l.value)){
-            liczKP(tcComputeInputObject);
-        }else{ 
-            cleanOutputElementsValue(tcComputeOutput);
-            cleanOutputElementsValue(tcDivisionOutput);
-        }
-        //blok uruchamiający dzielenie kp
-        if(Number(input.l.value) && Number(input.lprim.value)){
-            dzielKP(tcDivisionInputObject);
-        }else{
-            cleanOutputElementsValue(tcDivisionOutput);
-        }
-
-    })
-})
-
-function liczPrzechylke(input){
-    const { r, vmax, vmin, itype, etype, platform, calctype } =  input
-    //choosing Idop value
-    const Idop = IdopValueList(itype, calctype);
-    
-    //ustalanie Edop z listy rozwijanej
+    //calculating Edop, Idop values
+    const Idop = IdopValueList(itype, calctype)
     const Edop = EdopValueList(etype, calctype)
 
-    // var rminbp = 11.8*(vmax**2)/Idop;
-    // var rminp = 11.8*(vmax**2)/(Idop+Dmaxdop);
-
-    //obliczanie Dmax
-    const Dmaxdop = 150;
-    let Dmax = 0;
-
-    if (Number(r) < 300) {
-        Dmax = (r-50)/1.5;
-    }else {
-        Dmax = 11.8*((vmin**2)/r)+Edop;
+    //Cacluclating highest value of superelevation
+    let DmaxLimit = DmaxValueList(DmaxType, calctype, r)
+    if(isPlatform){
+        DmaxLimit = cround(Math.min(DmaxValueList(DmaxType, calctype, r),DmaxValueList( "tracks with platform", calctype, r)),2)
     }
+    const Dmax = Math.min(11.8*((vmin**2)/r)+Edop, DmaxLimit)
+
+    //Calculating lowest value of superelevation
+    const Dmin = Math.max(20, (11.8*(vmax**2)/r)-Idop)
     
-    if(platform == 2){
-        if(calctype == 1){
-            Dmax = 60;
-        }else if(calctype == 2){
-            Dmax = 100;
-        }else{
-            Dmax = 110;
-        }
+    return {
+        "Dmin": mround(Dmin,5),
+        "Dreq": mround(6.5*(vmax**2)/r,5),
+        "Dmed": mround((Dmax+Dmin)/2,5),
+        "Deq": mround((11.8*(vmax**2)/r),5),
+        "Dmax": mround(Dmax,5),
     }
-    else if(Number(Dmax) >= Dmaxdop){
-        Dmax = 150;
-    }
-    
-    //obilczanie Dreg
-    const Dreg = 6.5*(vmax**2)/r;
-
-    //Obliczanie Dmin
-    let Dmin = (11.8*(vmax**2)/r)-Idop;
-
-    if(Number(Dmin) < 20){
-        Dmin = 20;
-    }
-
-    const Deq = (11.8*(vmax**2)/r)
-    const Dmed = (Dmax+Dmin)/2
-
-    //Drukowanie wyników
-    document.getElementById('showdmin').value = mround(Dmin,5);
-    document.getElementById('showdmindeg').value = cround(degrees(Math.atan(mround(Dmin,5)/1435)),1); 
-    document.getElementById('showdreg').value = mround(Dreg,5);
-    document.getElementById('showdregdeg').value = cround(degrees(Math.atan(mround(Dreg,5)/1435)),1);
-    document.getElementById('showdmed').value = mround(Dmed,5);
-    document.getElementById('showdmeddeg').value = cround(degrees(Math.atan(mround(Dmed,5)/1435)),1); 
-    document.getElementById('showdeq').value = mround(Deq,5);
-    document.getElementById('showdeqdeg').value = cround(degrees(Math.atan(mround(Deq,5)/1435)),1);  
-    document.getElementById('showdmax').value = mround(Dmax,5);
-    document.getElementById('showdmaxdeg').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),1); 
-
-   
-}   
-
-function liczKP(input){
-    const {r, l, curvetype} = input
-
-    const n = calculateShift(r,l,curvetype);
-
-    document.getElementById("showshift").value = cround(n,2);
-    let l2 = cround(l/2,2)
-    document.getElementById("halflength").value = l2;
 }
+
+const superelevationEventHandler = () => {
+    const curveParameters = {
+        "radius": Number(document.querySelector("#superelevation_radius").value),
+        "vmax": Number(document.querySelector("#superelevation_vmax").value),
+        "vmin": Number(document.querySelector("#superelevation_vmin").value),
+        "itype": document.querySelector("#superelevation_idoplist").value,
+        "etype": document.querySelector("#superelevation_edoplist").value,
+        "isPlatform": document.querySelector("#superelevation_is_platform").value === "true"? true: false,
+        "calctype": document.querySelector("#superelevation_calctype").value
+    }
+
+    const {radius, vmax, vmin} = curveParameters
+
+    if([radius, vmax || vmin].includes(0)){
+        document.querySelector('#dmin_result_in_milimeters').value = ""
+        document.querySelector('#dmin_result_in_degrees').value = ""
+        document.querySelector('#dreq_result_in_milimeters').value = ""
+        document.querySelector('#dreq_result_in_degrees').value = ""
+        document.querySelector('#dmed_result_in_milimeters').value = ""
+        document.querySelector('#dmed_result_in_degrees').value = ""
+        document.querySelector('#deq_result_in_milimeters').value = ""
+        document.querySelector('#deq_result_in_degrees').value = "" 
+        document.querySelector('#dmax_result_in_milimeters').value = ""
+        document.querySelector('#dmax_result_in_degrees').value = "" 
+        return
+    }
+
+    const {Dmin, Dreq, Dmed, Deq, Dmax} = calculateSuperelevation(curveParameters)
+
+    document.querySelector('#dmin_result_in_milimeters').value = Dmin
+    document.querySelector('#dmin_result_in_degrees').value = cround(degrees(Math.atan(Dmin/1435)),1)
+    document.querySelector('#dreq_result_in_milimeters').value = Dreq
+    document.querySelector('#dreq_result_in_degrees').value = cround(degrees(Math.atan(Dreq/1435)),1);
+    document.querySelector('#dmed_result_in_milimeters').value = Dmed;
+    document.querySelector('#dmed_result_in_degrees').value = cround(degrees(Math.atan(Dmed/1435)),1); 
+    document.querySelector('#deq_result_in_milimeters').value = Deq
+    document.querySelector('#deq_result_in_degrees').value = cround(degrees(Math.atan(Deq/1435)),1);  
+    document.querySelector('#dmax_result_in_milimeters').value = mround(Dmax,5);
+    document.querySelector('#dmax_result_in_degrees').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),1); 
+}
+
+document.querySelector("#superelevation_compute_input").addEventListener("input", superelevationEventHandler)
+document.querySelector("#superelevation_calctype").addEventListener("input", superelevationEventHandler) 
+
+const calculateTCParameters = (input) => {
+   const {radius: r, length: l, curvetype} = input 
+
+   return {
+        "shift": cround(calculateShift(r, l, curvetype),2),
+        "halflength": cround(l/2, 2)
+   }
+}
+
+const tcParametersEventHandler = () => {
+    const curveParameters = {
+        "radius": Number(document.querySelector("#tc_radius").value),
+        "length": Number(document.querySelector("#tc_length").value),
+        "curvetype": document.querySelector("#tc_curvetype").value
+    }
+
+    const {radius: r, length: l} = curveParameters
+
+    if([r, l].includes(0)){
+        document.querySelector("#tc_halflength").value = ""
+        document.querySelector("#tc_shift").value = ""
+        return
+    }
+
+    const {halflength: l2, shift: n} = calculateTCParameters(curveParameters)
+
+    document.querySelector("#tc_halflength").value = l2
+    document.querySelector("#tc_shift").value = n
+}
+
+document.querySelector("#tc_parameters_input").addEventListener("input", tcParametersEventHandler)
 
 function dzielKP(input){
     //deklaracja wartości
@@ -218,8 +167,18 @@ function dzielKP(input){
     Number(rbis)? document.getElementById("shownbis").value = 0 : document.getElementById("shownbis").value = "" ;
 }
 
-const superelevation_degrees_element =  document.querySelector("#superelevation_degrees");
-const superelevation_milimeters_element = document.querySelector("#superelevation_milimeters");
+const divideTC = () => {
+
+}
+
+const tcDivisionEventHandler = () => {
+    
+}
+
+document.querySelector("#tc_division_input").addEventListener("input", tcDivisionEventHandler)
+
+const superelevation_degrees_element =  document.querySelector("#superelevation_in_degrees");
+const superelevation_milimeters_element = document.querySelector("#superelevation_in_milimeters");
 const superelevation_case_element = document.querySelector("#superelevation_case");
 
 const elevationcase = () => {
@@ -228,20 +187,20 @@ const elevationcase = () => {
     const supercase = superelevation_case_element.value
 
     if (supercase == "degrees"){
-        document.getElementById("superelevation_milimeters_result").parentElement.classList.add("invisible");
-        document.getElementById("superelevation_degrees_result").parentElement.classList.remove("invisible");
-        document.getElementById("superelevation_milimeters").parentElement.classList.remove("invisible");
-        document.getElementById("superelevation_degrees").parentElement.classList.add("invisible");
+        document.getElementById("superelevation_in_milimeters_result").parentElement.classList.add("invisible");
+        document.getElementById("superelevation_in_degrees_result").parentElement.classList.remove("invisible");
+        document.getElementById("superelevation_in_milimeters").parentElement.classList.remove("invisible");
+        document.getElementById("superelevation_in_degrees").parentElement.classList.add("invisible");
     }else{
-        document.getElementById("superelevation_milimeters_result").parentElement.classList.remove("invisible");
+        document.getElementById("superelevation_in_milimeters_result").parentElement.classList.remove("invisible");
         document.getElementById("superelevation_degrees_result").parentElement.classList.add("invisible");
-        document.getElementById("superelevation_milimeters").parentElement.classList.add("invisible");
-        document.getElementById("superelevation_degrees").parentElement.classList.remove("invisible");
+        document.getElementById("superelevation_in_milimeters").parentElement.classList.add("invisible");
+        document.getElementById("superelevation_in_degrees").parentElement.classList.remove("invisible");
     }
 
     if (!d1 && !d2){
-        document.getElementById("superelevation_degrees_result").value  = "";
-        document.getElementById("superelevation_milimeters_result").value = "";
+        document.getElementById("superelevation_in_degrees_result").value  = "";
+        document.getElementById("superelevation_in_milimeters_result").value = "";
     }else if(d1||d2){
         superelevationconvert(d1,d2);
     }
