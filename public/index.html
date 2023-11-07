@@ -40,9 +40,9 @@
                     
                     Wybierz wartości parametrów:
                     <select id = "valuelist" class = "long" >
-                        <option value = 1>Zalecane wartości dopuszczalne</option>
-                        <option value = 2>Normalne wartości dopuszczalne</option>
-                        <option value = 3>Rozszerzone wartości dopuszczalne</option>  
+                        <option value = "rec">Zalecane wartości dopuszczalne</option>
+                        <option value = "nrm">Normalne wartości dopuszczalne</option>
+                        <option value = "ext">Rozszerzone wartości dopuszczalne</option>  
                     </select>
 
                 </div>   
@@ -71,24 +71,24 @@
                     <div class = "boxline">
                         Uwarunkowania miejscowe:
                         <select id = "idoplist" >
-                            <option value = 1>Tory szlakowe, zasadnicze, główne</option>
-                            <option value = 2>Tory boczne</option>
-                            <option value = 3>Łuki o promieniach 200m < R < 250m</option>
-                            <option value = 4>Łuki o promieniach R <= 200</option>
-                            <option value = 5>Rozjazdy zwyczajne ze stałą krzyżownicą (inne niż krzyżowe) dla v <= 160 km/h</option>
-                            <option value = 6>Rozjazdy zwyczajne ze stałą krzyżownicą (inne niż krzyżowe) dla 160 km/h < v <= 200 km/h</option>
-                            <option value = 7>Rozjazdy krzyżowe/skrzyżowania torów dla v <= 120 km/h</option>
+                            <option value = "main tracks">Tory szlakowe, zasadnicze, główne</option>
+                            <option value = "side tracks">Tory boczne</option>
+                            <option value = "small curve radius">Łuki o promieniach 200m < R < 250m</option>
+                            <option value = "extra small curve radius">Łuki o promieniach R <= 200</option>
+                            <option value = "switches under 160">Rozjazdy zwyczajne ze stałą krzyżownicą (inne niż krzyżowe) dla v <= 160 km/h</option>
+                            <option value = "switches under 200">Rozjazdy zwyczajne ze stałą krzyżownicą (inne niż krzyżowe) dla 160 km/h < v <= 200 km/h</option>
+                            <option value = "double switches">Rozjazdy krzyżowe/skrzyżowania torów dla v <= 120 km/h</option>
                         </select>
                     </div>
 
                     <div class = "boxline">
                         Przewozy [mln ton/rok]:
                         <select id = "edoplist" >
-                            <option value = 1>0 < q <= 5</option>
-                            <option value = 2>5 < q <= 10</option>
-                            <option value = 3>10 < q <= 15</option>
-                            <option value = 4>15 < q <= 20</option>
-                            <option value = 5 selected>q > 20</option>
+                            <option value = "freight under 5">0 < q <= 5</option>
+                            <option value = "freight under 10">5 < q <= 10</option>
+                            <option value = "freigth under 15">10 < q <= 15</option>
+                            <option value = "freight under 20">15 < q <= 20</option>
+                            <option value = "freight above 20" selected>q > 20</option>
                         </select>
                     </div>
 

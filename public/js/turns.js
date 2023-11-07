@@ -1,4 +1,4 @@
-import { radians, cround, degrees } from "./functions.js";
+import { radians, cround, degrees, EdopValueList, deltaIdopValueList, IdopValueList, DmaxValueList, lawMinimalRadius } from "./functions.js";
 
 const minimalLength = (vmax,turncase) => {
 
@@ -28,196 +28,192 @@ const turnLength = () => {
 
 document.querySelector("#turn_lenght_compute_input").addEventListener('input', turnLength);
 
-function turnparams(){
-    //potrzebne wartości: r,l,t,alfa
-    let r = document.getElementById("turn_parameters_radius").value;
-    let l = document.getElementById("turn_parameters_length").value;
-    let t = document.getElementById("turn_parameters_slant").value;
-    let alfa = document.getElementById("turn_parameters_angle").value; 
-
-    //obliczanie l,t,alfa
-    if(r && l){
-        computeangle(r,l)
-    }else if (r && (alfa||t)){
-        computelength(r,alfa,t)
-    }else{
-        document.getElementById("turn_parameters_slant_result").value = "";
-        document.getElementById("turn_parameters_angle_result").value = "";
-        document.getElementById("turn_parameters_length_result").value = "";
-        return
-    }
+const turnparams = () => {
+    //potrzebne wartości: r,l,t,alfa    
+    const r = Number(document.querySelector("#turn_parameters_radius").value);
+    const l = Number(document.querySelector("#turn_parameters_length").value);
+    const t = Number(document.querySelector("#turn_parameters_slant").value);
+    const alfa = Number(document.querySelector("#turn_parameters_angle").value) 
 
     //przy l, obliczanie t i alfa
-    function computeangle(r,l){
-        alfa = 360*l/(2*Math.PI*r);
-        t = 1/Math.tan(radians(alfa));
-
-        document.getElementById("turn_parameters_slant_result").value = cround(t,4);
-        document.getElementById("turn_parameters_angle_result").value = cround(alfa,4);
+    const computeAngle = (r,l) => {
+        return {
+            "angle": cround(360*l/(2*Math.PI*r),4),
+            slant() {
+                return cround(1/Math.tan(radians(this.angle)),4)
+            }
+        }
     }
 
-    //przy  alfa/t obliczanie l i drugiego
-    function computelength(r,alfa,t){
-        if (!alfa && t) {
-            l = degrees((Math.PI/2)-Math.atan(t))*2*Math.PI*r/360;
-            alfa = l*360/(2*Math.PI*r)
-
-            document.getElementById("turn_parameters_length_result").value = cround(l,4);
-            document.getElementById("turn_parameters_angle_result").value = cround(alfa,4);
-
-        }else if (alfa && !t){
-            t = 1/Math.tan(radians(alfa));
-            l = (alfa/360)*2*Math.PI*r;
-
-            document.getElementById("turn_parameters_length_result").value = cround(l,4);
-            document.getElementById("turn_parameters_slant_result").value = cround(t,4);
+    const computeLengthFromSlant = (r, t) => {
+        return {
+            "length": cround(degrees((Math.PI/2)-Math.atan(t))*2*Math.PI*r/360,4),
+            angle() {
+                return cround(this.length*360/(2*Math.PI*r),4)
+            }
         }
-    }   
+    }
+
+    const computeLengthFromAngle = (r, alfa) =>  {
+        return {
+            "slant": cround(1/Math.tan(radians(alfa)),4),
+            "length": cround((alfa/360)*2*Math.PI*r,4)
+        }
+    }
+
+    if(!r){
+        document.querySelector("#turn_parameters_slant_result").value = "";
+        document.querySelector("#turn_parameters_angle_result").value = "";
+        document.querySelector("#turn_parameters_length_result").value = "";
+        return
+    }
+    
+    //obliczanie l,t,alfa
+    if(l){
+        const angleParameters = computeAngle(r,l)
+        document.querySelector("#turn_parameters_slant_result").value = angleParameters.slant()
+        document.querySelector("#turn_parameters_angle_result").value = angleParameters.angle
+        return
+    }else if (alfa){
+        const output = computeLengthFromAngle(r, alfa)
+        document.querySelector("#turn_parameters_length_result").value = output.length;
+        document.querySelector("#turn_parameters_slant_result").value = output.slant;
+        return
+    }else if(t){
+        const output = computeLengthFromSlant(r, t)
+        document.querySelector("#turn_parameters_length_result").value = output.length;
+        document.querySelector("#turn_parameters_angle_result").value = output.angle();
+        return
+    }
 }
 
 document.querySelector("#turn_parameters_input").addEventListener('input', turnparams);
 
-function computeRmin(){
+const computeCurveMinimalRadius = (trackParameters) => {
 
-    const vmax = Number(document.querySelector("#turn_rmin_vmax").value);
-    const calctype = document.querySelector("#turn_rmin_calctype").value;
+    
+    const minimalRadiusInIteration = (itype, DmaxType, rmin) => {
+        Dmax = DmaxValueList(DmaxType, calctype, rmin)
+        Idop = IdopValueList(itype, calctype)
+        return Number(11.8*(vmax**2)/(Idop+Dmax))
+    }
 
-    if(vmax){
-        let Dmax = selectDmax(calctype);
-        let Idop = selectIdop(calctype);
 
-        let rmin = 11.8*(vmax**2)/(Idop+Dmax);
-
-        if(rmin <= 300){
-            Dmax = selectExtendedDmax(calctype, rmin);
-            Idop = SelectExtendedIdop(calctype, rmin);
-            rmin = 11.8*(vmax**2)/(Idop+Dmax);  
+    const iterationForMinimalRadius = (rmin) => {
+        let rminAfterCorrections
+        if(rmin < 300){
+            itype = "main tracks"
+            DmaxType = "small curve radius"
+            rminAfterCorrections = minimalRadiusInIteration(itype, DmaxType, rmin)
+        }
+        if(rmin < 250){
+            itype = "small curve radius"
+            DmaxType = "small curve radius"
+            rminAfterCorrections = minimalRadiusInIteration(itype, DmaxType, rmin)
+        }
+        if(rmin < 200){
+            itype = "extra small curve radius"
+            DmaxType = "extra small curve radius"
+            rminAfterCorrections = minimalRadiusInIteration(itype, DmaxType, rmin)
         }
 
-        document.getElementById("turn_rmin_result").value = Math.ceil(rmin);
-    }else{
-        document.getElementById("turn_rmin_result").value = "";
+        return rminAfterCorrections
     }
+
+    const {vmax, calctype} = trackParameters
+
+    let itype = "main tracks"
+    let DmaxType = "main tracks"
+    const tracktype = "main tracks"
+
+    let Dmax = DmaxValueList("main tracks", calctype)
+    let Idop = IdopValueList("main tracks", calctype)
+    let rmin = Number(11.8*(vmax**2)/(Idop+Dmax))
+    let rminAfterCorrections
+
+    if(rmin < 300){
+        itype = "main tracks"
+        DmaxType = "small curve radius"
+        rmin = minimalRadiusInIteration(itype, DmaxType, rmin)
+        rminAfterCorrections = iterationForMinimalRadius(rmin)
+    }
+    if(rmin < 250){
+        itype = "small curve radius"
+        DmaxType = "small curve radius"
+        rmin = minimalRadiusInIteration(itype, DmaxType, rmin)
+        rminAfterCorrections = iterationForMinimalRadius(rmin)
+    }
+    if(rmin < 200){
+        itype = "extra small curve radius"
+        DmaxType = "extra small curve radius"
+        rmin = minimalRadiusInIteration(itype, DmaxType, rmin)
+        rminAfterCorrections = iterationForMinimalRadius(rmin)
+    }
+
+    
+
+    const lawLimitedRadius = lawMinimalRadius(tracktype, calctype)
+    const rminResult = rminAfterCorrections ? Math.max(rminAfterCorrections, lawLimitedRadius) : Math.max(rmin, lawLimitedRadius)
+
+    console.table({
+        "result": rminResult,
+        "minimal": rmin,
+        "correction": rminAfterCorrections
+    })
+
+    return Math.ceil(rminResult)
+    // rminAfterCorrection = rminAfterCorrection ? Math.max(rminAfterCorrection, 180): Math.max(rmin, 180); 
+    // document.getElementById("turn_rmin_result").value = Math.ceil(rminAfterCorrection)
+}
+
+const computeCurveMinimalRadiusEventHandler = () => {
+    const trackParameters = {
+        "vmax": Number(document.querySelector("#turn_rmin_vmax").value),
+        "calctype": document.querySelector("#turn_rmin_calctype").value,
+    }
+    
+    const {vmax} = trackParameters
 
     if(!vmax){
         document.querySelector("#turn_rmin_result").value = "";
         return
     }
 
-    let Dmax = selectDmax(calctype);
-    let Idop = selectIdop(calctype);
+    const result = computeCurveMinimalRadius(trackParameters)
 
-    const rmin = 11.8*(vmax**2)/(Idop+Dmax);
-
-    if(rmin <= 300){
-        Dmax = selectExtendedDmax(calctype, rmin);
-        Idop = SelectExtendedIdop(calctype, rmin);
-        rmin = 11.8*(vmax**2)/(Idop+Dmax);  
-    }
-
-    function selectDmax(calctype){
-        
-        const DmaxValueList = {
-            "rec": 150, 
-            "nrm": 150,
-            "ext": 150,
-        }
-
-        return DmaxValueList[calctype]
-    }
-
-    function selectIdop(calctype){
-
-        const IdopValueList = {
-            "rec": 110,
-            "nrm": 130,
-            "ext": 150,
-       }
-
-       return IdopValueList[calctype]
-    }
-
-    function selectExtendedDmax(calctype, rmin){
-        
-        const DmaxValueList = {
-            "rec": 0,
-            "nrm": rmin >> 200 ? 100: 60,
-            "ext": rmin >> 200? 150: 100,
-        }
-
-        const Dmax = DmaxValueList[calctype]
-
-        if(Dmax >> ((rmin-50)/1.5)){
-            return ((rmin-50)/1.5)
-        }else{
-            return Dmax
-        }
-    }
-
-    function SelectExtendedIdop(calctype, rmin){
-
-        const IdopValueList = {
-            "rec": rmin >> 250 ? 110: rmin >> 200 ? 80 : 50,
-            "nrm": rmin >> 250 ? 130: rmin >> 200 ? 100 : 70,
-            "ext": rmin >> 250 ? 150: rmin >> 200 ? 100 : 70,
-       }
-
-       return IdopValueList[calctype]
-    }
-
+    document.querySelector("#turn_rmin_result").value = result
 }
 
-const calculateMinimalCurveRadiusWithoutTC = (input) => {
-    const { calctype, tracktype, vmax } = input;
+document.querySelector("#compute_minimal_radius_input").addEventListener('input', computeCurveMinimalRadiusEventHandler);
 
-    const calctypeValueList = {
-        rec: 0,
-        nrm: 1,
-        ext: 2,
-    }
+const calculateMinimalCurveRadiusWithoutTC = (curveParameters) => {
+    const { calctype, tracktype, vmax } = curveParameters;
 
-    const calcTypeIndex = calctypeValueList[calctype]
-
-    const deltaIdopValueList = {
-        "joint tracks": 
-        vmax <= 60  ?  [130,130,130]:
-        vmax <= 100 ?  [100,100,125]:
-        vmax <= 160 ?  [80,80, 160-0.35*vmax]:
-                       [60,60, 160-0.35*vmax],
-        "main tracks": 
-        vmax <= 70  ?  [50,50,60]:
-        vmax <= 160 ?  [0, 64-0.2*vmax, 50]:
-        vmax <= 200 ?  [0,30,50]:
-                       [0,25,25],
-        "side tracks": [50,100,100],
-    }
-
-    const deltaIdop = deltaIdopValueList[tracktype][calcTypeIndex];
+    const deltaIdop = deltaIdopValueList(calctype, tracktype);
     const rmin = 11.8*(vmax**2)/deltaIdop;
 
-    vmax ? document.querySelector("#turnwithouttc_rmin_result").value = cround(rmin,2): document.querySelector("#turnwithouttc_rmin_result").value = "";
+   return cround(rmin,2)
 }
 
-document.querySelector("#compute_minimal_radius_input").addEventListener('input', computeRmin);
-
-const trackWithoutTCForm = document.querySelector("#turnwithouttc_pamrameters");
-
-trackWithoutTCForm.addEventListener("input", () => {
-
-    const output = {}
-
-    for (const item of trackWithoutTCForm.children){
-        if (item.classList.contains("boxline")){
-
-            //pozyskiwanie nazwy klucza do obiektu wejściowego
-            const keyNamePrefab = item.firstElementChild.getAttribute("id");
-            const endpoint = keyNamePrefab.lastIndexOf("_");
-            const keyName = keyNamePrefab.slice(endpoint + 1);
-
-            //generowanie obiektu wyjściowego z parametrów
-            output[keyName] = item.firstElementChild.value;
-        }
+const minimalRadiusWithoutTCEventHandler = () => {
+    const curveParameters = {
+        "tracktype": document.querySelector("#turnwithouttc_rmin_tracktype").value,
+        "calctype": document.querySelector("#turnwithouttc_rmin_calctype").value,
+        "vmax": Number(document.querySelector("#turnwithouttc_rmin_vmax").value)
     }
     
-    calculateMinimalCurveRadiusWithoutTC(output)
-})
+    const {vmax} = curveParameters
+
+    if(!vmax){
+        document.querySelector("#turnwithouttc_rmin_tracktype").value = "";
+        document.querySelector("#turnwithouttc_rmin_calctype").value = "";
+        document.querySelector("#turnwithouttc_rmin_vmax").value = "";
+    }
+
+    const minimalRadius = calculateMinimalCurveRadiusWithoutTC(curveParameters)
+
+    document.querySelector("#turnwithouttc_rmin_result").value = minimalRadius
+}
+
+const trackWithoutTCForm = document.querySelector("#turnwithouttc_pamrameters");
+trackWithoutTCForm.addEventListener("input", minimalRadiusWithoutTCEventHandler)

@@ -1,4 +1,4 @@
-import { calculateShift, mround, cround, degrees, radians } from "./functions.js";
+import { calculateShift, mround, cround, degrees, radians, IdopValueList, EdopValueList} from "./functions.js";
 
 const valueList = document.querySelector("#valuelist");
 const curveParameters = document.querySelector("#superelevation_compute_input");
@@ -83,7 +83,7 @@ SectionForm.forEach(item => {
         //blok uruchamiający kp
         if(Number(input.l.value)){
             liczKP(tcComputeInputObject);
-        }else{
+        }else{ 
             cleanOutputElementsValue(tcComputeOutput);
             cleanOutputElementsValue(tcDivisionOutput);
         }
@@ -99,56 +99,11 @@ SectionForm.forEach(item => {
 
 function liczPrzechylke(input){
     const { r, vmax, vmin, itype, etype, platform, calctype } =  input
-
     //choosing Idop value
-    const calctypeIndex = Number(calctype - 1);
-    let IDopValueList;
-
-    if(itype == 1){  // main tracks
-        IDopValueList = [110,130,150];                
-    }
-    else if(itype == 2){    //"side tracks"
-        IDopValueList = [80,100,110];   
-    }
-    else if(itype == 3){    // "small arc radius"
-        IDopValueList = [80,100,100];   
-    }
-    else if(itype == 4){    // "extra small arc radius"
-        IDopValueList = [80,100,100];  
-    }
-    else if(itype == 5){    // "switches with vmax <= 160"
-        IDopValueList = [90,110,110];
-    }
-    else if(itype == 6){   // "switches with vmax > 160"
-        IDopValueList = [60,90,90];
-    }
-    else if(itype == 7){    // "double switches"
-        IDopValueList = [0,0,80];
-    }
-
-    const Idop = IDopValueList[calctypeIndex];
+    const Idop = IdopValueList(itype, calctype);
     
-    //ustalanie Edop z listy rozwijanej - przerobić na case`y
-
-    let EDopValueList;
-
-    if(etype == 1){     
-        EDopValueList = [90,110,110];
-    }
-    else if(etype == 2){       
-        EDopValueList = [95,95,110];
-    }
-    else if(etype == 3){       
-        EDopValueList = [80,95,110];
-    }
-    else if(etype == 4){       
-        EDopValueList = [65,80,110];
-    }
-    else if(etype == 5){       
-        EDopValueList = [50,80,110];
-    }
-
-    const Edop = EDopValueList[calctypeIndex]
+    //ustalanie Edop z listy rozwijanej
+    const Edop = EdopValueList(etype, calctype)
 
     // var rminbp = 11.8*(vmax**2)/Idop;
     // var rminp = 11.8*(vmax**2)/(Idop+Dmaxdop);
@@ -172,7 +127,7 @@ function liczPrzechylke(input){
             Dmax = 110;
         }
     }
-    else if(Number(Dmax) >= 150){
+    else if(Number(Dmax) >= Dmaxdop){
         Dmax = 150;
     }
     
