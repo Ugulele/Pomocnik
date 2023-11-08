@@ -167,12 +167,72 @@ function dzielKP(input){
     Number(rbis)? document.getElementById("shownbis").value = 0 : document.getElementById("shownbis").value = "" ;
 }
 
-const divideTC = () => {
+const divideTC = (curveForDivisionParameters) => {
+    const {radius: r, length: l, curvetype: curvetype, newLength: lprim, superelevation: d} = curveForDivisionParameters
 
+    let rprim
+
+    switch(curvetype){
+        case "3st":
+            rprim = r*l/lprim
+            return {
+                "firstPartRadius": cround(rprim,2),
+                "firstPartLength": lprim,
+                "firstPartShift": cround(calculateShift(rprim, lprim, curvetype),2),
+                "firstPartSuperelevation": mround(d*r/rprim,5)
+            }
+        case "bloss":
+            rprim = r*(l**3)/((lprim**2)*(3*l-2*lprim))
+            return {
+                "firstPartRadius": cround(rprim,2),
+                "firstPartLength": lprim,
+                "firstPartShift": cround(calculateShift(rprim, lprim, curvetype),2),
+                "firstPartSuperelevation": mround(d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3)),5)
+            }
+        case "4st":
+            const dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3));
+            const {halflength: l2} = calculateTCParameters({"radius": r, "length": l, "curvetype": curvetype})
+            if(lprim > l2){
+                rprim = (r*l**2)/(2*l2**2);
+                return {
+                    "firstPartRadius": cround(rprim,2),
+                    "firstPartLength": l2,
+                    "firstPartShift": cround(calculateShift(rprim, l2, curvetype),2),
+                    "secondPartRadius": cround((r*l2**2)/((4*(lprim-l2)*l2)-(2*(lprim-l2)**2)-(l2**2)),2),
+                    "secondPartLength": lprim - l2,
+                    "secondPartShift": 0,
+                    "superelevationSecondPart": mround(dprim,5)
+                }
+            }else{
+                rprim = (r*l**2)/(2*lprim**2);
+                return{
+                    "firstPartRadius": cround(rprim,2),
+                    "firstPartLength": lprim,
+                    "firstPartShift": cround(calculateShift(rprim, lprim, curvetype),2),
+                    "firstPartSuperelevation": mround(dprim,5)
+                }
+            }
+    }
 }
 
 const tcDivisionEventHandler = () => {
-    
+    const curveForDivisionParameters = {
+        "radius": Number(document.querySelector("#tc_radius").value),
+        "length": Number(document.querySelector("#tc_length").value),
+        "curvetype": document.querySelector("#tc_curvetype").value,
+        "newLength": Number(document.querySelector("#tc_division_new_length").value),
+        "superelevation": Number(document.querySelector("#tc_division_superelevation").value)
+    }
+
+    const {radius: r, length: l, newLength: newL} = curveForDivisionParameters
+
+    if([r, l, newL].includes(0)){
+        return
+    }
+
+    const curveAfterDivisionParameters = divideTC(curveForDivisionParameters)
+
+    console.table(curveAfterDivisionParameters)
 }
 
 document.querySelector("#tc_division_input").addEventListener("input", tcDivisionEventHandler)

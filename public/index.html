@@ -254,7 +254,35 @@
                     Podział krzywej przejściowej prosta-łuk
                  </div>
 
-                 <div class="box" id="tc_division_input">
+                 <div class="contheader">
+                    Użyj parametrów krzywej powyżej?
+                    <input type="checkbox" class = "main-checkbox" id="previous_curve_preference" checked>
+                </div>   
+
+                 <div class="box" id="tc_division_input" data-checked = "true">
+                    <div class = "boxheader">
+                        Parametry krzywej:
+                    </div>
+
+                    <div class = "boxline" data checked = "true">
+                        Wybierz typ krzywej:
+                        <select id = "tc_division_curvetype">
+                            <option value = "3st">Parabola III stopnia</option>
+                            <option value = "4st">Parabola IV stopnia</option>
+                            <option value = "bloss">Krzywa Blossa</option>
+                        </select>
+                    </div>
+
+                    <div class = "boxline" data-checked = "true">
+                        Promień łuku [m]:
+                        <input type = "number" id = "tc_division_radius"  placeholder = "1200">
+                    </div>
+
+
+                    <div class = "boxline" data-checked = "true">
+                        Długość krzywej [m]:
+                        <input type = "number" id = "tc_division_length" placeholder = "150">
+                    </div>
 
                     <div class = "boxheader">
                         Parametry podzielonej krzywej:
@@ -262,12 +290,12 @@
 
                     <div class = "boxline">
                         Miejsce podziału [m]:
-                        <input type = "number" id = "tc_divison_new_length" placeholder = "100" >
+                        <input type = "number" id = "tc_division_new_length" placeholder = "100" >
                     </div>
 
                     <div class = "boxline">
                         Przechyłka [mm]:
-                        <input type = "number" id = "tc_divison_superelevation" placeholder = "80" >
+                        <input type = "number" id = "tc_division_superelevation" placeholder = "80" >
                     </div>
 
                  </div>
