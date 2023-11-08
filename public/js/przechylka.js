@@ -118,55 +118,6 @@ const tcParametersEventHandler = () => {
 
 document.querySelector("#tc_parameters_input").addEventListener("input", tcParametersEventHandler)
 
-function dzielKP(input){
-    //deklaracja wartości
-    let { r, l, l2, curvetype, d, lprim } = input
-
-    //wartości do obliczeń
-    let rprim = 0;
-    let nprim = 0;
-    let dprim = 0;
-    let lbis = 0;
-    let rbis = 0;
-
-    //Obliczanie przesunięcia i promienia/promieni w zależności od typu krzywej
-    if(curvetype == "3st"){
-        rprim = r*l/lprim;
-        nprim = calculateShift(rprim,lprim,curvetype)
-        dprim = d*r/rprim;
-    }else if(curvetype == "4st"){
-        dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3));
-        if(Number(lprim) > Number(l2)){
-            rprim = (r*l**2)/(2*l2**2);
-            lbis = lprim - l2;
-            lprim = l2;
-            rbis = (r*lprim**2)/((4*lbis*lprim)-(2*lbis**2)-(lprim**2));
-        }else{
-            rprim = (r*l**2)/(2*lprim**2);
-        }
-        //przesunięcie
-        nprim = calculateShift(rprim,lprim,curvetype)
-    }else if(curvetype == "bloss"){
-        rprim = r*(l**3)/((lprim**2)*(3*l-2*lprim))
-        nprim = calculateShift(rprim,lprim,curvetype)
-        dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3))
-    }
-
-    //drukowanie wyników
-    document.getElementById("showrprim").value = cround(rprim,2);
-    document.getElementById("showlprim").value = lprim;
-    document.getElementById("shownprim").value = cround(nprim,2);
-    if(isNaN(d) == false){
-        document.getElementById('showdprim').value = mround(dprim,5);
-        document.getElementById('showdprimdeg').value = cround(degrees(Math.atan(mround(dprim,5)/1435)),2); 
-    }
-
-    //czyszczenie wartości dla przypadków innych niż parabola IV stopnia
-    Number(rbis)? document.getElementById("showrbis").value = cround(rbis,2) : document.getElementById("showrbis").value = "";
-    Number(lbis)? document.getElementById("showlbis").value = lbis : document.getElementById("showlbis").value = "";
-    Number(rbis)? document.getElementById("shownbis").value = 0 : document.getElementById("shownbis").value = "" ;
-}
-
 const divideTC = (curveForDivisionParameters) => {
     const {radius: r, length: l, curvetype: curvetype, newLength: lprim, superelevation: d} = curveForDivisionParameters
 
