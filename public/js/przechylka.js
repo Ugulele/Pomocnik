@@ -1,23 +1,46 @@
-import { calculateShift, mround, cround, degrees, radians, IdopValueList, EdopValueList, DmaxValueList} from "./functions.js";
+import { calculateShift, mround, cround, degrees, radians, IdopValueList, EdopValueList, DmaxValueList, SuperelevationConversionFromMilimetersToDegrees} from "./functions.js";
+
+const correctionForItypeAndDmaxValues = (itype, radius, vmax) => {
+    //correction for switches
+    if(["switches", "arc switches"].includes[itype]){
+       return {
+        "itype": vmax < 160 ? `switches under 160`: `switches under 200`,
+        "DmaxType": itype
+       }
+    }
+
+    //correction for small radius
+    if(radius < 200){
+        return {
+            "itype": "extra small curve radius",
+            "DmaxType": "extra small curve radius"
+        }
+    }else if(radius < 250){
+        return {
+            "itype": "small curve radius",
+            "DmaxType": "small curve radius"
+        }
+    }else if(radius < 300){
+        return {
+            "itype": itype,
+            "DmaxType": "small curve radius"
+        }
+    }
+
+    //defualt correction
+    return {
+        "itype": itype,
+        "DmaxType": itype
+    }
+}
 
 const calculateSuperelevation = (input) => {
     //destructering of input object
     const {radius: r, vmax, vmin, etype,isPlatform, calctype} = input
-    let {itype} = input
+    const {itype: ItypeBeforeCorrection} = input
 
-    //DmaxType declaration
-    let DmaxType = itype
-
-    //DmaxType and itype corrrection for small radius curves
-    if(r<200){
-        itype = "extra small curve radius"
-        DmaxType = "extra small curve radius"
-    }else if(r<250){
-        itype = "small curve radius"
-        DmaxType = "small curve radius"
-    }else if(r<300){
-        DmaxType = "small curve radius"
-    }
+    //corrections for itype and choosing DmaxType
+    const {itype, DmaxType} =  correctionForItypeAndDmaxValues(ItypeBeforeCorrection, r, vmax)
 
     //calculating Edop, Idop values
     const Idop = IdopValueList(itype, calctype)
@@ -26,7 +49,7 @@ const calculateSuperelevation = (input) => {
     //Cacluclating highest value of superelevation
     let DmaxLimit = DmaxValueList(DmaxType, calctype, r)
     if(isPlatform){
-        DmaxLimit = cround(Math.min(DmaxValueList(DmaxType, calctype, r),DmaxValueList( "tracks with platform", calctype, r)),2)
+        DmaxLimit = mround(Math.min(DmaxValueList(DmaxType, calctype, r),DmaxValueList( "tracks with platform", calctype, r)),5)
     }
     const Dmax = Math.min(11.8*((vmin**2)/r)+Edop, DmaxLimit)
 
@@ -71,16 +94,18 @@ const superelevationEventHandler = () => {
 
     const {Dmin, Dreq, Dmed, Deq, Dmax} = calculateSuperelevation(curveParameters)
 
+    //poprawka aby funkcja zwracała 10 wartości zamiast pięciu
+    //no na razie musi zwracać 5, bo nie umiem w obiekty xdx
     document.querySelector('#dmin_result_in_milimeters').value = Dmin
-    document.querySelector('#dmin_result_in_degrees').value = cround(degrees(Math.atan(Dmin/1435)),1)
+    document.querySelector('#dmin_result_in_degrees').value = SuperelevationConversionFromMilimetersToDegrees(Dmin)
     document.querySelector('#dreq_result_in_milimeters').value = Dreq
-    document.querySelector('#dreq_result_in_degrees').value = cround(degrees(Math.atan(Dreq/1435)),1);
+    document.querySelector('#dreq_result_in_degrees').value = SuperelevationConversionFromMilimetersToDegrees(Dreq)
     document.querySelector('#dmed_result_in_milimeters').value = Dmed;
-    document.querySelector('#dmed_result_in_degrees').value = cround(degrees(Math.atan(Dmed/1435)),1); 
+    document.querySelector('#dmed_result_in_degrees').value = SuperelevationConversionFromMilimetersToDegrees(Dmed)
     document.querySelector('#deq_result_in_milimeters').value = Deq
-    document.querySelector('#deq_result_in_degrees').value = cround(degrees(Math.atan(Deq/1435)),1);  
+    document.querySelector('#deq_result_in_degrees').value = SuperelevationConversionFromMilimetersToDegrees(Deq)
     document.querySelector('#dmax_result_in_milimeters').value = mround(Dmax,5);
-    document.querySelector('#dmax_result_in_degrees').value = cround(degrees(Math.atan(mround(Dmax,5)/1435)),1); 
+    document.querySelector('#dmax_result_in_degrees').value = SuperelevationConversionFromMilimetersToDegrees(Dmax)
 }
 
 document.querySelector("#superelevation_compute_input").addEventListener("input", superelevationEventHandler)
@@ -90,10 +115,46 @@ const calculateTCParameters = (input) => {
    const {radius: r, length: l, curvetype} = input 
 
    return {
+        "length": cround(l,2),
         "shift": cround(calculateShift(r, l, curvetype),2),
         "halflength": cround(l/2, 2)
    }
 }
+
+const tcDvisionRenderAdditionalInputs = () => {
+    const curvetype = document.querySelector("#tc_curvetype").value
+    const tcDivisionOutputForm = document.querySelector("#tc_division_output")
+
+    switch(curvetype){
+        case "3st":
+        case "bloss": {
+
+            tcDivisionOutputForm.querySelectorAll("input").forEach((element) => {
+                if(element.getAttribute("data-cut")){
+                    element.classList.remove("half")
+                }
+            })
+            document.querySelector("#tc_division_second_part_radius").classList.add("invisible")
+            document.querySelector("#tc_division_second_part_length").classList.add("invisible")
+            document.querySelector("#tc_divison_second_part_shift").classList.add("invisible")
+
+        }
+            break
+        case "4st": {
+            tcDivisionOutputForm.querySelectorAll("input").forEach((element) => {
+                if(element.classList.contains("invisible")){
+                    element.classList.toggle("invisible")
+                }
+                if(!element.classList.contains("half")){
+                    element.classList.toggle("half")
+                }
+            })
+            break
+        }
+    }
+}
+
+document.querySelector("#tc_curvetype").addEventListener("input", tcDvisionRenderAdditionalInputs)
 
 const tcParametersEventHandler = () => {
     const curveParameters = {
@@ -138,10 +199,10 @@ const divideTC = (curveForDivisionParameters) => {
                 "firstPartRadius": cround(rprim,2),
                 "firstPartLength": lprim,
                 "firstPartShift": cround(calculateShift(rprim, lprim, curvetype),2),
-                "firstPartSuperelevation": mround(d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3)),5)
+                "firstPartSuperelevation": cround(d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3)),0)
             }
         case "4st":
-            const dprim = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3));
+            const superelevationLastPart = d*(3*(lprim**2)/(l**2) - 2*(lprim**3)/(l**3))
             const {halflength: l2} = calculateTCParameters({"radius": r, "length": l, "curvetype": curvetype})
             if(lprim > l2){
                 rprim = (r*l**2)/(2*l2**2);
@@ -149,10 +210,11 @@ const divideTC = (curveForDivisionParameters) => {
                     "firstPartRadius": cround(rprim,2),
                     "firstPartLength": l2,
                     "firstPartShift": cround(calculateShift(rprim, l2, curvetype),2),
+                    // "FirstPartSuperelevation": cround(d*(3*(l2**2)/(l**2) - 2*(l2**3)/(l**3)),2),
                     "secondPartRadius": cround((r*l2**2)/((4*(lprim-l2)*l2)-(2*(lprim-l2)**2)-(l2**2)),2),
                     "secondPartLength": lprim - l2,
                     "secondPartShift": 0,
-                    "superelevationSecondPart": mround(dprim,5)
+                    "firstPartSuperelevation": cround(superelevationLastPart,0)
                 }
             }else{
                 rprim = (r*l**2)/(2*lprim**2);
@@ -160,7 +222,7 @@ const divideTC = (curveForDivisionParameters) => {
                     "firstPartRadius": cround(rprim,2),
                     "firstPartLength": lprim,
                     "firstPartShift": cround(calculateShift(rprim, lprim, curvetype),2),
-                    "firstPartSuperelevation": mround(dprim,5)
+                    "firstPartSuperelevation": cround(superelevationLastPart,0)
                 }
             }
     }
@@ -175,7 +237,7 @@ const tcDivisionEventHandler = () => {
         "superelevation": Number(document.querySelector("#tc_division_superelevation").value)
     }
 
-    const {radius: r, length: l, newLength: newL} = curveForDivisionParameters
+    const {radius: r, length: l, newLength: newL, curvetype} = curveForDivisionParameters
 
     if([r, l, newL].includes(0)){
         return
@@ -183,70 +245,91 @@ const tcDivisionEventHandler = () => {
 
     const curveAfterDivisionParameters = divideTC(curveForDivisionParameters)
 
+    const {secondPartRadius, secondPartLength, secondPartShift} = curveAfterDivisionParameters
+    document.querySelector("#tc_division_second_part_radius").value = secondPartRadius ? secondPartRadius : ""
+    document.querySelector("#tc_division_second_part_length").value = secondPartLength ? secondPartLength : ""
+    document.querySelector("#tc_divison_second_part_shift").value = secondPartShift != 0 ? secondPartShift : 0
+
+    const {firstPartRadius, firstPartLength, firstPartShift, firstPartSuperelevation} = curveAfterDivisionParameters
+    document.querySelector("#tc_division_first_part_radius").value = firstPartRadius
+    document.querySelector("#tc_division_first_part_length").value = firstPartLength
+    document.querySelector("#tc_division_first_part_shift").value = firstPartShift
+    document.querySelector("#tc_divison_first_part_superelevation_in_milimeters").value = firstPartSuperelevation ? firstPartSuperelevation : ""
+    document.querySelector("#tc_divsion_first_part_superelevation_in_degrees").value = firstPartSuperelevation? SuperelevationConversionFromMilimetersToDegrees(firstPartSuperelevation): ""
+
+   
     console.table(curveAfterDivisionParameters)
 }
 
 document.querySelector("#tc_division_input").addEventListener("input", tcDivisionEventHandler)
+document.querySelector("#tc_parameters_input").addEventListener("input", tcDivisionEventHandler)
 
-const superelevation_degrees_element =  document.querySelector("#superelevation_in_degrees");
-const superelevation_milimeters_element = document.querySelector("#superelevation_in_milimeters");
-const superelevation_case_element = document.querySelector("#superelevation_case");
+document.querySelector("#superelevation_conversion_input")
+document.querySelector("#superelevation_case")
 
-const elevationcase = () => {
-    const d1 = superelevation_degrees_element.value
-    const d2 = superelevation_milimeters_element.value
-    const supercase = superelevation_case_element.value
-
-    if (supercase == "degrees"){
-        document.getElementById("superelevation_in_milimeters_result").parentElement.classList.add("invisible");
-        document.getElementById("superelevation_in_degrees_result").parentElement.classList.remove("invisible");
-        document.getElementById("superelevation_in_milimeters").parentElement.classList.remove("invisible");
-        document.getElementById("superelevation_in_degrees").parentElement.classList.add("invisible");
-    }else{
-        document.getElementById("superelevation_in_milimeters_result").parentElement.classList.remove("invisible");
-        document.getElementById("superelevation_degrees_result").parentElement.classList.add("invisible");
-        document.getElementById("superelevation_in_milimeters").parentElement.classList.add("invisible");
-        document.getElementById("superelevation_in_degrees").parentElement.classList.remove("invisible");
-    }
-
-    if (!d1 && !d2){
-        document.getElementById("superelevation_in_degrees_result").value  = "";
-        document.getElementById("superelevation_in_milimeters_result").value = "";
-    }else if(d1||d2){
-        superelevationconvert(d1,d2);
-    }
+const superelevationCaseLoadRender = () => {
+    document.querySelector("#superelevation_in_milimeters_result").parentElement.classList.add("invisible");
+    document.querySelector("#superelevation_in_degrees").parentElement.classList.add("invisible");
 }
 
-window.addEventListener("load",elevationcase);
-[superelevation_degrees_element, superelevation_milimeters_element, superelevation_case_element].forEach(element => element.addEventListener('input', elevationcase))
+const superelevationCaseRender = () => {
+    document.querySelector("#superelevation_in_milimeters_result").parentElement.classList.toggle("invisible");
+    document.querySelector("#superelevation_in_degrees_result").parentElement.classList.toggle("invisible");
+    document.querySelector("#superelevation_in_milimeters").parentElement.classList.toggle("invisible");
+    document.querySelector("#superelevation_in_degrees").parentElement.classList.toggle("invisible");
+}
 
-const superelevationconvert = (d1,d2) => {
+const superelevationConvertEventHandler = () => {
 
-    const degreestomilimeters = (angle) => {
+    const superelevationInMilimeters = Number(document.querySelector("#superelevation_in_milimeters").value)
+    const superelevationInDegrees = Number(document.querySelector("#superelevation_in_degrees").value)
+    const superelevationCase = document.querySelector("#superelevation_case").value
+
+    
+    if (!superelevationInMilimeters && !superelevationInDegrees){
+        document.querySelector("#superelevation_in_degrees_result").value  = ""
+        document.querySelector("#superelevation_in_milimeters_result").value = ""
+        return
+    }
+
+    const superelevationToConvert = superelevationCase === "degrees" ? superelevationInMilimeters : superelevationInDegrees
+    const superelevationResult = superelevationConvert(superelevationToConvert,superelevationCase)
+
+    if(superelevationCase === "degrees"){
+        document.querySelector("#superelevation_in_degrees_result").value = superelevationResult
+    }else{
+        document.querySelector("#superelevation_in_milimeters_result").value = superelevationResult
+    }
+    
+}
+
+window.addEventListener("load",superelevationCaseLoadRender);
+document.querySelector("#superelevation_case").addEventListener("change", superelevationCaseRender)
+document.querySelector("#superelevation_conversion_input").addEventListener('input', superelevationConvertEventHandler)
+
+const superelevationConvert = (superelevationToConvert,superelevationCase) => {
+
+    const degreesToMilimeters = (angle) => {
         return Math.tan(radians(angle))*1435;
     }
 
-    const milimeterstodegrees = (milimeters) => {
+    const milimetersToDegrees = (milimeters) => {
         return degrees(Math.atan(milimeters/1435));
     }
 
-    let dres = ""
-    
-    if (Number(d1)) {
-        dres = degreestomilimeters(d1);
-    }else if (Number(d2)){
-        dres = milimeterstodegrees(d2);
+    switch(superelevationCase){
+        case "degrees":
+            return cround(milimetersToDegrees(superelevationToConvert),2)
+        case "milimeters":
+            return cround(degreesToMilimeters(superelevationToConvert),2)
     }
 
-    document.getElementById("superelevation_degrees_result").value  = cround(dres,2);
-    document.getElementById("superelevation_milimeters_result").value = cround(dres,2);
-    
 }
 
 const computeMinimalLengthTC = (input) => {
 
     //pobranie wartości z obiektu wejściowego
-    const {r, vmax, d, curvetype, calctype} = input
+    const {radius: r, vmax, superelevation: d, curvetype, calctype} = input
 
     const type = {
         rec: 0,
@@ -286,37 +369,38 @@ const computeMinimalLengthTC = (input) => {
         "ext":Math.max(w1,w2,w3),
     }
 
-    const lmin = minimalLengthPrototype[calctype]
+    const lmin = cround(minimalLengthPrototype[calctype],0)
 
-    const output = {
-        l: cround(lmin,2),
-        l2: cround(lmin/2,2),
-        n: cround(calculateShift(r,lmin,curvetype),2),
-    }
-    
-    return output
+    return calculateTCParameters({"radius": r, "length": lmin, "curvetype": curvetype})
 }
 
-const tc_min_length_input_form = document.querySelector("#minimal_tc_length_input");
-
-tc_min_length_input_form.addEventListener("input", () => {
+const minimalTCLengthEventHandler = () => {
 
     const curveParametersInput = {
-        r: document.getElementById("minimal_tc_length_radius").value,
-        vmax: document.getElementById("minimal_tc_length_velocity").value,
-        d: document.getElementById("minimal_tc_length_superelevation").value,
-        curvetype: document.getElementById("minimal_tc_length_curvetype").value,
-        calctype: document.getElementById("minimal_tc_length_calctype").value,
+        radius: Number(document.querySelector("#minimal_tc_length_radius").value),
+        vmax: Number(document.querySelector("#minimal_tc_length_velocity").value),
+        superelevation: Number(document.querySelector("#minimal_tc_length_superelevation").value),
+        curvetype: document.querySelector("#minimal_tc_length_curvetype").value,
+        calctype: document.querySelector("#minimal_tc_length_calctype").value,
     }
 
-    if(curveParametersInput.r && curveParametersInput.vmax){
-        const curveParametersOutput = computeMinimalLengthTC(curveParametersInput)
-        document.getElementById("minimal_tc_length_length").value = curveParametersOutput.l;
-        document.getElementById("minimal_tc_length_halflength").value = curveParametersOutput.l2;
-        document.getElementById("minimal_tc_length_shift").value = curveParametersOutput.n;
-    }else{
-        document.getElementById("minimal_tc_length_length").value = "";
-        document.getElementById("minimal_tc_length_halflength").value = "";
-        document.getElementById("minimal_tc_length_shift").value = "";
+    const {radius, vmax} = curveParametersInput
+
+    console.log(curveParametersInput)
+
+    if([radius, vmax].includes[0]){
+        document.querySelector("#minimal_tc_length_length").value = "";
+        document.querySelector("#minimal_tc_length_halflength").value = "";
+        document.querySelector("#minimal_tc_length_shift").value = "";
+        return
     }
-})
+        
+    const {length, halflength, shift} = computeMinimalLengthTC(curveParametersInput)
+    console.log(length, halflength, shift)
+
+    document.querySelector("#minimal_tc_length_length").value = length;
+    document.querySelector("#minimal_tc_length_halflength").value = halflength;
+    document.querySelector("#minimal_tc_length_shift").value = shift;
+}
+
+document.querySelector("#minimal_tc_length_input").addEventListener("input", minimalTCLengthEventHandler)

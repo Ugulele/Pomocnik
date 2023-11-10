@@ -69,7 +69,7 @@
 
                     <div class = "boxline">
                         Prędkość minimalna [km/h]:
-                        <input type = "number" id = "superelevation_vmin" placeholder = "100" >
+                        <input type = "number" id = "superelevation_vmin" placeholder = "" >
                     </div>
 
                     <div class = "boxline">
@@ -77,11 +77,9 @@
                         <select id = "superelevation_idoplist" >
                             <option value = "main tracks">Tory szlakowe, zasadnicze, główne</option>
                             <option value = "side tracks">Tory boczne</option>
-                            <!-- <option value = "small curve radius">Łuki o promieniach 200m < R < 250m</option> -->
-                            <!-- <option value = "extra small curve radius">Łuki o promieniach R <= 200</option> -->
-                            <!-- <option value = "switches under 160">Rozjazdy zwyczajne ze stałą krzyżownicą (inne niż krzyżowe) dla v <= 160 km/h</option> -->
-                            <!-- <option value = "switches under 200">Rozjazdy zwyczajne ze stałą krzyżownicą (inne niż krzyżowe) dla 160 km/h < v <= 200 km/h</option> -->
-                            <!-- <option value = "double switches">Rozjazdy krzyżowe/skrzyżowania torów dla v <= 120 km/h</option> -->
+                            <option value = "switches">Rozjazdy zwyczajne ze stałą krzyżownicą</option>
+                            <option value = "arc switches">Rozjazdy łukowe</option>
+                            <option value = "double switches">Rozjazdy krzyżowe/skrzyżowania torów</option>
                         </select>
                     </div>
 
@@ -201,7 +199,7 @@
 
             <section class="container-grid">
                 <div class = "contheader">
-                   Obliczanie parametrów krzywej przejściowej prosta-łuk
+                   Obliczanie parametrów i podział krzywej przejściowej prosta-łuk
                 </div>
 
                 <div class = "box" id = "tc_parameters_input">
@@ -250,42 +248,10 @@
 
                 </div>
 
-                <div class = "contheader">
-                    Podział krzywej przejściowej prosta-łuk
-                 </div>
-
-                 <div class="contheader">
-                    Użyj parametrów krzywej powyżej?
-                    <input type="checkbox" class = "main-checkbox" id="previous_curve_preference" checked>
-                </div>   
-
-                 <div class="box" id="tc_division_input" data-checked = "true">
-                    <div class = "boxheader">
-                        Parametry krzywej:
-                    </div>
-
-                    <div class = "boxline" data checked = "true">
-                        Wybierz typ krzywej:
-                        <select id = "tc_division_curvetype">
-                            <option value = "3st">Parabola III stopnia</option>
-                            <option value = "4st">Parabola IV stopnia</option>
-                            <option value = "bloss">Krzywa Blossa</option>
-                        </select>
-                    </div>
-
-                    <div class = "boxline" data-checked = "true">
-                        Promień łuku [m]:
-                        <input type = "number" id = "tc_division_radius"  placeholder = "1200">
-                    </div>
-
-
-                    <div class = "boxline" data-checked = "true">
-                        Długość krzywej [m]:
-                        <input type = "number" id = "tc_division_length" placeholder = "150">
-                    </div>
+                <div class="box" id="tc_division_input">
 
                     <div class = "boxheader">
-                        Parametry podzielonej krzywej:
+                        Miejsce podziału krzywej:
                     </div>
 
                     <div class = "boxline">
@@ -303,31 +269,31 @@
                 <div class = "box" id="tc_division_output">
 
                     <div class = "boxheader">
-                        Parametry podzielonej krzywej:
+                        Wyniki podziału krzywej:
                     </div>
 
                     <div class = "boxline">
-                        Promienie części [m]: 
-                        <input class = "half" type = "text" id = "tc_first_part_radius" readonly>
-                        <input class = "half" type = "text" id = "tc_second_part_radius" readonly>
+                        Promień części [m]: 
+                        <input type = "text" id = "tc_division_first_part_radius" data-cut = "true" readonly>
+                        <input class = "half invisible" type = "text" id = "tc_division_second_part_radius" readonly>
                     </div>
                     
                     <div class = "boxline">
-                        Długości części [m]:
-                        <input class = "half" type = "text" id = "tc_first_part_length" readonly> 
-                        <input class = "half" type = "text" id = "tc_second_part_length" readonly> 
+                        Długość części [m]:
+                        <input type = "text" id = "tc_division_first_part_length" data-cut = "true" readonly> 
+                        <input class = "half invisible" type = "text" id = "tc_division_second_part_length" readonly> 
                     </div>
 
                     <div class = "boxline">
                         Przesunięcie części [m]:
-                        <input class = "half" type = "text" id = "tc_first_part_shift" readonly>
-                        <input class = "half" type = "text" id = "tc_second_part_shift" readonly>
+                        <input type = "text" id = "tc_division_first_part_shift" data-cut = "true" readonly>
+                        <input class = "half invisible" type = "text" id = "tc_divison_second_part_shift" readonly>
                     </div>
 
                     <div class = "boxline">
                         Przechyłka [mm/stopnie]:
-                        <input class = "half" type = "text" id = "tc_first_part_superelevation_in_milimeters" readonly>
-                        <input class = "half" type = "text" id = "tc_first_part_superelevation_in_degrees" readonly>
+                        <input class = "half" type = "text" id = "tc_divison_first_part_superelevation_in_milimeters" readonly>
+                        <input class = "half" type = "text" id = "tc_divsion_first_part_superelevation_in_degrees" readonly>
                     </div>
                     
                 </div>
@@ -352,7 +318,7 @@
                     </div>
                     <div class = "boxline">
                         Przechyłka na łuku [mm]:
-                        <input type = "number" id = "minimal_tc_length_superelevation" placeholder = "120">
+                        <input type = "number" id = "minimal_tc_length_superelevation" placeholder = "80">
                     </div>
                     <div class = "boxline">
                         Wybierz typ krzywej:
@@ -383,7 +349,7 @@
                     </div>
 
                     <div class = "boxline">
-                        Połowa długości KP
+                        Połowa długości KP:
                         <input type = "number" id = "minimal_tc_length_halflength" placeholder = "75">
                     </div>
 
@@ -466,7 +432,7 @@
                 <div class = "box" id = "curve_tc_input_tc_parameters">
 
                     <div class = "boxheader">
-                        Warunki miejscowe: 
+                        Parametry krzywej: 
                     </div>
 
                     <div class = "boxline">

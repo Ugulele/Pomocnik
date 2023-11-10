@@ -12,6 +12,8 @@ export const degrees = (angle) => angle * (180 / Math.PI);
 //funkcja przeliczająca stopnie na radiany
 export const radians = (angle) => (angle * Math.PI) / 180;
 
+export const SuperelevationConversionFromMilimetersToDegrees = (superelevationInMilimeters) => cround(degrees(Math.atan(superelevationInMilimeters/1435)),1) 
+
 //obliczanie przesunięcia w krzywej przejściowej
 export const calculateShift = (r, l, curvetype) => {
   const shiftPrototype = {
@@ -71,7 +73,10 @@ export const DmaxValueList = (DmaxType ,calctype, radius) => {
       "side tracks": [60, 100, 110],
       "tracks with platform": [60, 100, 110],
       "small curve radius": [0, 100, 150],
-      "extra small curve radius": [0, 60, 100]
+      "extra small curve radius": [0, 60, 100],
+      "switches": [0, 100, 110],
+      "arc switches": [60, 100, 110],
+      "double switches": [0, 0, 0]
   }
 
   if(["small curve radius", "extra small curve radius"].includes(DmaxType)){
