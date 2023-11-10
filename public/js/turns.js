@@ -205,9 +205,8 @@ const minimalRadiusWithoutTCEventHandler = () => {
     const {vmax} = curveParameters
 
     if(!vmax){
-        document.querySelector("#turnwithouttc_rmin_tracktype").value = "";
-        document.querySelector("#turnwithouttc_rmin_calctype").value = "";
-        document.querySelector("#turnwithouttc_rmin_vmax").value = "";
+        document.querySelector("#turnwithouttc_rmin_result").value = ""
+        return
     }
 
     const minimalRadius = calculateMinimalCurveRadiusWithoutTC(curveParameters)
