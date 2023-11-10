@@ -61,7 +61,7 @@ const turnparams = () => {
         }
     }
 
-    if(!r){
+    if([r,l ||t || alfa].includes(0)){
         document.querySelector("#turn_parameters_slant_result").value = "";
         document.querySelector("#turn_parameters_angle_result").value = "";
         document.querySelector("#turn_parameters_length_result").value = "";
