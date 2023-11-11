@@ -24,7 +24,7 @@ export const superelevationConversionFromMilimetersToDegrees = (
     return shiftPrototype[curvetype]
 }
   
-  const calctypeToIndex = (calctype) => {
+  export const calctypeToIndex = (calctype) => {
     const calctypeIndexPrototype = {
       rec: 0,
       nrm: 1,

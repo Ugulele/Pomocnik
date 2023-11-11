@@ -21,7 +21,7 @@ userPreferencesList.forEach(item => {
 
 //rozwijanie poszczególnych sekcji
 const sections = document.querySelectorAll("section");
-const labels = document.querySelectorAll(".label");
+const headers = document.querySelectorAll("header");
 
 const sectionOpening = () => {
     sections.forEach(section => {
@@ -54,8 +54,8 @@ const sectionsVisibility = (source) =>{
     }
 }
 
-labels.forEach(label => {
-    label.addEventListener('click', (e) => {
+headers.forEach(header => {
+    header.addEventListener('click', (e) => {
         sectionsVisibility(e);
         e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' }); 
     })

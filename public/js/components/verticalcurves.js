@@ -1,4 +1,5 @@
 import { cround, radians, degrees } from "../functions/math_functions.js";
+import { calctypeToIndex } from "../functions/engineering_functions.js";
 
 const p = 0.05728586
 
@@ -27,4 +28,19 @@ export const convertHeightDifferenceToAngle = (h1, h2, l) => {
 
     //obliczanie pochylenia
     return cround(alfa/p,2);
+}
+
+export const minimalVerticalCurveRadius = (trackParameters) => {
+    const {velocity, tracktype, calctype} = trackParameters
+
+    const calctypeIndex = calctypeToIndex(calctype) 
+
+    const minimalRadiusPrototype = {
+        "main tracks" : [Math.max(0.77*velocity**2, 5000),Math.max(0.35*velocity**2, 5000), Math.max(0.25*velocity**2, 2000)],
+        "suburban tracks": [Math.max(0.77*velocity**2, 5000), Math.max(0.77*velocity**2, 5000), Math.max(0.25*velocity**2, 2000)],
+        "oblique joint tracks": [Math.max(0.35*velocity**2, 5000), Math.max(0.35*velocity**2, 5000), Math.max(0.25*velocity**2, 3000)],
+        "reflex joint tracks": [Math.max(0.35*velocity**2, 3000), Math.max(0.35*velocity**2, 3000), Math.max(0.25*velocity**2, 2000)]
+    }
+
+    return minimalRadiusPrototype[tracktype][calctypeIndex]
 }

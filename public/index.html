@@ -30,9 +30,9 @@
         
         <main>
 
-            <div class ="label">
+            <header>
                 1. Przechyłka i krzywa przejściowa prosta - łuk
-            </div>
+            </header>
 
             <section class = "container-grid">
 
@@ -193,9 +193,9 @@
 
             </section>
 
-            <div class ="label">
+            <header>
                 2. Krzywa przejściowa prosta-łuk
-            </div>
+            </header>
 
             <section class="container-grid">
                 <div class = "contheader">
@@ -360,9 +360,9 @@
                 </div>
             </section>
             
-            <div class ="label">
-                3. Krzywa przejściowa łuk-łuk
-            </div>
+            <header>
+                3. Krzywa przejściowa łuk-łuk 
+            </header>
 
             <section class = "container-grid">
 
@@ -531,9 +531,9 @@
                     
             </section>
         
-            <div class ="label">
+            <header>
                 4. Poszerzenia międzytorza
-            </div>
+            </header>
 
             <section class = "container-grid">
 
@@ -844,9 +844,9 @@
 
             </section>
 
-            <div class ="label">
+            <header>
                 5. Łuki pionowe i profil
-            </div>
+            </header>
 
             <section class = "container-grid">
 
@@ -907,7 +907,50 @@
 
                 </div>
 
-               
+                <div class="contheader">
+                    Obliczanie minimalnego promienia łuku pionowego
+                </div>
+
+                <div class="box" id="minimal_vertical_curve_radius_input">
+                    <div class="boxheader">
+                        Parametry toru:
+                    </div>
+
+                    <div class="boxline">
+                        Prędkość maksymalna [km/h]:
+                        <input type="number" id="minimal_vertical_radius_velocity" placeholder="120">
+                    </div>
+
+                    <div class="boxline">
+                        Typ toru:
+                        <select id="minimal_vertical_radius_tracktype">
+                            <option value = "main tracks">Tory na liniach typu P, M, T</option>
+                            <option value = "suburban tracks">Tory przeznaczone do ruchu podmiejskiego</option>
+                            <option value = "oblique joint tracks">Połoączenia torów - załomy wypukłe</option>  
+                            <option value = "reflex joint tracks">Połoączenia torów - załomy wklęsłe</option>  
+                        </select>
+                    </div>
+
+                    <div class="boxline">
+                        Typ wartości:
+                        <select id="minimal_vertical_radius_caltype">
+                            <option value = "rec">Zalecane wartości dopuszczalne</option>
+                            <option value = "nrm">Normalne wartości dopuszczalne</option>
+                            <option value = "ext">Rozszerzone wartości dopuszczalne</option>  
+                        </select>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="boxheader">
+                        Wyniki:
+                    </div>
+
+                    <div class="boxline">
+                        Promień łuku [m]:
+                        <input type="number" id="minimal_vertical_radius_result" placeholder = "5000" readonly>
+                    </div>
+                </div>
 
                 <div class="contheader">  
                     Obliczanie pochylenia
@@ -988,9 +1031,9 @@
 
             </section>
         
-            <div class ="label">
+            <header>
                 6. Łuki poziome
-            </div>
+            </header>
 
             <section class = "container-grid">
                 
@@ -1171,9 +1214,5 @@
 
         <script type="module" src = "js/app.js"></script>
         <script type = "module" src = "js/domutils.js"></script>
-        <!-- <script type = "module" src = "js/curves.js"></script> -->
-        <!-- <script type = "module" src = "js/verticalcurves.js"></script> -->
-        <!-- <script type = "module" src = "js/turns.js"></script> -->
-
     </body>
 </html>

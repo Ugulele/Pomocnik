@@ -3,7 +3,7 @@ import { calculateSuperelevation, superelevationConvert } from "./components/sup
 import { calculateTCParameters, divideTC, computeMinimalLengthTC, calculateTCforCurves } from "./components/transitioncurves.js"
 import { calculateWideningFirstMethod, calculateWideningSecondMethod, calculateWideningThirdMethod, calculateWideningOnCurve } from "./components/widenings.js"
 import { minimalLength, computeCurveMinimalRadius ,calculateMinimalCurveRadiusWithoutTC, computeAngle, computeLengthFromSlant, computeLengthFromAngle } from "./components/turns.js"
-import { verticalInclinesFirstMethod, verticalInclinesSecondMethod, convertHeightDifferenceToAngle } from "./components/verticalcurves.js"
+import { verticalInclinesFirstMethod, verticalInclinesSecondMethod, convertHeightDifferenceToAngle, minimalVerticalCurveRadius } from "./components/verticalcurves.js"
 
 //superelevation event handlers
 const superelevationEventHandler = () => {
@@ -456,6 +456,26 @@ const verticalCurveInputsVisibilityChangeState = () => {
 }
 
 document.querySelector("#vertical_case").addEventListener("change", verticalCurveInputsVisibilityChangeState);
+
+const minimalVerticalCuvreRadiusEventHander = () => {
+    const trackParameters = {
+        "velocity": Number(document.querySelector("#minimal_vertical_radius_velocity").value),
+        "tracktype": document.querySelector("#minimal_vertical_radius_tracktype").value,
+        "calctype": document.querySelector("#minimal_vertical_radius_caltype").value
+    }
+
+    const {velocity} = trackParameters
+    
+    if(!velocity){
+        document.querySelector("#minimal_vertical_radius_result").value = ""
+        return
+    }
+
+    const verticalCurveRadius = minimalVerticalCurveRadius(trackParameters)
+    document.querySelector("#minimal_vertical_radius_result").value = verticalCurveRadius
+}
+
+document.querySelector("#minimal_vertical_curve_radius_input").addEventListener("input", minimalVerticalCuvreRadiusEventHander)
 
 const verticalInclinesFirstMethodEventHandler = () => {
     const verticalInclines1InputObject = {
