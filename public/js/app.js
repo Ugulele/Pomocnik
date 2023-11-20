@@ -1,9 +1,19 @@
+import { renderSelectedSectionandHeader, renderInitialAppState, renderFooterContent } from "./domutils.js"
 import { superelevationConversionFromMilimetersToDegrees } from "./functions/engineering_functions.js"
 import { calculateSuperelevation, superelevationConvert } from "./components/superelevation.js"
 import { calculateTCParameters, divideTC, computeMinimalLengthTC, calculateTCforCurves } from "./components/transitioncurves.js"
 import { calculateWideningFirstMethod, calculateWideningSecondMethod, calculateWideningThirdMethod, calculateWideningOnCurve } from "./components/widenings.js"
 import { minimalLength, computeCurveMinimalRadius ,calculateMinimalCurveRadiusWithoutTC, computeAngle, computeLengthFromSlant, computeLengthFromAngle } from "./components/turns.js"
 import { verticalInclinesFirstMethod, verticalInclinesSecondMethod, convertHeightDifferenceToAngle, minimalVerticalCurveRadius } from "./components/verticalcurves.js"
+
+//app content render
+document.querySelector("nav").addEventListener("click", (e) => {
+    renderSelectedSectionandHeader(e)
+})
+
+window.addEventListener("load", renderInitialAppState)
+window.addEventListener("load", renderFooterContent)
+
 
 //superelevation event handlers
 const superelevationEventHandler = () => {

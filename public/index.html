@@ -12,43 +12,61 @@
         <link rel="icon" type= "image/x-icon" href="img/favicon.png">
 
     <body>
-
-        <nav>
-            <div class = "dropdown">
-                <button id = "menu-visibility-button"><img src = "img/gear.svg"></button>
-                <ul>
-                    <li>Ręczne zamykanie sekcji: <input type = "checkbox" id = "preference_closing_checkbox"></li>
-                    <li>Rozwiń wszystkie sekcje: <input type = "checkbox" id = "preference_opening_checkbox"></li>
-                </ul>
-            </div>
-        </nav>
-
-      
+        
         <div class="logo">
             <img src = "img/logo.png">
         </div>
+
+        <nav>
+            <div class = "nav_logo">
+                <a href="#" data-contains="landing-page">
+                    <img src="img/favicon.png" data-contains="landing-page">
+                </a>
+                <button data-background = "hamburger"></button>
+            </div>
+            <div class = "nav_menu">
+                <ul>
+                    <li><a href="#" data-contains="superelevation">Przechyłka</a></li>
+                    <li><a href="#">Krzywe przejściowe</a>
+                        <ul>
+                            <li><a href="#" data-contains="tc_straight_arc">Krzywa przejściowa prosta-łuk</a></li>
+                            <li><a href="#" data-contains="tc_arc_arc">Krzywa przejściowa łuk-łuk</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" data-contains="track-widening">Poszerzenia</a></li>
+                    <li><a href="#">Łuki</a>
+                        <ul>
+                            <li><a href="#" data-contains="vertical_curves">Łuki pionowe i profil pionowy</a></li>
+                            <li><a href="#" data-contains="horizontal_curves">Łuki poziome</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         
         <main>
 
-            <header>
-                1. Przechyłka i krzywa przejściowa prosta - łuk
+            <header class = "primary-header" data-contains="landing-page">
+                <h1>Witaj w pomocniku Twórcy scenerii!</h1>
             </header>
 
-            <section class = "container-grid">
+            <header class = "primary-header" data-contains="superelevation">
+                <h2>Przechyłka</h2>
+            </header>
+
+            <section class = "container-grid" data-contains="superelevation">
+
+                <header class="contheader">
+                    <h3>Obliczanie wartości przechyłki na łuku</h3>
+                </header>   
 
                 <div class="contheader">
-                    Obliczanie wartości przechyłki na łuku
-                </div>   
-
-                <div class="contheader">
-                    
                     Wybierz wartości parametrów:
                     <select id = "superelevation_calctype" class = "long" >
                         <option value = "rec">Zalecane wartości dopuszczalne</option>
                         <option value = "nrm">Normalne wartości dopuszczalne</option>
                         <option value = "ext">Rozszerzone wartości dopuszczalne</option>  
                     </select>
-
                 </div>   
 
                 <div class = "box" id="superelevation_compute_input">
@@ -86,11 +104,11 @@
                     <div class = "boxline">
                         Przewozy [mln ton/rok]:
                         <select id = "superelevation_edoplist" >
-                            <option value = "freight under 5">0 < q <= 5</option>
-                            <option value = "freight under 10">5 < q <= 10</option>
-                            <option value = "freigth under 15">10 < q <= 15</option>
-                            <option value = "freight under 20">15 < q <= 20</option>
-                            <option value = "freight above 20" selected>q > 20</option>
+                            <option value = "freight under 5">0 &lt; q &lt;&equals; 5</option>
+                            <option value = "freight under 10">5 &lt; q &lt;&equals; 10</option>
+                            <option value = "freigth under 15">10 &lt; q &lt;&equals; 15</option>
+                            <option value = "freight under 20">15 &lt; q &lt;&equals; 20</option>
+                            <option value = "freight above 20" selected>q &gt;&equals; 20</option>
                         </select>
                     </div>
 
@@ -101,11 +119,6 @@
                             <option value = true>Tak</option>
                         </select>
                     </div>
-
-                    <!-- <div class = "boxbuttons">
-                        <input class = "button" type = "button" value = "Oblicz promień" onClick = "liczPrzechylke()">
-                        <input class = "button" type = "button" value = "Oblicz przechyłkę" onClick = "liczPrzechylke()">
-                    </div> -->
                 
                 </div>
 
@@ -148,7 +161,7 @@
                 </div>
 
                 <div class="contheader">  
-                    Przeliczanie przechyłki 
+                    <h3>Przeliczanie przechyłki</h3>
                     <select id = "superelevation_case">
                         <option value = "degrees">na stopnie</option>
                         <option value = "milimeters">na milimetry</option>
@@ -181,25 +194,25 @@
 
                     <div class = "boxline">
                         Przechyłka [stopnie]:
-                        <input type = "number" id = "superelevation_in_degrees_result" placeholder = "5,97" > 
+                        <input type = "number" id = "superelevation_in_degrees_result" placeholder = "5,97" readonly> 
                     </div>
 
                     <div class = "boxline">
                         Przechyłka [mm]:
-                        <input type = "number" id = "superelevation_in_milimeters_result" placeholder = "150" > 
+                        <input type = "number" id = "superelevation_in_milimeters_result" placeholder = "150" readonly> 
                     </div>
 
                 </div>
 
             </section>
 
-            <header>
-                2. Krzywa przejściowa prosta-łuk
+            <header class = "primary-header" data-contains="tc_straight_arc">
+                <h2>Krzywa przejściowa prosta-łuk</h2>
             </header>
 
-            <section class="container-grid">
+            <section class="container-grid" data-contains="tc_straight_arc">
                 <div class = "contheader">
-                   Obliczanie parametrów i podział krzywej przejściowej prosta-łuk
+                   <h3>Obliczanie parametrów i podział krzywej przejściowej prosta-łuk</h3>
                 </div>
 
                 <div class = "box" id = "tc_parameters_input">
@@ -299,7 +312,7 @@
                 </div>
 
                 <div class = "contheader">
-                    Minimalna długość krzywej przejściowej prosta-łuk
+                    <h3>Minimalna długość krzywej przejściowej prosta-łuk</h3>
                 </div>
 
                 <div id="minimal_tc_length_input" class = "box">
@@ -360,11 +373,11 @@
                 </div>
             </section>
             
-            <header>
-                3. Krzywa przejściowa łuk-łuk 
+            <header class = "primary-header" data-contains="tc_arc_arc">
+                <h2>Krzywa przejściowa łuk-łuk </h2>
             </header>
 
-            <section class = "container-grid">
+            <section class = "container-grid" data-contains="tc_arc_arc">
 
                 <div class="contheader">
 
@@ -472,16 +485,6 @@
                         Długość KP(Ł2) [m]:
                         <input type = "number" id = "curve_length_2" placeholder = "150"> 
                     </div>
-
-                    <!-- <div class = "boxline">
-                        Prędkość maksymalna Ł2 [km/h]:
-                        <input type = "number" id = "curve_vmax_2" placeholder = "120"> 
-                    </div> -->
-
-
-                    <!-- <div class = "boxbuttons">
-                        <input class = "button" type = "button" id ="curves_shiftbutton" value = "" onClick = "liczCurvesKP()">
-                    </div> -->
                     
                 </div>
 
@@ -531,11 +534,11 @@
                     
             </section>
         
-            <header>
-                4. Poszerzenia międzytorza
+            <header class = "primary-header" data-contains="track-widening">
+                <h2>Poszerzenia międzytorza</h2>
             </header>
 
-            <section class = "container-grid">
+            <section class = "container-grid" data-contains="track-widening">
 
                 <div class="contheader">  
                     Poszerzenie z dwoma łukami (z krzywymi przejściowymi) i wstawką prostą
@@ -585,10 +588,6 @@
                         Zmiana rozstawu torów [m]:
                         <input type = "number" id = "widening_change" placeholder = "1" > 
                     </div>
-
-                    <!-- <div class = "boxbuttons">
-                        <input class = "button" type = "button" value = "Oblicz wstawkę" onClick = "liczPoszerzenie()">
-                    </div> -->
 
                 </div>
 
@@ -844,11 +843,11 @@
 
             </section>
 
-            <header>
-                5. Łuki pionowe i profil
+            <header class = "primary-header" data-contains="vertical_curves">
+                <h2>Łuki pionowe i profil</h2>
             </header>
 
-            <section class = "container-grid">
+            <section class = "container-grid" data-contains="vertical_curves">
 
                 <div class="contheader">  
                     Obliczanie
@@ -883,10 +882,6 @@
                         Pochylenie za łukiem [&permil;]:
                         <input type = "number" id = "vertical_inclination_2" placeholder = "-1"> 
                     </div>
-
-                    <!-- <div class = "boxbuttons">
-                        <input class = "button" type = "button" id="vertical_button" onclick="verticalInclines1()">
-                    </div> -->
                 
                 </div>
 
@@ -1013,9 +1008,6 @@
                         <input type = "number" id = "vertical_length_3" placeholder = "5000"> 
                     </div>
 
-                    <!-- <div class = "boxbuttons">
-                        <input class = "button" type = "button" value = "Oblicz wyrównanie" onclick="verticalInclines2()">
-                    </div> -->
                 </div> 
                     
                 <div class = "box">
@@ -1031,11 +1023,11 @@
 
             </section>
         
-            <header>
-                6. Łuki poziome
+            <header class = "primary-header" data-contains="horizontal_curves">
+                <h2>Łuki poziome</h2>
             </header>
 
-            <section class = "container-grid">
+            <section class = "container-grid" data-contains="horizontal_curves">
                 
                 <div class = "contheader">
                     Minimalna długość łuku
@@ -1209,7 +1201,7 @@
         </main>
 
         <footer>
-            <a href = "https://td2.info.pl/profile/?u=3336">&copy; Ugulele <span id = "year"></span></a>
+            <a id="a_footer" href = "https://td2.info.pl/profile/?u=3336"></a>
         </footer>
 
         <script type="module" src = "js/app.js"></script>

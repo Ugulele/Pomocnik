@@ -1,66 +1,59 @@
-//Preferencje użytkownika
-const preferenceOpeningCheckbox = document.querySelector("#preference_opening_checkbox");
-const preferenceClosingCheckbox = document.querySelector("#preference_closing_checkbox");
-const userPreferencesList = [preferenceOpeningCheckbox,preferenceClosingCheckbox];
+const sections = document.querySelectorAll("section")
+const headers = document.querySelectorAll(".primary-header")
 
-userPreferencesList.forEach(item => {
-
-    const itemId = item.getAttribute("id");
-   
-    window.addEventListener('load', () =>{
-        const itemSavedState = localStorage.getItem(itemId);
-        item.checked = itemSavedState === "checked" ? true : false;
-    })
-
-    item.addEventListener('change', () => {
-        const itemState = item.checked ? "checked" : "unchecked";
-        localStorage.setItem(itemId,itemState);  
-    })
-
-})
-
-//rozwijanie poszczególnych sekcji
-const sections = document.querySelectorAll("section");
-const headers = document.querySelectorAll("header");
-
-const sectionOpening = () => {
-    sections.forEach(section => {
-        section.setAttribute('data-visible', preferenceOpeningCheckbox.checked ? 'open': 'close');
-    })
-}
-
-window.addEventListener('load', sectionOpening)
-preferenceOpeningCheckbox.addEventListener('change', () => {
-    sectionOpening();
-})
-
-const sectionsInvisibility = () => {
-    sections.forEach(section => {
-        if(section.getAttribute('data-visible') !== 'close'){
-            section.setAttribute('data-visible', 'close')
-        } 
-    })
-}
-
-const sectionsVisibility = (source) =>{
-    const nextElement = source.target.nextElementSibling;
-    if(nextElement.getAttribute('data-visible') === 'close'){
-        if(!preferenceClosingCheckbox.checked){
-            sectionsInvisibility();
-        }
-        nextElement.setAttribute('data-visible', 'open');
-    }else{
-        nextElement.setAttribute('data-visible', 'close');
+export const renderSelectedSectionandHeader = (e) => {
+    e.preventDefault()
+    if(!e.target.getAttribute("data-contains")){
+        return
     }
+    sections.forEach(element => {
+        if(!element.classList.contains("invisible")){
+            element.classList.add("invisible")
+        }
+        if(element.getAttribute("data-contains") === e.target.getAttribute("data-contains")){
+            element.classList.remove("invisible")
+        }
+    })
+    headers.forEach(element => {
+        if(!element.classList.contains("invisible")){
+            element.classList.add("invisible")
+        }
+        if(element.getAttribute("data-contains") === e.target.getAttribute("data-contains")){
+            element.classList.remove("invisible")
+        }
+    })
+    // e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
+} 
+
+export const renderInitialAppState = () => {
+    headers.forEach(element => {
+        if(element.getAttribute("data-contains") /* !== "landing-page" --preparation for landingpage*/ ){
+            element.classList.add("invisible")
+        }
+        if(element.getAttribute("data-contains") === "superelevation"){
+            element.classList.remove("invisible")
+        }
+    })
+    sections.forEach(element => {
+        if(element.getAttribute("data-contains")/* !== "landing-page" --preparation for landingpage*/){
+            element.classList.add("invisible")
+        }
+        if(element.getAttribute("data-contains") === "superelevation"){
+            element.classList.remove("invisible")
+        }
+    })
 }
 
-headers.forEach(header => {
-    header.addEventListener('click', (e) => {
-        sectionsVisibility(e);
-        e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' }); 
-    })
-})
+const navButton = document.querySelector("nav button")
 
-//automatyczna zmiana roku
-const date = new Date();
-document.getElementById("year").innerHTML = date.getFullYear();
+const changeIconFromHamburgerToCross = () => {
+    const currentIcon = navButton.getAttribute("data-background")
+    document.querySelector(".nav_menu").classList.toggle("active")
+    navButton.setAttribute("data-background", currentIcon === "hamburger" ? "cross" : "hamburger")
+}
+
+export const renderFooterContent = () => {
+    const date = new Date();
+    document.querySelector("#a_footer").innerHTML = `&copy; Ugulele ${date.getFullYear()}`
+}
+navButton.addEventListener("click", changeIconFromHamburgerToCross)
