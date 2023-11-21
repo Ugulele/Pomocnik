@@ -153,16 +153,15 @@ const tcDivisionEventHandler = () => {
 document.querySelector("#tc_division_input").addEventListener("input", tcDivisionEventHandler)
 document.querySelector("#tc_parameters_input").addEventListener("input", tcDivisionEventHandler)
 
-const superelevationCaseLoadRender = () => {
-    document.querySelector("#superelevation_in_milimeters_result").parentElement.classList.add("invisible")
-    document.querySelector("#superelevation_in_degrees").parentElement.classList.add("invisible")
-}
-
 const superelevationCaseRender = () => {
-    document.querySelector("#superelevation_in_milimeters_result").parentElement.classList.toggle("invisible")
-    document.querySelector("#superelevation_in_degrees_result").parentElement.classList.toggle("invisible")
-    document.querySelector("#superelevation_in_milimeters").parentElement.classList.toggle("invisible")
-    document.querySelector("#superelevation_in_degrees").parentElement.classList.toggle("invisible")
+    const currentState = document.querySelector("#superelevation_case").value
+    document.querySelectorAll("[data-superelevation-type]").forEach((element) => {
+        if(element.getAttribute("data-superelevation-type") === currentState){
+            element.classList.remove("invisible")
+        }else{
+            element.classList.add("invisible")
+        }
+    })
 }
 
 const superelevationConvertEventHandler = () => {
@@ -189,7 +188,7 @@ const superelevationConvertEventHandler = () => {
     
 }
 
-window.addEventListener("load",superelevationCaseLoadRender);
+window.addEventListener("load", superelevationCaseRender);
 document.querySelector("#superelevation_case").addEventListener("change", superelevationCaseRender)
 document.querySelector("#superelevation_conversion_input").addEventListener('input', superelevationConvertEventHandler)
 
@@ -232,29 +231,17 @@ const CurveTCInputs = [
     document.querySelector("#curve_halflength_2"),
 ]
 
-const inputVisibility = (inputs, visibilityState) => {
-    inputs.forEach(input => {
-        const endpoint = input.getAttribute("id").lastIndexOf("_");
-        if(visibilityState == "invisible"){
-            if(input.getAttribute("id").slice(endpoint + 1) === "joint"){
-                input.parentElement.classList.remove("invisible");
-            }else{
-                input.parentElement.classList.add("invisible");
-            }
+const CurveTCInputsVisibility = () => {
+    const currentCase = document.querySelector("#curve_case").value;
+    const currentState = currentCase === "1kp"? "joint": "separated"
+
+    document.querySelectorAll("[data-arc-tc-curvetype]").forEach((element) => {
+        if(element.getAttribute("data-arc-tc-curvetype") === currentState){
+            element.classList.remove("invisible")
         }else{
-            if(input.getAttribute("id").slice(endpoint + 1) === "joint"){
-                input.parentElement.classList.add("invisible");
-            }else{
-                input.parentElement.classList.remove("invisible");
-            }
+            element.classList.add("invisible")
         }
     })
-}
-
-const CurveTCInputsVisibility = () => {
-    const curvecase = document.getElementById("curve_case").value;
-    const visibilityState = curvecase == "1kp" ? "invisible" : "visible";
-    inputVisibility(CurveTCInputs, visibilityState);
 }
 
 document.querySelector("#curve_case").addEventListener("change", CurveTCInputsVisibility)
@@ -449,23 +436,20 @@ const wideningOnCurveEventHandler = () => {
 document.querySelector("#compute_fourth_widening_method_parameters_input").addEventListener("input", wideningOnCurveEventHandler)
 
 //vertical curves event handlers
-const verticalCurveInputsVisibilityInitialState = () => {
-    document.querySelector("#vertical_radius").parentElement.classList.remove("invisible");
-    document.querySelector("#vertical_radius_result").parentElement.classList.add("invisible");
-    document.querySelector("#vertical_length").parentElement.classList.add("invisible");
-    document.querySelector("#vertical_length_result").parentElement.classList.remove("invisible");
+const verticalCurveInputsVisibilityState = () => {
+    const currentState = document.querySelector("#vertical_case").value;
+    
+    document.querySelectorAll("[data-vertical-arc-case]").forEach((element) => {
+        if(element.getAttribute("data-vertical-arc-case") === currentState){
+            element.classList.remove("invisible")
+        }else{
+            element.classList.add("invisible")
+        }
+    })
 }
 
-window.addEventListener("load",verticalCurveInputsVisibilityInitialState);
-
-const verticalCurveInputsVisibilityChangeState = () => {
-    document.querySelector("#vertical_radius").parentElement.classList.toggle("invisible");
-    document.querySelector("#vertical_radius_result").parentElement.classList.toggle("invisible");
-    document.querySelector("#vertical_length").parentElement.classList.toggle("invisible");
-    document.querySelector("#vertical_length_result").parentElement.classList.toggle("invisible");
-}
-
-document.querySelector("#vertical_case").addEventListener("change", verticalCurveInputsVisibilityChangeState);
+window.addEventListener("load",verticalCurveInputsVisibilityState);
+document.querySelector("#vertical_case").addEventListener("change", verticalCurveInputsVisibilityState);
 
 const minimalVerticalCuvreRadiusEventHander = () => {
     const trackParameters = {
