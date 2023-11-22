@@ -126,15 +126,65 @@ export const calculateTCforCurves = (firstCurveParameters, secondCurveParameters
 
     if(curvecase === "1kp"){
         return {
+            l: lengths,
             n: cround(calculateShiftforJointTC(r1, r2, lengths, curvetype),2),
             l2: cround(lengths/2,2),
         }
     }else{
         return {
+            l1: lengths[0],
+            l2: lengths[1],
             n1: cround(calculateShift(r1, lengths[0], curvetype),2),
             n2: cround(calculateShift(r2, lengths[1], curvetype),2),
             l21: cround(lengths[0]/2,2),
             l22: cround(lengths[1]/2,2),
         }
     }    
+}
+
+export const computeMinimalLengthTCForCurves = (firstCurveParameters, secondCurveParameters) => {
+
+    const {radius:r1, vmax, superelevation: d1, curvetype, calctype} = firstCurveParameters
+    const {radius:r2, superelevation: d2} = secondCurveParameters
+
+    const type = {
+        rec: 0,
+        nrm: 1,
+        ext: 2,
+    }
+
+    const calctypeIndex = type[calctype];
+
+    const MinimalTCLengthParameters = {
+        qn: curvetype === "3st" ? 1 : 1.5,
+        qr: 0.48,
+        dddsdop: [1.6,2.0,2.5],
+        dddtdop: curvetype === "3st" ? [35,50,60] : [55,55,70],
+        didtdop: curvetype === "3st" ? (vmax <= 200? [55,70,80] : [55,55,70]) : [90,90,100],
+    }
+    
+    const qn = MinimalTCLengthParameters.qn;
+    const qr = MinimalTCLengthParameters.qr;
+    const dddtdop = MinimalTCLengthParameters.dddtdop[calctypeIndex];
+    const dddsdop = MinimalTCLengthParameters.dddsdop[calctypeIndex];
+    const didtdop = MinimalTCLengthParameters.didtdop[calctypeIndex];
+    
+    const I = Math.max((11.8*(vmax**2)/r1) - d1, (11.8*(vmax**2)/r2) - d2);
+    const d = Math.abs(d2-d1) 
+ 
+    const w1 = Number(qn*d/dddsdop);
+    const w2 = Number(qn*(vmax/3.6)*d/dddtdop);
+    const w3 = Number(qn*(vmax/3.6)*I/didtdop);
+    const w4 = Number(30);
+    const w5 = Number(Math.sqrt(qr*Math.abs(r2-r1)));
+
+    const minimalLengthPrototype = {
+        "rec":Math.max(w1,w2,w3,w4,w5),
+        "nrm":Math.max(w1,w2,w3),
+        "ext":Math.max(w1,w2,w3),
+    }
+
+    const lmin = cround(minimalLengthPrototype[calctype],0)
+
+    return calculateTCforCurves({radius1: r1, direction1: "right"}, {radius2: r2, direction2: "right"}, {curvetype: curvetype, curvecase: "1kp", lengths: lmin})
 }

@@ -11,6 +11,8 @@
     --black: #000;
     --default-box-shadow:  0px 5px 10px 1px rgba(0, 0, 0, 0.60);
     --high-contrast-box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.80);
+    --basic-font-size: 18px;
+    --basic-input-font-size: 15px;
 }
 
 *,
@@ -31,6 +33,7 @@ body
     gap: 10px;
     justify-items: space-around;
     min-height: 100svh;
+    font-size: var(----basic-font-size);
 } 
 
 
@@ -88,7 +91,7 @@ nav a
     flex-flow: row wrap;
     justify-content: space-around;
     text-decoration: none;
-    font-size: 18px;
+    font-size: var(--basic-font-size);
     font-weight: 700;
     z-index: 10;
 }
@@ -333,8 +336,9 @@ footer
 
 .contheader
 {
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
     gap: 0.25rem;
     padding: 0.65rem;
     background: var(--light-gray);
@@ -343,14 +347,10 @@ footer
 
 .contheader > h3.contains-input
 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    justify-content: center ;
+    flex-flow: row wrap;
     gap: 0.25rem;
-}
-
-h3.contains-input:first-child
-{
-    place-items: end;
 }
 
 .boxheader
@@ -362,7 +362,6 @@ h3.contains-input:first-child
     font-size: 24px;
     font-weight: 300;
 }
-
 
 .box
 {
@@ -391,7 +390,7 @@ h3.contains-input:first-child
 
 
 
-@media(min-width: 1000px){
+@media(min-width: 950px){
     .contheader{
         grid-column: span 2;
     }
@@ -401,7 +400,7 @@ h3.contains-input:first-child
     }
 }
 
-@media(min-width: 500px){
+@media(min-width: 475px){
     .boxheader
     {
         grid-column: span 2;
@@ -451,7 +450,7 @@ select
 {
     width: auto;
     border-radius: 5px;
-    font-size: 15px;
+    font-size: var(--basic-input-font-size);
     padding: 2px;  
     box-sizing: border-box;
     border: none;

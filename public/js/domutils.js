@@ -30,7 +30,7 @@ export const renderInitialAppState = () => {
         if(element.getAttribute("data-contains") /* !== "landing-page" --preparation for landingpage*/ ){
             element.classList.add("invisible")
         }
-        if(element.getAttribute("data-contains") === "superelevation"){
+        if(element.getAttribute("data-contains") === "tc_arc_arc"){
             element.classList.remove("invisible")
         }
     })
@@ -38,7 +38,7 @@ export const renderInitialAppState = () => {
         if(element.getAttribute("data-contains")/* !== "landing-page" --preparation for landingpage*/){
             element.classList.add("invisible")
         }
-        if(element.getAttribute("data-contains") === "superelevation"){
+        if(element.getAttribute("data-contains") === "tc_arc_arc"){
             element.classList.remove("invisible")
         }
     })

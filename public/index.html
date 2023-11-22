@@ -450,12 +450,7 @@
             <section class = "container-grid" data-contains="tc_arc_arc">
 
                 <div class="contheader">
-                    Wybierz wartości parametrów:
-                    <select id = "curve_valuelist" class = "long" >
-                        <option value = 1>Zalecane wartości dopuszczalne</option>
-                        <option value = 2>Normalne wartości dopuszczalne</option>
-                        <option value = 3>Rozszerzone wartości dopuszczalne</option>  
-                    </select>
+                    <h3>Obliczanie parametrów krzywej przejściowej łuk-łuk</h3>
                 </div>
 
                 <div class = "box" id = "curve_tc_input_1st_curve">
@@ -524,7 +519,7 @@
                     </div>
 
                     <div class="label">
-                        Wybierz typ krzywej:
+                        Typ krzywej:
                     </div>
                     <div class = "input-container">
                         <select id = "curve_type">
@@ -534,6 +529,17 @@
                         </select>
                     </div>
 
+                    <div class="label">
+                        Typ wartości:
+                    </div>
+                    <div class="input-container">
+                        <select id = "curve_valuelist">
+                            <option value = 1>Zalecane wartości dopuszczalne</option>
+                            <option value = 2>Normalne wartości dopuszczalne</option>
+                            <option value = 3>Rozszerzone wartości dopuszczalne</option>  
+                        </select>
+                    </div>
+                    
                     <div class="label" data-arc-tc-curvetype = "joint">
                         Długość KP [m]:
                     </div>
@@ -560,7 +566,7 @@
                 <div class = "box">
 
                     <div class = "boxheader">
-                        Parametry krzywej: 
+                        Wyniki: 
                     </div>
 
                     <div class="label" data-arc-tc-curvetype = "joint">
@@ -603,6 +609,191 @@
                     </div>
                     <div class = "input-container" data-arc-tc-curvetype="separated">
                         <input type = "number" id = "curve_shift_2" placeholder = "0,78" readonly> 
+                    </div>
+
+                </div>
+
+                <div class="contheader">
+                    <h3>Obliczanie minimalnej długości krzywej przejściowej</h3>
+                </div>
+
+                
+                <div class = "box" id = "curve_tc_minimal_length_input_1st_curve">
+                    <div class = "boxheader">
+                        Parametry Łuku 1:
+                    </div>
+
+                    <div class="label">
+                        Promień łuku [m]:
+                    </div>
+                    <div class = "input-container">
+                        <input type = "number" id = "minimal_tc_length_curve_radius_1" placeholder = "1200"> 
+                    </div>
+
+                    <div class="label">
+                        Kierunek łuku: 
+                    </div>
+                    <div class = "input-container">
+                        <select id = "minimal_tc_length_curve_direction_1">
+                            <option value = "right">Prawy</option>
+                            <option value = "left">Lewy</option>
+                        </select>
+                    </div>
+
+                    <div class="label">
+                        Przechyłka [mm]:
+                    </div>
+                    <div class = "input-container">
+                        <input type = "number" id = "minimal_tc_length_curve_superelevation_1" placeholder = "80"> 
+                    </div>
+                </div>
+
+                <div class = "box" id = "curve_tc_minimal_length_input_2nd_curve">
+
+                    <div class = "boxheader">
+                        Parametry Łuku 2:
+                    </div>
+
+                    <div class="label">
+                        Promień łuku [m]:
+                    </div>
+                    <div class = "input-container">
+                            <input type = "number" id = "minimal_tc_length_curve_radius_2" placeholder = "1200"> 
+                    </div>
+
+                    <div class="label">
+                        Kierunek łuku: 
+                    </div>
+                    <div class = "input-container">
+                        <select id = "minimal_tc_length_curve_direction_2">
+                            <option value = "right">Prawy</option>
+                            <option value = "left">Lewy</option>
+                        </select>
+                    </div>
+
+                    <div class="label">
+                        Przechyłka [mm]:
+                    </div>
+                    <div class = "input-container">
+                        <input type = "number" id = "minimal_tc_length_curve_superelevation_2" placeholder = "80"> 
+                    </div>
+                </div>
+
+                <div class = "box" id = "curve_tc_minimal_length_input_tc_parameters">
+
+                    <div class = "boxheader">
+                        Warunki miejscowe: 
+                    </div>
+
+                    <div class="label">
+                        Określ sytuację:
+                    </div>
+                    <div class = "input-container">
+                        <select id = "minimal_tc_length_curve_case">
+                            <option value = "2kp">Dwie krzywe przejściowe</option>
+                            <option value = "shears">Nożyce torowe</option>
+                            <option value = "1kp">Jedna krzywa przejściowa</option>
+                        </select>
+                    </div>
+
+                    <div class="label">
+                        Typ krzywej:
+                    </div>
+                    <div class = "input-container">
+                        <select id = "minimal_tc_length_curve_type">
+                            <option value = "3st">Parabola III stopnia</option>
+                            <option value = "4st">Parabola IV stopnia</option>
+                            <option value = "bloss">Krzywa Blossa</option>
+                        </select>
+                    </div>
+
+                    <div class="label">
+                        Typ wartości:
+                    </div>
+                    <div class="input-container">
+                        <select id = "minimal_tc_length_curve_valuelist">
+                            <option value = "rec">Zalecane wartości dopuszczalne</option>
+                            <option value = "nrm">Normalne wartości dopuszczalne</option>
+                            <option value = "ext">Rozszerzone wartości dopuszczalne</option>  
+                        </select>
+                    </div>
+                    
+                    <div class="label">
+                        Prędkość maksymalna [km/h]:
+                    </div>
+                    <div class = "input-container">
+                        <input type = "number" id = "minimal_tc_length_curve_velocity" placeholder = "120"> 
+                    </div>
+                    
+                </div>
+
+                <div class = "box" id = "minimal_tc_length_curve_output">
+
+                    <div class = "boxheader">
+                        Wyniki: 
+                    </div>
+                    
+                    <div class="label" data-arc-tc-minimal-length-curvetype = "joint">
+                        Długość krzywej [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype = "joint">
+                        <input type = "number" id = "minimal_tc_curve_length_joint" placeholder = "75" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype = "joint">
+                        Połowa długości krzywej [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype = "joint">
+                        <input type = "number" id = "minimal_tc_curve_halflength_joint" placeholder = "75" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype = "joint">
+                        Przesunięcie [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype = "joint">
+                        <input type = "number" id = "minimal_tc_curve_shift_joint" placeholder = "0,78" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype="separated">
+                        Długość KP(Ł1) [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype="separated">
+                        <input type = "number" id = "minimal_tc_curve_length_1" placeholder = "75" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype="separated">
+                        Połowa długości KP(Ł1) [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype="separated">
+                        <input type = "number" id = "minimal_tc_curve_halflength_1" placeholder = "75" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype="separated">
+                        Przesunięcie Ł1 [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype="separated">
+                        <input type = "number" id = "minimal_tc_curve_shift_1" placeholder = "0,78" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype="separated">
+                        Długość KP(Ł2) [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype="separated">
+                        <input type = "number" id = "minimal_tc_curve_length_2" placeholder = "75" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype="separated">
+                        Połowa długości KP(Ł2) [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype="separated">
+                        <input type = "number" id = "minimal_tc_curve_halflength_2" placeholder = "75" readonly> 
+                    </div>
+
+                    <div class="label" data-arc-tc-minimal-length-curvetype="separated">
+                        Przesunięcie Ł2 [m]:
+                    </div>
+                    <div class = "input-container" data-arc-tc-minimal-length-curvetype="separated">
+                        <input type = "number" id = "minimal_tc_curve_shift_2" placeholder = "0,78" readonly> 
                     </div>
 
                 </div>
@@ -655,7 +846,7 @@
                         <input type = "number" id = "widening_angle" placeholder = "0,57" > 
                     </div>
                     <div class="label">
-                        Wybierz typ krzywej:
+                        Typ krzywej:
                     </div>
                     <div class = "input-container">
                         <select id = "widening_curvetype" o>
@@ -733,7 +924,7 @@
                         <input type = "number" id = "widening2_radius" placeholder = "5000" >
                     </div>
                     <div class="label">
-                        Wybierz typ krzywej:
+                        Typ krzywej:
                     </div>
                     <div class = "input-container">
                         <select id = "widening2_curvetype" >
@@ -811,7 +1002,7 @@
                         <input type = "number" id = "widening3_change" placeholder = "1" >
                     </div>
                     <div class="label">
-                        Wybierz typ krzywej:
+                        Typ krzywej:
                     </div>
                     <div class = "input-container">
                         <select id = "widening3_curvetype" >
@@ -884,7 +1075,7 @@
                         <input type = "number" id = "wideningc_curve_length_2" placeholder = "60" >
                     </div>
                     <div class="label">
-                        Wybierz typ krzywych:
+                        Typ krzywych:
                     </div>
                     <div class = "input-container">
                         <select id = wideningc_curvetype >
@@ -968,9 +1159,12 @@
                             Obliczanie
                         </div>
                         <select id = "vertical_case" class = "contheader-select">
-                            <option value = "length">długości łuku pionowego</option>
-                            <option value = "radius">promienia łuku pionowego</option>
-                        </select> 
+                            <option value = "length">długości</option>
+                            <option value = "radius">promienia</option>
+                        </select>
+                        <div class="contheader-label">
+                            łuku pionowego
+                        </div> 
                     </h3>  
                 </div>   
                     
@@ -1370,7 +1564,7 @@
         </main>
 
         <footer>
-            <a id="a_footer" href = "https://td2.info.pl/profile/?u=3336"></a>
+            <a id="a_footer" target="_blank" href = "https://td2.info.pl/profile/?u=3336"></a>
         </footer>
 
         <script type="module" src = "js/app.js"></script>

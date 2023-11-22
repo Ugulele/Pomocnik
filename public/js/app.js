@@ -1,7 +1,7 @@
 import { renderSelectedSectionandHeader, renderInitialAppState, renderFooterContent } from "./domutils.js"
 import { superelevationConversionFromMilimetersToDegrees } from "./functions/engineering_functions.js"
 import { calculateSuperelevation, superelevationConvert } from "./components/superelevation.js"
-import { calculateTCParameters, divideTC, computeMinimalLengthTC, calculateTCforCurves } from "./components/transitioncurves.js"
+import { calculateTCParameters, divideTC, computeMinimalLengthTC, calculateTCforCurves, computeMinimalLengthTCForCurves } from "./components/transitioncurves.js"
 import { calculateWideningFirstMethod, calculateWideningSecondMethod, calculateWideningThirdMethod, calculateWideningOnCurve } from "./components/widenings.js"
 import { minimalLength, computeCurveMinimalRadius ,calculateMinimalCurveRadiusWithoutTC, computeAngle, computeLengthFromSlant, computeLengthFromAngle } from "./components/turns.js"
 import { verticalInclinesFirstMethod, verticalInclinesSecondMethod, convertHeightDifferenceToAngle, minimalVerticalCurveRadius } from "./components/verticalcurves.js"
@@ -132,6 +132,14 @@ const tcDivisionEventHandler = () => {
     const {radius: r, length: l, newLength: newL, curvetype} = curveForDivisionParameters
 
     if([r, l, newL].includes(0)){
+        document.querySelector("#tc_division_first_part_radius").value = ""
+        document.querySelector("#tc_division_first_part_length").value = ""
+        document.querySelector("#tc_division_first_part_shift").value = ""
+        document.querySelector("#tc_divison_first_part_superelevation_in_milimeters").value = ""
+        document.querySelector("#tc_divsion_first_part_superelevation_in_degrees").value = ""
+        document.querySelector("#tc_division_second_part_radius").value = ""
+        document.querySelector("#tc_division_second_part_length").value = ""
+        document.querySelector("#tc_divison_second_part_shift").value = ""
         return
     }
 
@@ -170,7 +178,6 @@ const superelevationConvertEventHandler = () => {
     const superelevationInDegrees = Number(document.querySelector("#superelevation_in_degrees").value)
     const superelevationCase = document.querySelector("#superelevation_case").value
 
-    
     if (!superelevationInMilimeters && !superelevationInDegrees){
         document.querySelector("#superelevation_in_degrees_result").value  = ""
         document.querySelector("#superelevation_in_milimeters_result").value = ""
@@ -185,7 +192,6 @@ const superelevationConvertEventHandler = () => {
     }else{
         document.querySelector("#superelevation_in_milimeters_result").value = superelevationResult
     }
-    
 }
 
 window.addEventListener("load", superelevationCaseRender);
@@ -204,7 +210,7 @@ const minimalTCLengthEventHandler = () => {
 
     const {radius, vmax} = curveParametersInput
 
-    if([radius, vmax].includes[0]){
+    if([radius, vmax].includes(0)){
         document.querySelector("#minimal_tc_length_length").value = ""
         document.querySelector("#minimal_tc_length_halflength").value = ""
         document.querySelector("#minimal_tc_length_shift").value = ""
@@ -219,18 +225,6 @@ const minimalTCLengthEventHandler = () => {
 
 document.querySelector("#minimal_tc_length_input").addEventListener("input", minimalTCLengthEventHandler)
 
-const CurveTCInputs = [
-    document.querySelector("#curve_length_joint"),
-    document.querySelector("#curve_shift_joint"),
-    document.querySelector("#curve_halflength_joint"),
-    document.querySelector("#curve_shift_1"),
-    document.querySelector("#curve_shift_2"),
-    document.querySelector("#curve_length_1"),
-    document.querySelector("#curve_length_2"),
-    document.querySelector("#curve_halflength_1"),
-    document.querySelector("#curve_halflength_2"),
-]
-
 const CurveTCInputsVisibility = () => {
     const currentCase = document.querySelector("#curve_case").value;
     const currentState = currentCase === "1kp"? "joint": "separated"
@@ -243,6 +237,62 @@ const CurveTCInputsVisibility = () => {
         }
     })
 }
+
+const minimalLengthCurveTCEventHandler = () => {
+
+    const currentCase = document.querySelector("#minimal_tc_length_curve_case").value;
+    const currentState = currentCase === "1kp" ? "joint": "separated"
+
+    const firstArcParameters = {
+        "radius": Number(document.querySelector("#minimal_tc_length_curve_radius_1").value),
+        "direction": document.querySelector("#minimal_tc_length_curve_direction_1").value,
+        "vmax": Number(document.querySelector("#minimal_tc_length_curve_velocity").value),
+        "superelevation": Number(document.querySelector("#minimal_tc_length_curve_superelevation_1").value),
+        "curvetype": document.querySelector("#minimal_tc_length_curve_type").value,
+        "calctype": document.querySelector("#minimal_tc_length_curve_valuelist").value
+        
+    }
+    const {radius: firstCurveRadius, vmax} = firstArcParameters
+
+    const secondArcParameters = {
+        "radius": Number(document.querySelector("#minimal_tc_length_curve_radius_2").value),
+        "direction": document.querySelector("#minimal_tc_length_curve_direction_1").value,
+        "vmax": Number(document.querySelector("#minimal_tc_length_curve_velocity").value),
+        "superelevation": Number(document.querySelector("#minimal_tc_length_curve_superelevation_2").value),
+        "curvetype": document.querySelector("#minimal_tc_length_curve_type").value,
+        "calctype": document.querySelector("#minimal_tc_length_curve_valuelist").value
+    }
+    const {radius: secondCurveRadius} = secondArcParameters
+
+    if([firstCurveRadius, secondCurveRadius, vmax].includes(0)){
+        document.querySelector("#minimal_tc_length_curve_output").querySelectorAll("input").forEach((input) => input.value = "")
+        return
+    }
+
+    if(currentState === "separated"){
+        const{"length": firstCurveLength, "halflength": firstCurveHalflength, "shift": firstCurveShift} = computeMinimalLengthTC(firstArcParameters)
+        const{"length": secondCurveLength, "halflength": secondCurveHalflength, "shift": secondCurveShift} = computeMinimalLengthTC(secondArcParameters)
+        document.querySelector("#minimal_tc_curve_length_1").value = firstCurveLength
+        document.querySelector("#minimal_tc_curve_halflength_1").value = firstCurveHalflength
+        document.querySelector("#minimal_tc_curve_shift_1").value = firstCurveShift
+        document.querySelector("#minimal_tc_curve_length_2").value = secondCurveLength
+        document.querySelector("#minimal_tc_curve_halflength_2").value = secondCurveHalflength
+        document.querySelector("#minimal_tc_curve_shift_2").value = secondCurveShift
+
+    }else if(currentState === "joint"){
+        const {l: length, n: shift, l2: halflength} = computeMinimalLengthTCForCurves(firstArcParameters, secondArcParameters)
+        document.querySelector("#minimal_tc_curve_length_joint").value = length
+        document.querySelector("#minimal_tc_curve_halflength_joint").value = halflength
+        document.querySelector("#minimal_tc_curve_shift_joint").value = shift
+    }
+
+}
+
+[
+    document.querySelector("#curve_tc_minimal_length_input_1st_curve"),
+    document.querySelector("#curve_tc_minimal_length_input_2nd_curve"),
+    document.querySelector("#curve_tc_minimal_length_input_tc_parameters")
+].forEach((item) => item.addEventListener("input", minimalLengthCurveTCEventHandler))
 
 document.querySelector("#curve_case").addEventListener("change", CurveTCInputsVisibility)
 window.addEventListener('load', CurveTCInputsVisibility)
@@ -257,7 +307,7 @@ const curveInputsArray =
     parametersElement,
 ]
  
-const CurveTCEventHandler = () => {
+const curveTCEventHandler = () => {
     //Definicja wstępnch parametrów
     const radiusFirstCurve = Number(firstCurveElement.querySelector('input').value);
     const radiusSecondCurve = Number(secondCurveElement.querySelector('input').value);
@@ -306,7 +356,22 @@ const CurveTCEventHandler = () => {
     }
 }
 
-curveInputsArray.forEach(element => element.addEventListener('input', CurveTCEventHandler))
+curveInputsArray.forEach(element => element.addEventListener('input', curveTCEventHandler))
+
+const minimalLengthCurveTCInputsVisibility = () => {
+    const currentCase = document.querySelector("#minimal_tc_length_curve_case").value;
+    const currentState = currentCase === "1kp"? "joint": "separated"
+
+    document.querySelectorAll("[data-arc-tc-minimal-length-curvetype]").forEach((element) => {
+        if(element.getAttribute("data-arc-tc-minimal-length-curvetype") === currentState){
+            element.classList.remove("invisible")
+        }else{
+            element.classList.add("invisible")
+        }
+    })
+}
+window.addEventListener("load", minimalLengthCurveTCInputsVisibility)
+document.querySelector("#minimal_tc_length_curve_case").addEventListener("change", minimalLengthCurveTCInputsVisibility)
 
 //widenings Event Handlers
 const wideningFirstMethodEventHandler = () => {
