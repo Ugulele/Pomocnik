@@ -50,34 +50,33 @@
                 <div class="instruction-container">
                     <p><strong>Pomocnik Twórcy Scenerii</strong> - jest to narzędzie przeznaczone dla Twórców scenerii w symulatorach kolejowych. Tutaj możesz parametry występujących powszechnie elementów układu torowego, z których koniecznością konstrukcji zmierzysz się podczas jej budowy. Pamiętaj jednak, że strona służy w dotychczasowej wersji służy wyłącznie ich obliczaniu. To twoim zadaniem jest zweryfikowanie, czy wynik który otrzymałeś ma sens fizyczny i czy nie stoi on w sprzeczności z innymi wytycznymi. Powodzenia w korzystaniu, a przede wszystkim w budowaniu wymarzonej scenerii!</p>
                 </div>
-                <div class="functionality-container">
+                <div class="functionality-container" id="clickable_elements_container">
                     <header class="functionality-container-header">
                         <h2 class="main-page-header">Lista funkcjonalności dostępnych na stronie:</h2>
                     </header> 
-                    <div class="functionality-element">
+                    <div class="functionality-element" data-text-type = "superelevation">
                         <h3 class = "functionality-element-header">Przechyłka</h3>
-                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-img-container" data-text-type = "superelevation"><img src="img/layers.svg"></div>
                         <div class = "functionality-element-text"> Obliczanie przechyłki oraz przeliczanie jej na stopnie </div>
                     </div>
-                    <div class="functionality-element">
+                    <div class="functionality-element" data-text-type = "transition_curves">
                         <h3 class = "functionality-element-header">Krzywe przejściowe</h3>
-                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-img-container" data-text-type = "transition_curves"><img src="img/layers.svg"></div>
                         <div class = "functionality-element-text"> Obliczanie parametrów krzywych przejściowych i ich podział </div>
                     </div>
-                    <div class="functionality-element">
+                    <div class="functionality-element" data-text-type = "track_widenings">
                         <h3 class = "functionality-element-header">Poszerzenia międzytorza</h3>
-                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-img-container" data-text-type = "track_widenings"><img src="img/layers.svg"></div>
                         <div class = "functionality-element-text"> Obliczanie parametrów różnych wariantów poszerzeń międzytorza </div>
                     </div>
-                    <div class="functionality-element">
+                    <div class="functionality-element" data-text-type = "arcs">
                         <h3 class = "functionality-element-header">Łuki</h3>
-                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-img-container" data-text-type = "arcs"><img src="img/layers.svg"></div>
                         <div class = "functionality-element-text"> Obliczanie parametrów łuków pionowych i poziomych </div>
                     </div>
                     <div class="functionality-description">
-                        <h3 class = "functionality-element-header">Opis funkcjonalności</h3>
-                        <div class = "functionality-element-text" id  = "description_element">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore, eos harum facere minima minus assumenda eum, aliquam asperiores vel omnis molestiae rem totam, repellat distinctio aut blanditiis enim quasi eveniet?
-                        Fuga, tempore. Incidunt veritatis repellat dolorem. Provident hic vel, quos sequi modi molestias doloribus et odit nulla voluptates cum autem beatae asperiores eos maxime fugit voluptatem eligendi quae tempore ea!</div>
+                        <h3 class = "functionality-element-header">Opis funkcjonalności:</h3>
+                        <div class = "functionality-element-text" id="generated_text_output"></div>
                     </div>
                 </div>
             </section>
