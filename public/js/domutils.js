@@ -2,46 +2,45 @@ const sections = document.querySelectorAll("section")
 const headers = document.querySelectorAll(".primary-header")
 
 export const renderSelectedSectionandHeader = (e) => {
-    e.preventDefault()
-    if(!e.target.getAttribute("data-contains")){
-        return
-    }
-    sections.forEach(element => {
-        if(!element.classList.contains("invisible")){
-            element.classList.add("invisible")
-        }
-        if(element.getAttribute("data-contains") === e.target.getAttribute("data-contains")){
-            element.classList.remove("invisible")
-        }
-    })
-    headers.forEach(element => {
-        if(!element.classList.contains("invisible")){
-            element.classList.add("invisible")
-        }
-        if(element.getAttribute("data-contains") === e.target.getAttribute("data-contains")){
-            element.classList.remove("invisible")
-        }
-    })
-    // e.target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
-} 
+	e.preventDefault()
+	if (!e.target.getAttribute("data-contains")) {
+		return
+	}
+	sections.forEach((element) => {
+		if (!element.classList.contains("invisible")) {
+			element.classList.add("invisible")
+		}
+		if (
+			element.getAttribute("data-contains") ===
+			e.target.getAttribute("data-contains")
+		) {
+			element.classList.remove("invisible")
+		}
+	})
+	headers.forEach((element) => {
+		if (!element.classList.contains("invisible")) {
+			element.classList.add("invisible")
+		}
+		if (
+			element.getAttribute("data-contains") ===
+			e.target.getAttribute("data-contains")
+		) {
+			element.classList.remove("invisible")
+		}
+	})
+}
 
 export const renderInitialAppState = () => {
-    headers.forEach(element => {
-        if(element.getAttribute("data-contains") /* !== "landing-page" --preparation for landingpage*/ ){
-            element.classList.add("invisible")
-        }
-        if(element.getAttribute("data-contains") === "tc_arc_arc"){
-            element.classList.remove("invisible")
-        }
-    })
-    sections.forEach(element => {
-        if(element.getAttribute("data-contains")/* !== "landing-page" --preparation for landingpage*/){
-            element.classList.add("invisible")
-        }
-        if(element.getAttribute("data-contains") === "tc_arc_arc"){
-            element.classList.remove("invisible")
-        }
-    })
+	headers.forEach((element) => {
+		if (element.getAttribute("data-contains") !== "main_page") {
+			element.classList.add("invisible")
+		}
+	})
+	sections.forEach((element) => {
+		if (element.getAttribute("data-contains") !== "main_page") {
+			element.classList.add("invisible")
+		}
+	})
 }
 
 const navButton = document.querySelector("nav button")

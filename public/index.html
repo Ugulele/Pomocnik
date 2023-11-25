@@ -10,17 +10,15 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700;900&display=swap" rel="stylesheet">
         <link rel="icon" type= "image/x-icon" href="img/favicon.png">
-
+    </head>
     <body>
-        
         <div class="logo">
-            <img src = "img/logo.png">
+            <img src = "img/logo.png" alt="Obrazek zawiera logo strony, cyrkiel wraz z ekierką, oraz napisem z nazwą strony po lewej stronie">
         </div>
-
         <nav>
             <div class = "nav_logo">
-                <a href="#" data-contains="landing-page">
-                    <img src="img/favicon.png" data-contains="landing-page">
+                <a href="#" data-contains="main_page">
+                    <img src="img/favicon.png" data-contains="main_page">
                 </a>
                 <button data-background = "hamburger" aria-controls="nav_menu"></button>
             </div>
@@ -43,12 +41,46 @@
                 </ul>
             </div>
         </nav>
-        
         <main>
-
-            <header class = "primary-header" data-contains="landing-page">
+            <header class = "primary-header" data-contains="main_page">
                 <h1>Witaj w pomocniku Twórcy scenerii!</h1>
             </header>
+
+            <section class = "main-page-content" data-contains="main_page">
+                <div class="instruction-container">
+                    <p><strong>Pomocnik Twórcy Scenerii</strong> - jest to narzędzie przeznaczone dla Twórców scenerii w symulatorach kolejowych. Tutaj możesz parametry występujących powszechnie elementów układu torowego, z których koniecznością konstrukcji zmierzysz się podczas jej budowy. Pamiętaj jednak, że strona służy w dotychczasowej wersji służy wyłącznie ich obliczaniu. To twoim zadaniem jest zweryfikowanie, czy wynik który otrzymałeś ma sens fizyczny i czy nie stoi on w sprzeczności z innymi wytycznymi. Powodzenia w korzystaniu, a przede wszystkim w budowaniu wymarzonej scenerii!</p>
+                </div>
+                <div class="functionality-container">
+                    <header class="functionality-container-header">
+                        <h2 class="main-page-header">Lista funkcjonalności dostępnych na stronie:</h2>
+                    </header> 
+                    <div class="functionality-element">
+                        <h3 class = "functionality-element-header">Przechyłka</h3>
+                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-element-text"> Obliczanie przechyłki oraz przeliczanie jej na stopnie </div>
+                    </div>
+                    <div class="functionality-element">
+                        <h3 class = "functionality-element-header">Krzywe przejściowe</h3>
+                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-element-text"> Obliczanie parametrów krzywych przejściowych i ich podział </div>
+                    </div>
+                    <div class="functionality-element">
+                        <h3 class = "functionality-element-header">Poszerzenia międzytorza</h3>
+                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-element-text"> Obliczanie parametrów różnych wariantów poszerzeń międzytorza </div>
+                    </div>
+                    <div class="functionality-element">
+                        <h3 class = "functionality-element-header">Łuki</h3>
+                        <div class = "functionality-img-container"><img src="img/layers.svg"></div>
+                        <div class = "functionality-element-text"> Obliczanie parametrów łuków pionowych i poziomych </div>
+                    </div>
+                    <div class="functionality-description">
+                        <h3 class = "functionality-element-header">Opis funkcjonalności</h3>
+                        <div class = "functionality-element-text" id  = "description_element">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore, eos harum facere minima minus assumenda eum, aliquam asperiores vel omnis molestiae rem totam, repellat distinctio aut blanditiis enim quasi eveniet?
+                        Fuga, tempore. Incidunt veritatis repellat dolorem. Provident hic vel, quos sequi modi molestias doloribus et odit nulla voluptates cum autem beatae asperiores eos maxime fugit voluptatem eligendi quae tempore ea!</div>
+                    </div>
+                </div>
+            </section>
 
             <header class = "primary-header" data-contains="superelevation">
                 <h2>Przechyłka</h2>
@@ -1560,13 +1592,11 @@
                 </div>
 
             </section>
-
         </main>
 
         <footer>
             <a id="a_footer" target="_blank" href = "https://td2.info.pl/profile/?u=3336"></a>
         </footer>
-
         <script type="module" src = "js/app.js"></script>
         <script type = "module" src = "js/domutils.js"></script>
     </body>

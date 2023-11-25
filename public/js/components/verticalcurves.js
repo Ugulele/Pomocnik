@@ -31,16 +31,32 @@ export const convertHeightDifferenceToAngle = (h1, h2, l) => {
 }
 
 export const minimalVerticalCurveRadius = (trackParameters) => {
-    const {velocity, tracktype, calctype} = trackParameters
+	const { velocity, tracktype, calctype } = trackParameters
 
-    const calctypeIndex = calctypeToIndex(calctype) 
+	const calctypeIndex = calctypeToIndex(calctype)
 
-    const minimalRadiusPrototype = {
-        "main tracks" : [Math.max(0.77*velocity**2, 5000),Math.max(0.35*velocity**2, 5000), Math.max(0.25*velocity**2, 2000)],
-        "suburban tracks": [Math.max(0.77*velocity**2, 5000), Math.max(0.77*velocity**2, 5000), Math.max(0.25*velocity**2, 2000)],
-        "oblique joint tracks": [Math.max(0.35*velocity**2, 5000), Math.max(0.35*velocity**2, 5000), Math.max(0.25*velocity**2, 3000)],
-        "reflex joint tracks": [Math.max(0.35*velocity**2, 3000), Math.max(0.35*velocity**2, 3000), Math.max(0.25*velocity**2, 2000)]
-    }
+	const minimalRadiusPrototype = {
+		"main tracks": [
+			Math.max(0.77 * velocity ** 2, 5000),
+			Math.max(0.35 * velocity ** 2, 5000),
+			Math.max(0.25 * velocity ** 2, 2000),
+		],
+		"suburban tracks": [
+			Math.max(0.77 * velocity ** 2, 5000),
+			Math.max(0.77 * velocity ** 2, 5000),
+			Math.max(0.25 * velocity ** 2, 2000),
+		],
+		"oblique joint tracks": [
+			Math.max(0.35 * velocity ** 2, 5000),
+			Math.max(0.35 * velocity ** 2, 5000),
+			Math.max(0.25 * velocity ** 2, 3000),
+		],
+		"reflex joint tracks": [
+			Math.max(0.35 * velocity ** 2, 3000),
+			Math.max(0.35 * velocity ** 2, 3000),
+			Math.max(0.25 * velocity ** 2, 2000),
+		],
+	}
 
-    return minimalRadiusPrototype[tracktype][calctypeIndex]
+	return minimalRadiusPrototype[tracktype][calctypeIndex]
 }
