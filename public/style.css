@@ -595,12 +595,7 @@ select
 
 input.half
 {
-    width: calc(13.1em/2 - 0.25rem);
-}
-
-select.long
-{
-    width: 20em;
+    width: calc(13.1em/2 - 0.1em);
 }
 
 /* input hover effects */
