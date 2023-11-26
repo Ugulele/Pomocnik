@@ -1,21 +1,31 @@
 import { textForMainPageContainer } from "./components/textsformainpage.js"
 
+const mainPageTextContentEventHandler = (e) => {
+	if (
+		e.target.getAttribute("data-text-type") ||
+		e.target.parentElement.getAttribute("data-text-type")
+	) {
+		const textType =
+			e.target.getAttribute("data-text-type") ||
+			e.target.parentElement.getAttribute("data-text-type")
+
+		const generatedText = textForMainPageContainer(textType)
+
+		document.querySelector("#generated_text_output").innerText = generatedText
+	}
+}
+
 //main page changing text content
 document
 	.querySelector("#clickable_elements_container")
-	.addEventListener("click", function (e) {
-		if (
-			e.target.getAttribute("data-text-type") ||
-			e.target.parentElement.getAttribute("data-text-type")
-		) {
-			const textType =
-				e.target.getAttribute("data-text-type") ||
-				e.target.parentElement.getAttribute("data-text-type")
+	.addEventListener("click", (e) => {
+		mainPageTextContentEventHandler(e)
+	})
 
-			const generatedText = textForMainPageContainer(textType)
-
-			document.querySelector("#generated_text_output").innerText = generatedText
-		}
+document
+	.querySelector("#clickable_elements_container")
+	.addEventListener("mouseover", (e) => {
+		mainPageTextContentEventHandler(e)
 	})
 //sections visibility
 
