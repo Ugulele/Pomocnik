@@ -40,6 +40,7 @@ body
 
 nav
 {
+    position: sticky;
     background: var(--blue);
     display: flex;
     flex-flow: row nowrap;
