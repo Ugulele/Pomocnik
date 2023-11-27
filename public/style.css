@@ -579,7 +579,7 @@ input[type = "text"],
 input[type = "number"],
 select
 {
-    width: auto;
+    width: 13.1em;
     border-radius: 5px;
     font-size: var(--basic-input-font-size);
     padding: 2px;  
