@@ -23,8 +23,8 @@ export const calculateWideningFirstMethod = (parameters) => {
 		),
 		"firstCurveLength": cround((alfa / 360) * 2 * Math.PI * r1 - l1, 4),
 		"secondCurveLength": cround((alfa / 360) * 2 * Math.PI * r2 - l2, 4),
-		"shiftFirstCurve": l1 ? calculateShift(r1, l1, curvetype) : "",
-		"shiftSecondCurve": l2 ? calculateShift(r2, l2, curvetype) : "",
+		"shiftFirstCurve": l1 ? cround(calculateShift(r1, l1, curvetype), 2) : "",
+		"shiftSecondCurve": l2 ? cround(calculateShift(r2, l2, curvetype), 2) : "",
 	}
 }
 

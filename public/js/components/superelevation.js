@@ -12,7 +12,7 @@ import {
 
 const correctionForItypeAndDmaxValues = (itype, radius, vmax) => {
 	//correction for switches
-	if (["switches", "arc switches"].includes[itype]) {
+	if (["switches", "arc switches"].includes(itype)) {
 		return {
 			"itype": vmax < 160 ? `switches under 160` : `switches under 200`,
 			"DmaxType": itype,
