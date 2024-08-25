@@ -28,7 +28,7 @@ export const minimalLength = (vmax, turncase) => {
 				: Math.max(0.25 * vmax, 20),
 	}
 
-	return minimalLengthPrototype[turncase]
+	return cround(minimalLengthPrototype[turncase], 2)
 }
 
 export const computeCurveMinimalRadius = (trackParameters) => {

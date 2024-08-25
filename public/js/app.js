@@ -832,7 +832,7 @@ const turnLength = () => {
 	}
 
 	//drukowanie wyniku
-	const lmin = cround(minimalLength(vmax, turncase), 2)
+	const lmin = minimalLength(vmax, turncase)
 	document.querySelector("#turn_minimal_length").value = lmin
 }
 
