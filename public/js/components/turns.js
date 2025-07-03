@@ -8,24 +8,9 @@ import { cround, radians, degrees } from "../functions/math_functions.js"
 
 export const minimalLength = (vmax, turncase) => {
 	const minimalLengthPrototype = {
-		"rec":
-			vmax >> 200
-				? 0.65 * vmax
-				: vmax >> 120
-				? 0.4 * vmax
-				: Math.max(0.35 * vmax, 30),
-		"nrm":
-			vmax >> 200
-				? 0.65 * vmax
-				: vmax >> 120
-				? 0.4 * vmax
-				: Math.max(0.35 * vmax, 30),
-		"ext":
-			vmax >> 200
-				? 0.55 * vmax
-				: vmax >> 120
-				? 0.3 * vmax
-				: Math.max(0.25 * vmax, 20),
+		"rec": vmax >> 200 ? 0.65 * vmax : vmax >> 120 ? 0.4 * vmax : Math.max(0.35 * vmax, 30),
+		"nrm": vmax >> 200 ? 0.65 * vmax : vmax >> 120 ? 0.4 * vmax : Math.max(0.35 * vmax, 30),
+		"ext": vmax >> 200 ? 0.55 * vmax : vmax >> 120 ? 0.3 * vmax : Math.max(0.25 * vmax, 20),
 	}
 
 	return cround(minimalLengthPrototype[turncase], 2)

@@ -15,13 +15,7 @@ export const calculateTCParameters = (input) => {
 }
 
 export const divideTC = (curveForDivisionParameters) => {
-	const {
-		radius: r,
-		length: l,
-		curvetype: curvetype,
-		newLength: lprim,
-		superelevation: d,
-	} = curveForDivisionParameters
+	const { radius: r, length: l, curvetype, newLength: lprim, superelevation: d } = curveForDivisionParameters
 
 	let rprim
 
@@ -31,6 +25,7 @@ export const divideTC = (curveForDivisionParameters) => {
 			return {
 				"firstPartRadius": cround(rprim, 2),
 				"firstPartLength": lprim,
+				"firstPartHalflength": cround(lprim / 2, 2),
 				"firstPartShift": cround(calculateShift(rprim, lprim, curvetype), 2),
 				"firstPartSuperelevation": mround((d * r) / rprim, 5),
 			}
@@ -39,15 +34,12 @@ export const divideTC = (curveForDivisionParameters) => {
 			return {
 				"firstPartRadius": cround(rprim, 2),
 				"firstPartLength": lprim,
+				"firstPartHalflength": cround(lprim / 2, 2),
 				"firstPartShift": cround(calculateShift(rprim, lprim, curvetype), 2),
-				"firstPartSuperelevation": cround(
-					d * ((3 * lprim ** 2) / l ** 2 - (2 * lprim ** 3) / l ** 3),
-					0
-				),
+				"firstPartSuperelevation": cround(d * ((3 * lprim ** 2) / l ** 2 - (2 * lprim ** 3) / l ** 3), 0),
 			}
 		case "4st":
-			const superelevationLastPart =
-				d * ((3 * lprim ** 2) / l ** 2 - (2 * lprim ** 3) / l ** 3)
+			const superelevationLastPart = d * ((3 * lprim ** 2) / l ** 2 - (2 * lprim ** 3) / l ** 3)
 			const { halflength: l2 } = calculateTCParameters({
 				"radius": r,
 				"length": l,
@@ -58,14 +50,12 @@ export const divideTC = (curveForDivisionParameters) => {
 				return {
 					"firstPartRadius": cround(rprim, 2),
 					"firstPartLength": l2,
+					"firstPartHalflength": cround(l2 / 2, 2),
 					"firstPartShift": cround(calculateShift(rprim, l2, curvetype), 2),
 					// "FirstPartSuperelevation": cround(d*(3*(l2**2)/(l**2) - 2*(l2**3)/(l**3)),2),
-					"secondPartRadius": cround(
-						(r * l2 ** 2) /
-							(4 * (lprim - l2) * l2 - 2 * (lprim - l2) ** 2 - l2 ** 2),
-						2
-					),
+					"secondPartRadius": cround((r * l2 ** 2) / (4 * (lprim - l2) * l2 - 2 * (lprim - l2) ** 2 - l2 ** 2), 2),
 					"secondPartLength": lprim - l2,
+					"secondPartHalflength": "n/d",
 					"secondPartShift": 0,
 					"firstPartSuperelevation": cround(superelevationLastPart, 0),
 				}
@@ -74,6 +64,7 @@ export const divideTC = (curveForDivisionParameters) => {
 				return {
 					"firstPartRadius": cround(rprim, 2),
 					"firstPartLength": lprim,
+					"firstPartHalflength": cround(lprim / 2, 2),
 					"firstPartShift": cround(calculateShift(rprim, lprim, curvetype), 2),
 					"firstPartSuperelevation": cround(superelevationLastPart, 0),
 				}

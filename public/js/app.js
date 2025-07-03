@@ -142,15 +142,10 @@ const tcDvisionRenderAdditionalInputs = () => {
 						element.classList.remove("half")
 					}
 				})
-				document
-					.querySelector("#tc_division_second_part_radius")
-					.classList.add("invisible")
-				document
-					.querySelector("#tc_division_second_part_length")
-					.classList.add("invisible")
-				document
-					.querySelector("#tc_divison_second_part_shift")
-					.classList.add("invisible")
+				document.querySelector("#tc_division_second_part_radius").classList.add("invisible")
+				document.querySelector("#tc_division_second_part_length").classList.add("invisible")
+				document.querySelector("#tc_division_second_part_halflength").classList.add("invisible")
+				document.querySelector("#tc_divison_second_part_shift").classList.add("invisible")
 			}
 			break
 		case "4st": {
@@ -167,74 +162,48 @@ const tcDvisionRenderAdditionalInputs = () => {
 	}
 }
 
-document
-	.querySelector("#tc_curvetype")
-	.addEventListener("input", tcDvisionRenderAdditionalInputs)
+document.querySelector("#tc_curvetype").addEventListener("input", tcDvisionRenderAdditionalInputs)
 
 const tcDivisionEventHandler = () => {
 	const curveForDivisionParameters = {
 		"radius": Number(document.querySelector("#tc_radius").value),
 		"length": Number(document.querySelector("#tc_length").value),
 		"curvetype": document.querySelector("#tc_curvetype").value,
-		"newLength": Number(
-			document.querySelector("#tc_division_new_length").value
-		),
-		"superelevation": Number(
-			document.querySelector("#tc_division_superelevation").value
-		),
+		"newLength": Number(document.querySelector("#tc_division_new_length").value),
+		"superelevation": Number(document.querySelector("#tc_division_superelevation").value),
 	}
 
-	const {
-		radius: r,
-		length: l,
-		newLength: newL,
-		curvetype,
-	} = curveForDivisionParameters
+	const { radius: r, length: l, newLength: newL, curvetype } = curveForDivisionParameters
 
 	if ([r, l, newL].includes(0)) {
 		document.querySelector("#tc_division_first_part_radius").value = ""
 		document.querySelector("#tc_division_first_part_length").value = ""
 		document.querySelector("#tc_division_first_part_shift").value = ""
-		document.querySelector(
-			"#tc_divison_first_part_superelevation_in_milimeters"
-		).value = ""
-		document.querySelector(
-			"#tc_divsion_first_part_superelevation_in_degrees"
-		).value = ""
+		document.querySelector("#tc_divison_first_part_superelevation_in_milimeters").value = ""
+		document.querySelector("#tc_divsion_first_part_superelevation_in_degrees").value = ""
 		document.querySelector("#tc_division_second_part_radius").value = ""
 		document.querySelector("#tc_division_second_part_length").value = ""
+		document.querySelector("#tc_division_first_part_halflength").value = ""
+		document.querySelector("#tc_division_second_part_halflength").value = ""
 		document.querySelector("#tc_divison_second_part_shift").value = ""
 		return
 	}
 
 	const curveAfterDivisionParameters = divideTC(curveForDivisionParameters)
 
-	const { secondPartRadius, secondPartLength, secondPartShift } =
-		curveAfterDivisionParameters
-	document.querySelector("#tc_division_second_part_radius").value =
-		secondPartRadius ? secondPartRadius : ""
-	document.querySelector("#tc_division_second_part_length").value =
-		secondPartLength ? secondPartLength : ""
-	document.querySelector("#tc_divison_second_part_shift").value =
-		secondPartShift != 0 ? secondPartShift : 0
+	const { secondPartRadius, secondPartLength, secondPartShift, secondPartHalflength } = curveAfterDivisionParameters
+	document.querySelector("#tc_division_second_part_radius").value = secondPartRadius ? secondPartRadius : ""
+	document.querySelector("#tc_division_second_part_length").value = secondPartLength ? secondPartLength : ""
+	document.querySelector("#tc_division_second_part_halflength").value = secondPartHalflength ? secondPartHalflength : ""
+	document.querySelector("#tc_divison_second_part_shift").value = secondPartShift ? secondPartShift : ""
 
-	const {
-		firstPartRadius,
-		firstPartLength,
-		firstPartShift,
-		firstPartSuperelevation,
-	} = curveAfterDivisionParameters
-	document.querySelector("#tc_division_first_part_radius").value =
-		firstPartRadius
-	document.querySelector("#tc_division_first_part_length").value =
-		firstPartLength
+	const { firstPartRadius, firstPartLength, firstPartShift, firstPartSuperelevation, firstPartHalflength } = curveAfterDivisionParameters
+	document.querySelector("#tc_division_first_part_radius").value = firstPartRadius
+	document.querySelector("#tc_division_first_part_length").value = firstPartLength
+	document.querySelector("#tc_division_first_part_halflength").value = firstPartHalflength
 	document.querySelector("#tc_division_first_part_shift").value = firstPartShift
-	document.querySelector(
-		"#tc_divison_first_part_superelevation_in_milimeters"
-	).value = firstPartSuperelevation ? firstPartSuperelevation : ""
-	document.querySelector(
-		"#tc_divsion_first_part_superelevation_in_degrees"
-	).value = firstPartSuperelevation
+	document.querySelector("#tc_divison_first_part_superelevation_in_milimeters").value = firstPartSuperelevation ? firstPartSuperelevation : ""
+	document.querySelector("#tc_divsion_first_part_superelevation_in_degrees").value = firstPartSuperelevation
 		? superelevationConversionFromMilimetersToDegrees(firstPartSuperelevation)
 		: ""
 }
